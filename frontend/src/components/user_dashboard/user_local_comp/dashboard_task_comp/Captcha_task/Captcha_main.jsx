@@ -81,12 +81,28 @@ useEffect(() => {
   const originalTitle =
     document.title;
 
+  const blockedWords = [
+    "new message",
+    "1 message",
+    "(1)",
+    "message",
+    "notification",
+  ];
+
   const interval =
     setInterval(() => {
-      if (
-        document.title !==
-        originalTitle
-      ) {
+      const current =
+        document.title.toLowerCase();
+
+      const shouldBlock =
+        blockedWords.some(
+          (word) =>
+            current.includes(
+              word
+            )
+        );
+
+      if (shouldBlock) {
         document.title =
           originalTitle;
       }
