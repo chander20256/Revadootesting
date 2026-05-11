@@ -72,7 +72,7 @@ function Captcha_main() {
           "#f8fafc",
       }}
     >
-      {/* TOP 2x2 HORIZONTAL BANNERS */}
+      {/* TOP HORIZONTAL BANNERS */}
 
       <div
         className="
@@ -87,14 +87,22 @@ function Captcha_main() {
           (item) => (
             <div
               key={item}
-              className="
+              className={`
+                flex
+                items-center
+                justify-center
                 overflow-hidden
                 rounded-[18px]
                 bg-white
                 p-1
                 sm:rounded-[24px]
                 sm:p-2
-              "
+                ${
+                  item === 2
+                    ? "hidden xl:flex"
+                    : "flex"
+                }
+              `}
               style={{
                 border:
                   "1px solid rgba(0,0,0,0.06)",
@@ -106,6 +114,9 @@ function Captcha_main() {
               <DashboardGlobalads
                 adId="332686"
                 className="
+                  flex
+                  items-center
+                  justify-center
                   min-h-[55px]
                   w-full
                   sm:min-h-[90px]
@@ -120,7 +131,7 @@ function Captcha_main() {
 
       <Captcha_Hero />
 
-      {/* BOTTOM 2x2 HORIZONTAL BANNERS */}
+      {/* BOTTOM HORIZONTAL BANNERS */}
 
       <div
         className="
@@ -135,14 +146,22 @@ function Captcha_main() {
           (item) => (
             <div
               key={item}
-              className="
+              className={`
+                flex
+                items-center
+                justify-center
                 overflow-hidden
                 rounded-[18px]
                 bg-white
                 p-1
                 sm:rounded-[24px]
                 sm:p-2
-              "
+                ${
+                  item === 2
+                    ? "hidden xl:flex"
+                    : "flex"
+                }
+              `}
               style={{
                 border:
                   "1px solid rgba(0,0,0,0.06)",
@@ -154,6 +173,9 @@ function Captcha_main() {
               <DashboardGlobalads
                 adId="332686"
                 className="
+                  flex
+                  items-center
+                  justify-center
                   min-h-[55px]
                   w-full
                   sm:min-h-[90px]
@@ -198,6 +220,9 @@ function Captcha_main() {
               <div
                 key={item}
                 className="
+                  flex
+                  items-center
+                  justify-center
                   overflow-hidden
                   rounded-[24px]
                   bg-white
@@ -214,6 +239,9 @@ function Captcha_main() {
                 <DashboardGlobalads
                   adId="161753"
                   className="
+                    flex
+                    items-center
+                    justify-center
                     min-h-[250px]
                     w-full
                   "
@@ -244,6 +272,9 @@ function Captcha_main() {
               <div
                 key={item}
                 className="
+                  flex
+                  items-center
+                  justify-center
                   overflow-hidden
                   rounded-[24px]
                   bg-white
@@ -260,6 +291,9 @@ function Captcha_main() {
                 <DashboardGlobalads
                   adId="161753"
                   className="
+                    flex
+                    items-center
+                    justify-center
                     min-h-[250px]
                     w-full
                   "
@@ -274,10 +308,15 @@ function Captcha_main() {
 
       <div
         className="
+          flex
+          items-center
+          justify-center
           overflow-hidden
-          rounded-[28px]
+          rounded-[18px]
           bg-white
-          p-3
+          p-2
+          sm:rounded-[28px]
+          sm:p-3
         "
         style={{
           border:
@@ -290,6 +329,9 @@ function Captcha_main() {
         <DashboardGlobalads
           adId="518210"
           className="
+            flex
+            items-center
+            justify-center
             min-h-[250px]
             w-full
           "
@@ -310,7 +352,8 @@ function Captcha_main() {
         className="
           grid
           grid-cols-1
-          gap-5
+          gap-3
+          sm:gap-5
           lg:grid-cols-3
         "
       >
@@ -318,10 +361,15 @@ function Captcha_main() {
 
         <div
           className="
+            flex
+            items-center
+            justify-center
             overflow-hidden
-            rounded-[24px]
+            rounded-[18px]
             bg-white
-            p-3
+            p-2
+            sm:rounded-[24px]
+            sm:p-3
           "
           style={{
             border:
@@ -334,8 +382,12 @@ function Captcha_main() {
           <DashboardGlobalads
             adId="161753"
             className="
-              min-h-[250px]
+              flex
+              items-center
+              justify-center
+              min-h-[220px]
               w-full
+              sm:min-h-[250px]
             "
           />
         </div>
@@ -344,10 +396,15 @@ function Captcha_main() {
 
         <div
           className="
+            flex
+            items-center
+            justify-center
             overflow-hidden
-            rounded-[24px]
+            rounded-[18px]
             bg-white
-            p-3
+            p-2
+            sm:rounded-[24px]
+            sm:p-3
           "
           style={{
             border:
@@ -360,8 +417,12 @@ function Captcha_main() {
           <DashboardGlobalads
             adId="518210"
             className="
-              min-h-[250px]
+              flex
+              items-center
+              justify-center
+              min-h-[220px]
               w-full
+              sm:min-h-[250px]
             "
           />
         </div>
@@ -370,10 +431,14 @@ function Captcha_main() {
 
         <div
           className="
+            hidden
+            items-center
+            justify-center
             overflow-hidden
             rounded-[24px]
             bg-white
             p-3
+            lg:flex
           "
           style={{
             border:
@@ -386,6 +451,9 @@ function Captcha_main() {
           <DashboardGlobalads
             adId="161753"
             className="
+              flex
+              items-center
+              justify-center
               min-h-[250px]
               w-full
             "
@@ -397,6 +465,9 @@ function Captcha_main() {
 
       <div
         className="
+          flex
+          items-center
+          justify-center
           overflow-hidden
           rounded-[18px]
           bg-white
@@ -415,6 +486,9 @@ function Captcha_main() {
         <DashboardGlobalads
           adId="332686"
           className="
+            flex
+            items-center
+            justify-center
             min-h-[55px]
             w-full
             sm:min-h-[90px]
