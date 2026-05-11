@@ -117,134 +117,141 @@ function Captcha_claim() {
   ----------------------------- */
 
   const handleVerify =
-    async (token) => {
-      setLoading(true);
+  async (token) => {
 
-      try {
-        const response =
-          await fetch(
-            "https://revadoobackend.onrender.com/api/hcaptcha/verify",
-            {
-              method: "POST",
+    /* DIRECT LINK AD */
 
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
+    window.open(
+      "https://omg10.com/4/10993313",
+      "_blank"
+    );
 
-              body: JSON.stringify({
-                token,
+    setLoading(true);
 
-                userId:
-                  localStorage.getItem(
-                    "userId"
-                  ),
-              }),
-            }
-          );
+    try {
+      const response =
+        await fetch(
+          "https://revadoobackend.onrender.com/api/hcaptcha/verify",
+          {
+            method: "POST",
 
-        const data =
-          await response.json();
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-        /* COOLDOWN */
+            body: JSON.stringify({
+              token,
 
-        if (data.cooldown) {
-          setVerified(false);
+              userId:
+                localStorage.getItem(
+                  "userId"
+                ),
+            }),
+          }
+        );
 
-          setCooldownActive(
-            true
-          );
+      const data =
+        await response.json();
 
-          setTimeLeft(
-            data.remainingMinutes *
-              60
-          );
+      /* COOLDOWN */
 
-          Swal.fire({
-            icon: "warning",
+      if (data.cooldown) {
+        setVerified(false);
 
-            title:
-              "Cooldown Active",
+        setCooldownActive(
+          true
+        );
 
-            text: `Please wait ${data.remainingMinutes} minutes before claiming again`,
+        setTimeLeft(
+          data.remainingMinutes *
+            60
+        );
 
-            confirmButtonColor:
-              "#FF6B00",
-          });
+        Swal.fire({
+          icon: "warning",
 
-          return;
-        }
+          title:
+            "Cooldown Active",
 
-        /* SUCCESS */
+          text: `Please wait ${data.remainingMinutes} minutes before claiming again`,
 
-        if (data.success) {
-          setVerified(true);
+          confirmButtonColor:
+            "#FF6B00",
+        });
 
-          setReward(
-            data.reward
-          );
+        return;
+      }
 
-          setCooldownActive(
-            true
-          );
+      /* SUCCESS */
 
-          setTimeLeft(
-            30 * 60
-          );
+      if (data.success) {
+        setVerified(true);
 
-          localStorage.setItem(
-            "balance",
-            data.newBalance
-          );
+        setReward(
+          data.reward
+        );
 
-          Swal.fire({
-            icon: "success",
+        setCooldownActive(
+          true
+        );
 
-            title: `+${data.reward} Creds Earned`,
+        setTimeLeft(
+          30 * 60
+        );
 
-            text:
-              "Reward added to your balance",
+        localStorage.setItem(
+          "balance",
+          data.newBalance
+        );
 
-            confirmButtonColor:
-              "#FF6B00",
-          });
-        } else {
-          setVerified(false);
+        Swal.fire({
+          icon: "success",
 
-          Swal.fire({
-            icon: "error",
+          title: `+${data.reward} Creds Earned`,
 
-            title:
-              "Verification Failed",
+          text:
+            "Reward added to your balance",
 
-            text:
-              data.message ||
-              "Captcha verification failed",
-
-            confirmButtonColor:
-              "#FF6B00",
-          });
-        }
-      } catch (error) {
-        console.log(error);
+          confirmButtonColor:
+            "#FF6B00",
+        });
+      } else {
+        setVerified(false);
 
         Swal.fire({
           icon: "error",
 
           title:
-            "Server Error",
+            "Verification Failed",
 
           text:
-            "Something went wrong",
+            data.message ||
+            "Captcha verification failed",
 
           confirmButtonColor:
             "#FF6B00",
         });
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.log(error);
 
+      Swal.fire({
+        icon: "error",
+
+        title:
+          "Server Error",
+
+        text:
+          "Something went wrong",
+
+        confirmButtonColor:
+          "#FF6B00",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   /* -----------------------------
      FORMAT TIMER
   ----------------------------- */
