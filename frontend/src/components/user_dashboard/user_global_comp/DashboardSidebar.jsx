@@ -310,8 +310,8 @@ const DashboardSidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) =>
     },
 
     {
-      path: "/dashboard/wallet",
-      label: "Wallet",
+      path: "/dashboard/Rewards-Store",
+      label: "Rewards Store",
       icon: <FaWallet />,
     },
   ];

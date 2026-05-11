@@ -90,7 +90,7 @@ function App() {
           />
 
           <Route
-            path="wallet"
+            path="Rewards-Store"
             element={
               <DashboardWallet />
             }

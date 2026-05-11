@@ -14,17 +14,16 @@ const WalletHeader = () => {
       "
     >
       <p className="text-xs font-semibold text-orange-500 tracking-widest uppercase mb-2">
-        Wallet Dashboard
+        Rewards Dashboard
       </p>
 
       <h1 className="text-2xl sm:text-3xl font-bold text-black tracking-tight mb-2">
-        My Wallet
+        Rewards Store
       </h1>
 
       <p className="text-sm text-gray-400 font-normal leading-relaxed max-w-2xl">
-        Manage your earnings, wallet balance, withdrawals, rewards,
-        transactions, and account activity securely from your Revadoo
-        wallet dashboard.
+        Redeem your earned creds for gift cards, vouchers, cash rewards,
+        and digital payouts securely from your Revadoo rewards store.
       </p>
     </div>
   );
