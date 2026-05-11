@@ -69,7 +69,7 @@ function Captcha_main() {
           "'DM Sans', sans-serif",
 
         background:
-          "#f8fafc",
+          "#ffffff",
       }}
     >
       {/* TOP HORIZONTAL BANNERS */}
