@@ -127,11 +127,6 @@ function Captcha_main() {
           "#ffffff",
       }}
     >
-      {/* SOCIAL BAR */}
-
-      <DashboardGlobalads
-        adId="687639"
-      />
 
       {/* POPUNDER */}
 
