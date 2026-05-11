@@ -1,5 +1,3 @@
-/* eslint-disable no-empty */
-/* eslint-disable no-unused-vars */
 import React, {
   useEffect,
   useRef,
@@ -67,18 +65,8 @@ function DashboardGlobalads({
 
           /* CLEAR OLD ADS */
 
-          if (
-            containerRef.current
-          ) {
-            containerRef.current.innerHTML =
-              "";
-          }
-
-          /* VERY IMPORTANT */
-
-          try {
-            delete window.atOptions;
-          } catch (err) {}
+          containerRef.current.innerHTML =
+            "";
 
           /* TEMP WRAPPER */
 
@@ -114,91 +102,84 @@ function DashboardGlobalads({
           );
 
           /* -----------------------------------
-             EXECUTE SCRIPTS SEQUENTIALLY
+             EXECUTE SCRIPTS
           ----------------------------------- */
 
-          const scripts =
-            tempDiv.querySelectorAll(
-              "script"
-            );
+          setTimeout(() => {
+            if (
+              !containerRef.current
+            )
+              return;
 
-          for (const oldScript of scripts) {
-            const script =
-              document.createElement(
+            const scripts =
+              tempDiv.querySelectorAll(
                 "script"
               );
 
-            /* COPY ATTRIBUTES */
+            scripts.forEach(
+              (
+                oldScript
+              ) => {
+                const script =
+                  document.createElement(
+                    "script"
+                  );
 
-            Array.from(
-              oldScript.attributes
-            ).forEach(
-              (attr) => {
-                script.setAttribute(
-                  attr.name,
-                  attr.value
+                /* COPY ATTRIBUTES */
+
+                Array.from(
+                  oldScript.attributes
+                ).forEach(
+                  (attr) => {
+                    script.setAttribute(
+                      attr.name,
+                      attr.value
+                    );
+                  }
                 );
-              }
-            );
 
-            /* INLINE SCRIPT */
+                /* INLINE SCRIPT */
 
-            if (
-              oldScript.innerHTML
-            ) {
-              script.innerHTML =
-                oldScript.innerHTML;
-            }
+                if (
+                  oldScript.innerHTML
+                ) {
+                  script.innerHTML =
+                    oldScript.innerHTML;
+                }
 
-            script.async =
-              false;
+                script.async =
+                  true;
 
-            /* WAIT FOR SCRIPT */
-
-            await new Promise(
-              (resolve) => {
-                script.onload =
-                  resolve;
-
-                script.onerror =
-                  resolve;
+                /* APPEND */
 
                 containerRef.current.appendChild(
                   script
                 );
-
-                /* INLINE FALLBACK */
-
-                if (
-                  !script.src
-                ) {
-                  resolve();
-                }
               }
             );
-          }
 
-          /* REMOVE WRAPPER UI */
+            /* REMOVE BACKGROUND AFTER LOAD */
 
-          setTimeout(() => {
-            if (
-              wrapperRef.current
-            ) {
-              wrapperRef.current.style.background =
-                "transparent";
+            setTimeout(() => {
+              if (
+                wrapperRef.current
+              ) {
+                wrapperRef.current.style.background =
+                  "transparent";
 
-              wrapperRef.current.style.boxShadow =
-                "none";
+                wrapperRef.current.style.boxShadow =
+                  "none";
 
-              wrapperRef.current.style.border =
-                "none";
+                wrapperRef.current.style.border =
+                  "none";
 
-              wrapperRef.current.style.padding =
-                "0px";
-            }
+                wrapperRef.current.style.padding =
+                  "0px";
+              }
 
-            setLoading(false);
-          }, 500);
+              setLoading(false);
+            }, 800);
+          }, 150);
         } catch (error) {
           console.log(
             "Ad Load Error:",
@@ -221,13 +202,7 @@ function DashboardGlobalads({
   return (
     <div
       ref={wrapperRef}
-      className={`
-        flex
-        items-center
-        justify-center
-        overflow-hidden
-        ${className}
-      `}
+      className={className}
     >
       {loading && (
         <div

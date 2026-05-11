@@ -77,40 +77,40 @@ function Captcha_main() {
    PREVENT TITLE FLASH
 ----------------------------- */
 
-useEffect(() => {
-  const originalTitle =
-    document.title;
+// useEffect(() => {
+//   const originalTitle =
+//     document.title;
 
-  const blockedWords = [
-    "new message",
-    "1 message",
-    "(1)",
-    "message",
-    "notification",
-  ];
+//   const blockedWords = [
+//     "new message",
+//     "1 message",
+//     "(1)",
+//     "message",
+//     "notification",
+//   ];
 
-  const interval =
-    setInterval(() => {
-      const current =
-        document.title.toLowerCase();
+//   const interval =
+//     setInterval(() => {
+//       const current =
+//         document.title.toLowerCase();
 
-      const shouldBlock =
-        blockedWords.some(
-          (word) =>
-            current.includes(
-              word
-            )
-        );
+//       const shouldBlock =
+//         blockedWords.some(
+//           (word) =>
+//             current.includes(
+//               word
+//             )
+//         );
 
-      if (shouldBlock) {
-        document.title =
-          originalTitle;
-      }
-    }, 500);
+//       if (shouldBlock) {
+//         document.title =
+//           originalTitle;
+//       }
+//     }, 500);
 
-  return () =>
-    clearInterval(interval);
-}, []);
+//   return () =>
+//     clearInterval(interval);
+// }, []);
 
   return (
     <div
@@ -408,15 +408,15 @@ useEffect(() => {
           }}
         >
           <DashboardGlobalads
-            adId="161753"
-            className="
-              flex
-              items-center
-              justify-center
-              min-h-[250px]
-              w-full
-            "
-          />
+                  adId="161753"
+                  className="
+                    flex
+                    items-center
+                    justify-center
+                    min-h-[250px]
+                    w-full
+                  "
+                />
         </div>
       </div>
 
