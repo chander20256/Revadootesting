@@ -73,6 +73,29 @@ function Captcha_main() {
     }
   }, []);
 
+  /* -----------------------------
+   PREVENT TITLE FLASH
+----------------------------- */
+
+useEffect(() => {
+  const originalTitle =
+    document.title;
+
+  const interval =
+    setInterval(() => {
+      if (
+        document.title !==
+        originalTitle
+      ) {
+        document.title =
+          originalTitle;
+      }
+    }, 500);
+
+  return () =>
+    clearInterval(interval);
+}, []);
+
   return (
     <div
       className="
