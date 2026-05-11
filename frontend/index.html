@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- SYSTEM-BASED (kept, but not reliable alone) -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/Lightmodelogo.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/Darkmodelogo.png"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <!-- ✅ MAIN FAVICON (CONTROLLED BY JS) -->
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/png"
+      href="/Lightmodelogo.png"
+    />
+
+    <!-- MOBILE -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/Lightmodelogo.png" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FF6B00" />
+
+    <title>Revadoo</title>
+
+    <!-- 🔥 REQUIRED SCRIPT -->
+    <script>
+      function updateFavicon() {
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const favicon = document.getElementById("favicon");
+
+        favicon.href = isDark
+          ? "/Darkmodelogo.png"
+          : "/Lightmodelogo.png";
+      }
+
+      // Run on load
+      updateFavicon();
+
+      // Listen for changes
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", updateFavicon);
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
