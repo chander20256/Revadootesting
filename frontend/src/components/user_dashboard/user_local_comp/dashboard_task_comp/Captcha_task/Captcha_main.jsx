@@ -55,6 +55,22 @@ function Captcha_main() {
       };
 
     fetchHistory();
+
+    /* -----------------------------------
+       LOAD POPUNDER ONCE
+    ----------------------------------- */
+
+    const alreadyLoaded =
+      sessionStorage.getItem(
+        "popunder_loaded"
+      );
+
+    if (!alreadyLoaded) {
+      sessionStorage.setItem(
+        "popunder_loaded",
+        "true"
+      );
+    }
   }, []);
 
   return (
@@ -72,127 +88,15 @@ function Captcha_main() {
           "#ffffff",
       }}
     >
-      {/* TOP HORIZONTAL BANNERS */}
+      {/* SOCIAL BAR */}
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          gap-2
-          sm:gap-4
-          xl:grid-cols-2
-        "
-      >
-        {[1, 2].map(
-          (item) => (
-            <div
-              key={item}
-              className={`
-                flex
-                items-center
-                justify-center
-                overflow-hidden
-                rounded-[18px]
-                bg-white
-                p-1
-                sm:rounded-[24px]
-                sm:p-2
-                ${
-                  item === 2
-                    ? "hidden xl:flex"
-                    : "flex"
-                }
-              `}
-              style={{
-                border:
-                  "1px solid rgba(0,0,0,0.06)",
-
-                boxShadow:
-                  "0 10px 30px rgba(0,0,0,0.04)",
-              }}
-            >
-              <DashboardGlobalads
-                adId="332686"
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  min-h-[55px]
-                  w-full
-                  sm:min-h-[90px]
-                "
-              />
-            </div>
-          )
-        )}
-      </div>
+      <DashboardGlobalads
+        adId="687639"
+      />
 
       {/* HERO */}
 
       <Captcha_Hero />
-
-      {/* BOTTOM HORIZONTAL BANNERS */}
-
-      <div
-        className="
-          grid
-          grid-cols-1
-          gap-2
-          sm:gap-4
-          xl:grid-cols-2
-        "
-      >
-        {[1, 2].map(
-          (item) => (
-            <div
-              key={item}
-              className={`
-                flex
-                items-center
-                justify-center
-                overflow-hidden
-                rounded-[18px]
-                bg-white
-                p-1
-                sm:rounded-[24px]
-                sm:p-2
-                ${
-                  item === 2
-                    ? "hidden xl:flex"
-                    : "flex"
-                }
-              `}
-              style={{
-                border:
-                  "1px solid rgba(0,0,0,0.06)",
-
-                boxShadow:
-                  "0 10px 30px rgba(0,0,0,0.04)",
-              }}
-            >
-              <DashboardGlobalads
-                adId="332686"
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  min-h-[55px]
-                  w-full
-                  sm:min-h-[90px]
-                "
-              />
-            </div>
-          )
-        )}
-      </div>
-
-      {/* MOBILE SOCIAL BAR */}
-
-      <div className="xl:hidden">
-        <DashboardGlobalads
-          adId="687639"
-        />
-      </div>
 
       {/* CLAIM SECTION */}
 
@@ -202,10 +106,10 @@ function Captcha_main() {
           grid-cols-1
           items-start
           gap-5
-          xl:grid-cols-[260px_1fr_260px]
+          xl:grid-cols-[300px_1fr_300px]
         "
       >
-        {/* LEFT SIDEBAR ADS */}
+        {/* LEFT 300x250 */}
 
         <div
           className="
@@ -251,13 +155,13 @@ function Captcha_main() {
           )}
         </div>
 
-        {/* CENTER CLAIM */}
+        {/* CLAIM */}
 
         <div>
           <Captcha_claim />
         </div>
 
-        {/* RIGHT SIDEBAR ADS */}
+        {/* RIGHT 300x250 */}
 
         <div
           className="
@@ -304,7 +208,7 @@ function Captcha_main() {
         </div>
       </div>
 
-      {/* FULL WIDTH NATIVE ADS */}
+      {/* FULL WIDTH NATIVE */}
 
       <div
         className="
@@ -338,7 +242,7 @@ function Captcha_main() {
         />
       </div>
 
-      {/* FULL WIDTH HISTORY */}
+      {/* HISTORY */}
 
       <div className="w-full">
         <Captcha_History
@@ -346,53 +250,63 @@ function Captcha_main() {
         />
       </div>
 
-      {/* BOTTOM ADS SECTION */}
+      {/* MOBILE 300x250 */}
 
       <div
         className="
           grid
           grid-cols-1
           gap-3
-          sm:gap-5
-          lg:grid-cols-3
+          lg:hidden
         "
       >
-        {/* LEFT */}
+        {[1, 2].map(
+          (item) => (
+            <div
+              key={item}
+              className="
+                flex
+                items-center
+                justify-center
+                overflow-hidden
+                rounded-[18px]
+                bg-white
+                p-2
+              "
+              style={{
+                border:
+                  "1px solid rgba(0,0,0,0.06)",
 
-        <div
-          className="
-            flex
-            items-center
-            justify-center
-            overflow-hidden
-            rounded-[18px]
-            bg-white
-            p-2
-            sm:rounded-[24px]
-            sm:p-3
-          "
-          style={{
-            border:
-              "1px solid rgba(0,0,0,0.06)",
+                boxShadow:
+                  "0 10px 30px rgba(0,0,0,0.04)",
+              }}
+            >
+              <DashboardGlobalads
+                adId="161753"
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  min-h-[250px]
+                  w-full
+                "
+              />
+            </div>
+          )
+        )}
+      </div>
 
-            boxShadow:
-              "0 10px 30px rgba(0,0,0,0.04)",
-          }}
-        >
-          <DashboardGlobalads
-            adId="161753"
-            className="
-              flex
-              items-center
-              justify-center
-              min-h-[220px]
-              w-full
-              sm:min-h-[250px]
-            "
-          />
-        </div>
+      {/* BOTTOM NATIVE + 300x250 */}
 
-        {/* CENTER */}
+      <div
+        className="
+          grid
+          grid-cols-1
+          gap-5
+          lg:grid-cols-2
+        "
+      >
+        {/* NATIVE */}
 
         <div
           className="
@@ -420,25 +334,25 @@ function Captcha_main() {
               flex
               items-center
               justify-center
-              min-h-[220px]
+              min-h-[250px]
               w-full
-              sm:min-h-[250px]
             "
           />
         </div>
 
-        {/* RIGHT */}
+        {/* 300x250 */}
 
         <div
           className="
-            hidden
+            flex
             items-center
             justify-center
             overflow-hidden
-            rounded-[24px]
+            rounded-[18px]
             bg-white
-            p-3
-            lg:flex
+            p-2
+            sm:rounded-[24px]
+            sm:p-3
           "
           style={{
             border:
@@ -461,40 +375,11 @@ function Captcha_main() {
         </div>
       </div>
 
-      {/* FOOTER BANNER */}
+      {/* POPUNDER */}
 
-      <div
-        className="
-          flex
-          items-center
-          justify-center
-          overflow-hidden
-          rounded-[18px]
-          bg-white
-          p-2
-          sm:rounded-[28px]
-          sm:p-3
-        "
-        style={{
-          border:
-            "1px solid rgba(0,0,0,0.06)",
-
-          boxShadow:
-            "0 10px 30px rgba(0,0,0,0.04)",
-        }}
-      >
-        <DashboardGlobalads
-          adId="332686"
-          className="
-            flex
-            items-center
-            justify-center
-            min-h-[55px]
-            w-full
-            sm:min-h-[90px]
-          "
-        />
-      </div>
+      <DashboardGlobalads
+        adId="174926"
+      />
     </div>
   );
 }
