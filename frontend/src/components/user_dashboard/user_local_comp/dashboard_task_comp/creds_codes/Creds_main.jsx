@@ -5,6 +5,8 @@ import Creds_claim from "./Creds_claim";
 import Creds_history from "./Creds_history";
 import Creds_rewards from "./Creds_rewards";
 
+import DashboardGlobalads from "../../../user_global_comp/DashboardGlobalads";
+
 function Creds_main() {
   return (
     <div
@@ -23,39 +25,42 @@ function Creds_main() {
 
       <Creds_Hero />
 
-      {/* TELEGRAM REWARDS */}
-
-      <Creds_rewards />
-
-      {/* MOBILE TOP ADS */}
+      {/* TOP 468x60 */}
 
       <div
         className="
-          block
-          xl:hidden
-          w-full
-          h-[120px]
-          sm:h-[140px]
-          rounded-[24px]
           flex
           items-center
           justify-center
-          text-sm
-          font-semibold
+          overflow-hidden
+          rounded-[24px]
+          bg-white
+          p-2
         "
         style={{
-          background:
-            "rgba(255,107,0,0.05)",
-
           border:
-            "1px dashed rgba(255,107,0,0.18)",
+            "1px solid rgba(0,0,0,0.06)",
 
-          color:
-            "#FF6B00",
+          boxShadow:
+            "0 10px 30px rgba(0,0,0,0.04)",
         }}
       >
-        Mobile Banner Ads
+        <DashboardGlobalads
+          adId="797073"
+          className="
+            flex
+            items-center
+            justify-center
+            h-[60px]
+            w-full
+            max-w-[468px]
+          "
+        />
       </div>
+
+      {/* TELEGRAM REWARDS */}
+
+      <Creds_rewards />
 
       {/* MAIN SECTION */}
 
@@ -76,16 +81,19 @@ function Creds_main() {
 
           <Creds_claim />
 
-          {/* RESPONSIVE ADS */}
+          {/* RESPONSIVE BANNER */}
 
           <div
             className="
               rounded-[24px]
               overflow-hidden
+              bg-white
+              p-2
+              flex
+              items-center
+              justify-center
             "
             style={{
-              background: "#ffffff",
-
               border:
                 "1px solid rgba(0,0,0,0.06)",
 
@@ -93,33 +101,24 @@ function Creds_main() {
                 "0 10px 30px rgba(0,0,0,0.04)",
             }}
           >
-            <div
+            <DashboardGlobalads
+              adId="797073"
               className="
-                h-[110px]
-                sm:h-[120px]
-                w-full
                 flex
                 items-center
                 justify-center
-                text-sm
-                font-semibold
+                h-[60px]
+                w-full
+                max-w-[468px]
               "
-              style={{
-                background:
-                  "rgba(255,107,0,0.03)",
-
-                color: "#9ca3af",
-              }}
-            >
-              Responsive Banner Ad
-            </div>
+            />
           </div>
 
           {/* HISTORY */}
 
           <Creds_history />
 
-          {/* LARGE MOBILE ADS */}
+          {/* MOBILE 300x250 */}
 
           <div
             className="
@@ -127,10 +126,13 @@ function Creds_main() {
               xl:hidden
               rounded-[24px]
               overflow-hidden
+              bg-white
+              p-2
+              flex
+              items-center
+              justify-center
             "
             style={{
-              background: "#ffffff",
-
               border:
                 "1px solid rgba(0,0,0,0.06)",
 
@@ -138,39 +140,32 @@ function Creds_main() {
                 "0 10px 30px rgba(0,0,0,0.04)",
             }}
           >
-            <div
+            <DashboardGlobalads
+              adId="161753"
               className="
-                h-[180px]
-                sm:h-[220px]
-                w-full
                 flex
                 items-center
                 justify-center
-                text-sm
-                font-semibold
+                min-h-[250px]
+                w-full
+                max-w-[300px]
               "
-              style={{
-                background:
-                  "rgba(255,107,0,0.03)",
-
-                color: "#9ca3af",
-              }}
-            >
-              Large Mobile Ads Space
-            </div>
+            />
           </div>
 
-          {/* NATIVE STYLE AD */}
+          {/* NATIVE STYLE */}
 
           <div
             className="
               rounded-[24px]
-              p-4
-              sm:p-5
+              overflow-hidden
+              bg-white
+              p-2
+              flex
+              items-center
+              justify-center
             "
             style={{
-              background: "#ffffff",
-
               border:
                 "1px solid rgba(0,0,0,0.06)",
 
@@ -178,93 +173,16 @@ function Creds_main() {
                 "0 10px 30px rgba(0,0,0,0.04)",
             }}
           >
-            <div
+            <DashboardGlobalads
+              adId="518210"
               className="
                 flex
-                flex-col
-                md:flex-row
-                md:items-center
-                md:justify-between
-                gap-5
+                items-center
+                justify-center
+                min-h-[250px]
+                w-full
               "
-            >
-              {/* LEFT */}
-
-              <div className="flex-1">
-                <span
-                  className="
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-wider
-                  "
-                  style={{
-                    color: "#FF6B00",
-                  }}
-                >
-                  Sponsored
-                </span>
-
-                <h3
-                  className="
-                    mt-2
-                    text-lg
-                    sm:text-xl
-                    font-black
-                  "
-                  style={{
-                    color: "#111827",
-                  }}
-                >
-                  Earn Extra Revadoo
-                  Creds Daily
-                </h3>
-
-                <p
-                  className="
-                    mt-2
-                    text-sm
-                    leading-7
-                  "
-                  style={{
-                    color: "#6b7280",
-                  }}
-                >
-                  Complete premium
-                  offers and rewarded
-                  tasks to unlock bonus
-                  credits instantly.
-                </p>
-              </div>
-
-              {/* CTA */}
-
-              <button
-                className="
-                  h-11
-                  sm:h-12
-                  px-5
-                  sm:px-6
-                  rounded-2xl
-                  text-white
-                  font-bold
-                  text-sm
-                  whitespace-nowrap
-                  transition-all
-                  duration-300
-                  hover:scale-[1.02]
-                "
-                style={{
-                  background:
-                    "linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%)",
-
-                  boxShadow:
-                    "0 10px 25px rgba(255,107,0,0.20)",
-                }}
-              >
-                Open Offerwall
-              </button>
-            </div>
+            />
           </div>
         </div>
 
@@ -286,10 +204,13 @@ function Creds_main() {
             className="
               rounded-[24px]
               overflow-hidden
+              bg-white
+              p-2
+              flex
+              items-center
+              justify-center
             "
             style={{
-              background: "#ffffff",
-
               border:
                 "1px solid rgba(0,0,0,0.06)",
 
@@ -297,37 +218,31 @@ function Creds_main() {
                 "0 10px 30px rgba(0,0,0,0.04)",
             }}
           >
-            <div
+            <DashboardGlobalads
+              adId="161753"
               className="
-                w-full
-                h-[250px]
                 flex
                 items-center
                 justify-center
-                text-sm
-                font-semibold
+                min-h-[250px]
+                w-full
               "
-              style={{
-                background:
-                  "rgba(255,107,0,0.03)",
-
-                color: "#9ca3af",
-              }}
-            >
-              300x250 Sidebar Ad
-            </div>
+            />
           </div>
 
-          {/* SECONDARY SIDEBAR */}
+          {/* NATIVE */}
 
           <div
             className="
               rounded-[24px]
               overflow-hidden
+              bg-white
+              p-2
+              flex
+              items-center
+              justify-center
             "
             style={{
-              background: "#ffffff",
-
               border:
                 "1px solid rgba(0,0,0,0.06)",
 
@@ -335,25 +250,16 @@ function Creds_main() {
                 "0 10px 30px rgba(0,0,0,0.04)",
             }}
           >
-            <div
+            <DashboardGlobalads
+              adId="518210"
               className="
-                w-full
-                h-[280px]
                 flex
                 items-center
                 justify-center
-                text-sm
-                font-semibold
+                min-h-[250px]
+                w-full
               "
-              style={{
-                background:
-                  "rgba(255,107,0,0.03)",
-
-                color: "#9ca3af",
-              }}
-            >
-              Native / Image Ad
-            </div>
+            />
           </div>
         </div>
       </div>
