@@ -13,18 +13,11 @@ function DashboardGlobalads({
   const containerRef =
     useRef(null);
 
-  const wrapperRef =
-    useRef(null);
-
   const [loading, setLoading] =
     useState(true);
 
   const API =
     "https://revadoobackend.onrender.com";
-
-  /* -----------------------------------
-     LOAD AD
-  ----------------------------------- */
 
   useEffect(() => {
     let mounted = true;
@@ -32,43 +25,35 @@ function DashboardGlobalads({
     const loadAd =
       async () => {
         try {
-          setLoading(true);
-
           const res =
             await axios.get(
               `${API}/api/admin/ads/${adId}`
             );
 
-          /* NO SUCCESS */
-
           if (
             !res.data.success
           ) {
             setLoading(false);
-
             return;
           }
-
-          const adCode =
-            res.data.ad.adCode;
-
-          /* NO CONTAINER */
 
           if (
             !containerRef.current ||
             !mounted
           ) {
             setLoading(false);
-
             return;
           }
 
-          /* CLEAR OLD ADS */
+          const adCode =
+            res.data.ad.adCode;
+
+          /* CLEAR OLD */
 
           containerRef.current.innerHTML =
             "";
 
-          /* TEMP WRAPPER */
+          /* TEMP DIV */
 
           const tempDiv =
             document.createElement(
@@ -78,54 +63,47 @@ function DashboardGlobalads({
           tempDiv.innerHTML =
             adCode;
 
-          /* -----------------------------------
-             APPEND NON-SCRIPT ELEMENTS
-          ----------------------------------- */
+          /* NON SCRIPTS */
 
-          const nonScripts =
-            Array.from(
-              tempDiv.childNodes
-            ).filter(
-              (node) =>
-                node.nodeName !==
-                "SCRIPT"
-            );
-
-          nonScripts.forEach(
-            (node) => {
+          Array.from(
+            tempDiv.childNodes
+          ).forEach((node) => {
+            if (
+              node.nodeName !==
+              "SCRIPT"
+            ) {
               containerRef.current.appendChild(
                 node.cloneNode(
                   true
                 )
               );
             }
-          );
+          });
 
-          /* -----------------------------------
-             EXECUTE SCRIPTS
-          ----------------------------------- */
+          /* SCRIPTS */
 
-          setTimeout(() => {
-            if (
-              !containerRef.current
-            )
-              return;
+          const scripts =
+            tempDiv.querySelectorAll(
+              "script"
+            );
 
-            const scripts =
-              tempDiv.querySelectorAll(
-                "script"
-              );
+          scripts.forEach(
+            (
+              oldScript,
+              index
+            ) => {
+              setTimeout(() => {
+                if (
+                  !containerRef.current
+                )
+                  return;
 
-            scripts.forEach(
-              (
-                oldScript
-              ) => {
                 const script =
                   document.createElement(
                     "script"
                   );
 
-                /* COPY ATTRIBUTES */
+                /* ATTRIBUTES */
 
                 Array.from(
                   oldScript.attributes
@@ -138,7 +116,7 @@ function DashboardGlobalads({
                   }
                 );
 
-                /* INLINE SCRIPT */
+                /* INLINE */
 
                 if (
                   oldScript.innerHTML
@@ -150,39 +128,17 @@ function DashboardGlobalads({
                 script.async =
                   true;
 
-                /* APPEND */
-
                 containerRef.current.appendChild(
                   script
                 );
-              }
-            );
+              }, index * 50);
+            }
+          );
 
-            /* REMOVE BACKGROUND AFTER LOAD */
-
-            setTimeout(() => {
-              if (
-                wrapperRef.current
-              ) {
-                wrapperRef.current.style.background =
-                  "transparent";
-
-                wrapperRef.current.style.boxShadow =
-                  "none";
-
-                wrapperRef.current.style.border =
-                  "none";
-
-                wrapperRef.current.style.padding =
-                  "0px";
-              }
-
-              setLoading(false);
-            }, 800);
-          }, 150);
+          setLoading(false);
         } catch (error) {
           console.log(
-            "Ad Load Error:",
+            "Ad Error:",
             error
           );
 
@@ -199,31 +155,28 @@ function DashboardGlobalads({
     };
   }, [adId]);
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <div
-      ref={wrapperRef}
-      className={className}
+      className={`
+        flex
+        items-center
+        justify-center
+        overflow-hidden
+        ${className}
+      `}
     >
-      {loading && (
-        <div
-          className="
-            flex
-            min-h-[90px]
-            w-full
-            items-center
-            justify-center
-            rounded-2xl
-            bg-zinc-100
-            text-xs
-            text-zinc-400
-          "
-        >
-          Loading Ad...
-        </div>
-      )}
-
       <div
         ref={containerRef}
+        className="
+          flex
+          items-center
+          justify-center
+          w-full
+        "
       />
     </div>
   );

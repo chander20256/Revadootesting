@@ -296,129 +296,89 @@ function Captcha_main() {
       </div>
 
       {/* MOBILE 300x250 */}
+{/* BOTTOM ADS */}
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          gap-3
-          lg:hidden
-        "
-      >
-        {[1, 2].map(
-          (item) => (
-            <div
-              key={item}
-              className="
-                flex
-                items-center
-                justify-center
-                overflow-hidden
-                rounded-[18px]
-                bg-white
-                p-2
-              "
-              style={{
-                border:
-                  "1px solid rgba(0,0,0,0.06)",
+<div
+  className="
+    mt-2
+    grid
+    grid-cols-1
+    gap-4
+    xl:grid-cols-2
+  "
+>
+  {/* FIRST 468x60 */}
 
-                boxShadow:
-                  "0 10px 30px rgba(0,0,0,0.04)",
-              }}
-            >
-              <DashboardGlobalads
-                adId="161753"
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  min-h-[250px]
-                  w-full
-                "
-              />
-            </div>
-          )
-        )}
-      </div>
+  <div
+    className="
+      flex
+      items-center
+      justify-center
+      overflow-hidden
+      rounded-[18px]
+      bg-white
+      p-2
+      h-[90px]
+      sm:rounded-[24px]
+      sm:p-3
+    "
+    style={{
+      border:
+        "1px solid rgba(0,0,0,0.06)",
 
-      {/* BOTTOM NATIVE + 300x250 */}
+      boxShadow:
+        "0 8px 24px rgba(0,0,0,0.04)",
+    }}
+  >
+    <DashboardGlobalads
+      adId="797073"
+      className="
+        flex
+        h-[60px]
+        w-full
+        max-w-[468px]
+        items-center
+        justify-center
+      "
+    />
+  </div>
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          gap-5
-          lg:grid-cols-2
-        "
-      >
-        {/* NATIVE */}
+  {/* SECOND 468x60 */}
 
-        <div
-          className="
-            flex
-            items-center
-            justify-center
-            overflow-hidden
-            rounded-[18px]
-            bg-white
-            p-2
-            sm:rounded-[24px]
-            sm:p-3
-          "
-          style={{
-            border:
-              "1px solid rgba(0,0,0,0.06)",
+  <div
+    className="
+      flex
+      items-center
+      justify-center
+      overflow-hidden
+      rounded-[18px]
+      bg-white
+      p-2
+      h-[90px]
+      sm:rounded-[24px]
+      sm:p-3
+    "
+    style={{
+      border:
+        "1px solid rgba(0,0,0,0.06)",
 
-            boxShadow:
-              "0 10px 30px rgba(0,0,0,0.04)",
-          }}
-        >
-          <DashboardGlobalads
-            adId="518210"
-            className="
-              flex
-              items-center
-              justify-center
-              min-h-[250px]
-              w-full
-            "
-          />
-        </div>
-
-        {/* 300x250 */}
-
-        <div
-          className="
-            flex
-            items-center
-            justify-center
-            overflow-hidden
-            rounded-[18px]
-            bg-white
-            p-2
-            sm:rounded-[24px]
-            sm:p-3
-          "
-          style={{
-            border:
-              "1px solid rgba(0,0,0,0.06)",
-
-            boxShadow:
-              "0 10px 30px rgba(0,0,0,0.04)",
-          }}
-        >
-          <DashboardGlobalads
-                  adId="161753"
-                  className="
-                    flex
-                    items-center
-                    justify-center
-                    min-h-[250px]
-                    w-full
-                  "
-                />
-        </div>
-      </div>
+      boxShadow:
+        "0 8px 24px rgba(0,0,0,0.04)",
+    }}
+  >
+    <DashboardGlobalads
+      adId="797073"
+      className="
+        flex
+        h-[60px]
+        w-full
+        max-w-[468px]
+        items-center
+        justify-center
+      "
+    />
+  </div>
+</div>
 
       
     </div>
