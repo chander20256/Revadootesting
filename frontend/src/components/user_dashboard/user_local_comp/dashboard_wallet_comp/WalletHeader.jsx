@@ -1,11 +1,23 @@
 const WalletHeader = () => {
   return (
-    <div className="mb-6 sm:mb-8 font-['DM_Sans',sans-serif]">
-      <p className="text-xs font-semibold text-orange-500 tracking-widest uppercase mb-1">
+    <div
+      className="
+        mb-6
+        sm:mb-8
+        font-['DM_Sans',sans-serif]
+        bg-white
+        border
+        border-gray-100
+        rounded-3xl
+        p-5
+        sm:p-6
+      "
+    >
+      <p className="text-xs font-semibold text-orange-500 tracking-widest uppercase mb-2">
         Wallet Dashboard
       </p>
 
-      <h1 className="text-2xl sm:text-3xl font-bold text-black tracking-tight mb-1">
+      <h1 className="text-2xl sm:text-3xl font-bold text-black tracking-tight mb-2">
         My Wallet
       </h1>
 

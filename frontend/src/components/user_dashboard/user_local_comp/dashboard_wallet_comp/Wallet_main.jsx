@@ -11,8 +11,7 @@ function Wallet_main() {
     <div>
       <WalletHeader />
 
-      {/* HORIZONTAL ON LARGE SCREEN */}
-      {/* STACK ON MOBILE */}
+      {/* TOP SECTION */}
 
       <div
         className="
@@ -24,14 +23,22 @@ function Wallet_main() {
         "
       >
         {/* LEFT */}
+
         <div className="w-full lg:w-[65%]">
           <WalletBalanceCard />
         </div>
 
         {/* RIGHT */}
+
         <div className="w-full lg:w-[35%]">
           <PointsExchange />
         </div>
+      </div>
+
+      {/* WITHDRAW FORM */}
+
+      <div className="mt-5">
+        <WithdrawForm />
       </div>
     </div>
   );
