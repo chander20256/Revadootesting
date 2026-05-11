@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+/* eslint-disable no-unused-vars */
 import React, {
   useEffect,
   useRef,
@@ -65,8 +67,18 @@ function DashboardGlobalads({
 
           /* CLEAR OLD ADS */
 
-          containerRef.current.innerHTML =
-            "";
+          if (
+            containerRef.current
+          ) {
+            containerRef.current.innerHTML =
+              "";
+          }
+
+          /* VERY IMPORTANT */
+
+          try {
+            delete window.atOptions;
+          } catch (err) {}
 
           /* TEMP WRAPPER */
 
@@ -102,84 +114,91 @@ function DashboardGlobalads({
           );
 
           /* -----------------------------------
-             EXECUTE SCRIPTS
+             EXECUTE SCRIPTS SEQUENTIALLY
           ----------------------------------- */
 
-          setTimeout(() => {
-            if (
-              !containerRef.current
-            )
-              return;
+          const scripts =
+            tempDiv.querySelectorAll(
+              "script"
+            );
 
-            const scripts =
-              tempDiv.querySelectorAll(
+          for (const oldScript of scripts) {
+            const script =
+              document.createElement(
                 "script"
               );
 
-            scripts.forEach(
-              (
-                oldScript
-              ) => {
-                const script =
-                  document.createElement(
-                    "script"
-                  );
+            /* COPY ATTRIBUTES */
 
-                /* COPY ATTRIBUTES */
-
-                Array.from(
-                  oldScript.attributes
-                ).forEach(
-                  (attr) => {
-                    script.setAttribute(
-                      attr.name,
-                      attr.value
-                    );
-                  }
-                );
-
-                /* INLINE SCRIPT */
-
-                if (
-                  oldScript.innerHTML
-                ) {
-                  script.innerHTML =
-                    oldScript.innerHTML;
-                }
-
-                script.async =
-                  true;
-
-                /* APPEND */
-
-                containerRef.current.appendChild(
-                  script
+            Array.from(
+              oldScript.attributes
+            ).forEach(
+              (attr) => {
+                script.setAttribute(
+                  attr.name,
+                  attr.value
                 );
               }
             );
 
-            /* REMOVE BACKGROUND AFTER LOAD */
+            /* INLINE SCRIPT */
 
-            setTimeout(() => {
-              if (
-                wrapperRef.current
-              ) {
-                wrapperRef.current.style.background =
-                  "transparent";
+            if (
+              oldScript.innerHTML
+            ) {
+              script.innerHTML =
+                oldScript.innerHTML;
+            }
 
-                wrapperRef.current.style.boxShadow =
-                  "none";
+            script.async =
+              false;
 
-                wrapperRef.current.style.border =
-                  "none";
+            /* WAIT FOR SCRIPT */
 
-                wrapperRef.current.style.padding =
-                  "0px";
+            await new Promise(
+              (resolve) => {
+                script.onload =
+                  resolve;
+
+                script.onerror =
+                  resolve;
+
+                containerRef.current.appendChild(
+                  script
+                );
+
+                /* INLINE FALLBACK */
+
+                if (
+                  !script.src
+                ) {
+                  resolve();
+                }
               }
+            );
+          }
 
-              setLoading(false);
-            }, 800);
-          }, 150);
+          /* REMOVE WRAPPER UI */
+
+          setTimeout(() => {
+            if (
+              wrapperRef.current
+            ) {
+              wrapperRef.current.style.background =
+                "transparent";
+
+              wrapperRef.current.style.boxShadow =
+                "none";
+
+              wrapperRef.current.style.border =
+                "none";
+
+              wrapperRef.current.style.padding =
+                "0px";
+            }
+
+            setLoading(false);
+          }, 500);
         } catch (error) {
           console.log(
             "Ad Load Error:",
@@ -202,7 +221,13 @@ function DashboardGlobalads({
   return (
     <div
       ref={wrapperRef}
-      className={className}
+      className={`
+        flex
+        items-center
+        justify-center
+        overflow-hidden
+        ${className}
+      `}
     >
       {loading && (
         <div

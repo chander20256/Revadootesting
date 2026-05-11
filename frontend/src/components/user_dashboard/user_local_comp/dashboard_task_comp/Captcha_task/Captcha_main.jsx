@@ -117,6 +117,12 @@ useEffect(() => {
         adId="687639"
       />
 
+      {/* POPUNDER */}
+
+<DashboardGlobalads
+  adId="174926"
+/>
+
       {/* HERO */}
 
       <Captcha_Hero />
@@ -398,11 +404,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* POPUNDER */}
-
-      <DashboardGlobalads
-        adId="174926"
-      />
+      
     </div>
   );
 }
