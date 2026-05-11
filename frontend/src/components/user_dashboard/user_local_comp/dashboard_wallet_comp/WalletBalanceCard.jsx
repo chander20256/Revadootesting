@@ -48,14 +48,32 @@ const WalletBalanceCard = () => {
       alert(error.response?.data?.message || "Withdraw failed");
     }
   };
+return (
+  <div
+    className="
+      relative
+      overflow-hidden
+      bg-orange-500
+      rounded-2xl
+      p-6
+      sm:p-8
+      font-['DM_Sans',sans-serif]
+      w-full
+      h-full
+      min-h-[220px]
+      flex
+      flex-col
+      justify-between
+    "
+  >
+    {/* Decorative circles */}
+    <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
+    <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
 
-  return (
-    <div className="relative overflow-hidden bg-orange-500 rounded-2xl p-6 sm:p-8 mb-4 font-['DM_Sans',sans-serif] w-full">
-      {/* Decorative circles */}
-      <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
-      <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
-
-      <p className="text-sm font-medium text-white/75 mb-2">Available Balance</p>
+    <div>
+      <p className="text-sm font-medium text-white/75 mb-2">
+        Available Balance
+      </p>
 
       <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-none mb-1">
         ${balance.toFixed(2)}
@@ -64,23 +82,25 @@ const WalletBalanceCard = () => {
       <p className="text-sm text-white/60 mb-7">
         ≈ {(balance * 82).toLocaleString()} INR
       </p>
-
-      <div className="flex gap-3 flex-wrap">
-        <button
-          onClick={addMoney}
-          className="bg-white text-black text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-orange-50 transition-colors duration-150"
-        >
-          + Add Money
-        </button>
-        <button
-          onClick={withdrawMoney}
-          className="bg-white/15 text-white text-sm font-semibold px-5 py-2.5 rounded-lg border border-white/40 hover:bg-white/25 transition-colors duration-150"
-        >
-          Withdraw
-        </button>
-      </div>
     </div>
-  );
+
+    <div className="flex gap-3 flex-wrap">
+      <button
+        onClick={addMoney}
+        className="bg-white text-black text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-orange-50 transition-colors duration-150"
+      >
+        + Add Money
+      </button>
+
+      <button
+        onClick={withdrawMoney}
+        className="bg-white/15 text-white text-sm font-semibold px-5 py-2.5 rounded-lg border border-white/40 hover:bg-white/25 transition-colors duration-150"
+      >
+        Withdraw
+      </button>
+    </div>
+  </div>
+);
 };
 
 export default WalletBalanceCard;
