@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
 
+    <!-- MONETAG VERIFICATION -->
+    <meta
+      name="monetag"
+      content="039c4a1f931259174ca802124c0645a9"
+    />
+
     <!-- SYSTEM-BASED (kept, but not reliable alone) -->
     <link
       rel="icon"
@@ -10,6 +16,7 @@
       href="/Lightmodelogo.png"
       media="(prefers-color-scheme: light)"
     />
+
     <link
       rel="icon"
       type="image/png"
@@ -17,7 +24,7 @@
       media="(prefers-color-scheme: dark)"
     />
 
-    <!-- ✅ MAIN FAVICON (CONTROLLED BY JS) -->
+    <!-- MAIN FAVICON -->
     <link
       id="favicon"
       rel="icon"
@@ -26,39 +33,68 @@
     />
 
     <!-- MOBILE -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/Lightmodelogo.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/Lightmodelogo.png"
+    />
 
     <!-- PWA -->
-    <link rel="manifest" href="/manifest.json" />
+    <link
+      rel="manifest"
+      href="/manifest.json"
+    />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FF6B00" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta
+      name="theme-color"
+      content="#FF6B00"
+    />
 
     <title>Revadoo</title>
 
-    <!-- 🔥 REQUIRED SCRIPT -->
+    <!-- REQUIRED SCRIPT -->
+
     <script>
       function updateFavicon() {
-        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const favicon = document.getElementById("favicon");
+        const isDark =
+          window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+
+        const favicon =
+          document.getElementById(
+            "favicon"
+          );
 
         favicon.href = isDark
           ? "/Darkmodelogo.png"
           : "/Lightmodelogo.png";
       }
 
-      // Run on load
       updateFavicon();
 
-      // Listen for changes
       window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", updateFavicon);
+        .matchMedia(
+          "(prefers-color-scheme: dark)"
+        )
+        .addEventListener(
+          "change",
+          updateFavicon
+        );
     </script>
   </head>
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <script
+      type="module"
+      src="/src/main.jsx"
+    ></script>
   </body>
 </html>
