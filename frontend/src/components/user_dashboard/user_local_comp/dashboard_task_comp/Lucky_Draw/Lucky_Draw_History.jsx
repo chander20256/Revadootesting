@@ -1,71 +1,154 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import axios from "axios";
+
+import Swal from "sweetalert2";
 
 function Lucky_Draw_History() {
-  const history = [
-    {
-      id: "#LD1024",
+  /* =============================
+     STATE
+  ============================= */
 
-      reward:
-        "₹500 Amazon Gift Card",
+  const [loading, setLoading] =
+    useState(true);
 
-      tickets:
-        "5 Tickets",
+  const [history, setHistory] =
+    useState([]);
 
-      date:
-        "12 May 2026",
+  /* =============================
+     API
+  ============================= */
 
-      status:
-        "Completed",
-    },
+  const API =
+    "https://revadoobackend.onrender.com/api/admin/lucky-draw";
 
-    {
-      id: "#LD1023",
+  /* =============================
+     FETCH HISTORY
+  ============================= */
 
-      reward:
-        "Netflix Premium Subscription",
+  const fetchHistory =
+    async () => {
+      try {
+        setLoading(true);
 
-      tickets:
-        "2 Tickets",
+        const { data } =
+          await axios.get(
+            `${API}/history`,
+            {
+              withCredentials: true,
+            }
+          );
 
-      date:
-        "05 May 2026",
+        setHistory(data || []);
+      } catch (error) {
+        console.log(error);
 
-      status:
-        "Completed",
-    },
+        Swal.fire({
+          icon: "error",
 
-    {
-      id: "#LD1022",
+          title:
+            "Failed To Load",
 
-      reward:
-        "₹300 Flipkart Voucher",
+          text:
+            error.response?.data
+              ?.message ||
+            "Unable to load lucky draw history",
 
-      tickets:
-        "3 Tickets",
+          confirmButtonColor:
+            "#f97316",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      date:
-        "28 Apr 2026",
+  /* =============================
+     INITIAL LOAD
+  ============================= */
 
-      status:
-        "Lost",
-    },
+  useEffect(() => {
+    fetchHistory();
+  }, []);
 
-    {
-      id: "#LD1021",
+  /* =============================
+     LOADING
+  ============================= */
 
-      reward:
-        "Google Play Redeem Code",
+  if (loading) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          sm:rounded-[32px]
+          p-8
+          flex
+          items-center
+          justify-center
+          min-h-[350px]
+        "
+      >
+        <div className="text-center">
+          <div
+            className="
+              w-14
+              h-14
+              border-4
+              border-orange-200
+              border-t-orange-500
+              rounded-full
+              animate-spin
+              mx-auto
+            "
+          />
 
-      tickets:
-        "1 Ticket",
+          <p className="mt-5 text-sm font-bold text-gray-500">
+            Loading History...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-      date:
-        "21 Apr 2026",
+  /* =============================
+     EMPTY
+  ============================= */
 
-      status:
-        "Completed",
-    },
-  ];
+  if (history.length === 0) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          sm:rounded-[32px]
+          p-8
+          text-center
+        "
+      >
+        <div className="text-6xl mb-5">
+          🎁
+        </div>
+
+        <h2 className="text-2xl font-black text-black">
+          No Lucky Draw
+          History
+        </h2>
+
+        <p className="text-gray-500 mt-3">
+          Completed lucky
+          draw history will
+          appear here.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -89,7 +172,8 @@ function Lucky_Draw_History() {
         </p>
 
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight">
-          Participation History
+          Participation
+          History
         </h2>
       </div>
 
@@ -100,10 +184,10 @@ function Lucky_Draw_History() {
           <thead>
             <tr>
               {[
-                "Draw ID",
                 "Reward",
-                "Tickets",
-                "Date",
+                "Winners",
+                "Tickets Sold",
+                "Completed",
                 "Status",
               ].map(
                 (
@@ -142,33 +226,107 @@ function Lucky_Draw_History() {
                     bg-gray-50
                   "
                 >
+                  {/* REWARD */}
+
                   <td className="px-4 py-4 rounded-l-2xl">
-                    <p className="text-sm font-black text-orange-500">
-                      {item.id}
+                    <div className="flex items-center gap-3">
+                      {item.rewardImage ? (
+                        <img
+                          src={
+                            item.rewardImage
+                          }
+                          alt="reward"
+                          className="
+                            w-12
+                            h-12
+                            rounded-2xl
+                            object-cover
+                          "
+                        />
+                      ) : (
+                        <div
+                          className="
+                            w-12
+                            h-12
+                            rounded-2xl
+                            bg-orange-100
+                            flex
+                            items-center
+                            justify-center
+                            text-xl
+                          "
+                        >
+                          🎁
+                        </div>
+                      )}
+
+                      <div>
+                        <p className="text-sm font-black text-black">
+                          {
+                            item.rewardTitle
+                          }
+                        </p>
+
+                        <p className="text-xs text-gray-400 font-semibold mt-1">
+                          ID: #
+                          {
+                            item._id?.slice(
+                              -6
+                            )
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* WINNERS */}
+
+                  <td className="px-4 py-4">
+                    <p className="text-sm font-semibold text-gray-600">
+                      {
+                        item.totalWinners
+                      }{" "}
+                      Users
                     </p>
                   </td>
 
+                  {/* SOLD */}
+
                   <td className="px-4 py-4">
-                    <p className="text-sm font-bold text-black">
-                      {item.reward}
+                    <p className="text-sm font-semibold text-gray-600">
+                      {
+                        item.ticketsSold
+                      }{" "}
+                      Tickets
                     </p>
                   </td>
 
+                  {/* DATE */}
+
                   <td className="px-4 py-4">
-                    <p className="text-sm font-semibold text-gray-500">
-                      {item.tickets}
+                    <p className="text-sm font-semibold text-gray-600">
+                      {new Date(
+                        item.completedAt ||
+                          item.updatedAt
+                      ).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+
+                          month:
+                            "short",
+
+                          year: "numeric",
+                        }
+                      )}
                     </p>
                   </td>
 
-                  <td className="px-4 py-4">
-                    <p className="text-sm font-semibold text-gray-500">
-                      {item.date}
-                    </p>
-                  </td>
+                  {/* STATUS */}
 
                   <td className="px-4 py-4 rounded-r-2xl">
                     <span
-                      className={`
+                      className="
                         inline-flex
                         items-center
                         justify-center
@@ -177,15 +335,13 @@ function Lucky_Draw_History() {
                         rounded-xl
                         text-xs
                         font-black
-                        ${
-                          item.status ===
-                          "Completed"
-                            ? "bg-green-50 text-green-600 border border-green-100"
-                            : "bg-red-50 text-red-500 border border-red-100"
-                        }
-                      `}
+                        bg-green-50
+                        text-green-600
+                        border
+                        border-green-100
+                      "
                     >
-                      {item.status}
+                      Completed
                     </span>
                   </td>
                 </tr>
@@ -195,7 +351,7 @@ function Lucky_Draw_History() {
         </table>
       </div>
 
-      {/* MOBILE CARDS */}
+      {/* MOBILE */}
 
       <div className="lg:hidden space-y-4">
         {history.map(
@@ -216,18 +372,55 @@ function Lucky_Draw_History() {
               {/* TOP */}
 
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-black text-orange-500">
-                    {item.id}
-                  </p>
+                <div className="flex items-start gap-3">
+                  {item.rewardImage ? (
+                    <img
+                      src={
+                        item.rewardImage
+                      }
+                      alt="reward"
+                      className="
+                        w-14
+                        h-14
+                        rounded-2xl
+                        object-cover
+                      "
+                    />
+                  ) : (
+                    <div
+                      className="
+                        w-14
+                        h-14
+                        rounded-2xl
+                        bg-orange-100
+                        flex
+                        items-center
+                        justify-center
+                        text-2xl
+                      "
+                    >
+                      🎁
+                    </div>
+                  )}
 
-                  <h3 className="text-sm font-black text-black mt-2 leading-relaxed">
-                    {item.reward}
-                  </h3>
+                  <div>
+                    <p className="text-xs font-black text-orange-500">
+                      #
+                      {item._id?.slice(
+                        -6
+                      )}
+                    </p>
+
+                    <h3 className="text-sm font-black text-black mt-2 leading-relaxed">
+                      {
+                        item.rewardTitle
+                      }
+                    </h3>
+                  </div>
                 </div>
 
                 <span
-                  className={`
+                  className="
                     inline-flex
                     items-center
                     justify-center
@@ -237,15 +430,13 @@ function Lucky_Draw_History() {
                     text-[11px]
                     font-black
                     shrink-0
-                    ${
-                      item.status ===
-                      "Completed"
-                        ? "bg-green-50 text-green-600 border border-green-100"
-                        : "bg-red-50 text-red-500 border border-red-100"
-                    }
-                  `}
+                    bg-green-50
+                    text-green-600
+                    border
+                    border-green-100
+                  "
                 >
-                  {item.status}
+                  Completed
                 </span>
               </div>
 
@@ -259,6 +450,31 @@ function Lucky_Draw_History() {
                   mt-4
                 "
               >
+                {/* WINNERS */}
+
+                <div
+                  className="
+                    rounded-2xl
+                    bg-white
+                    border
+                    border-gray-100
+                    p-3
+                  "
+                >
+                  <p className="text-[10px] uppercase tracking-widest font-black text-gray-400 mb-1">
+                    Winners
+                  </p>
+
+                  <h4 className="text-xs font-black text-black">
+                    {
+                      item.totalWinners
+                    }{" "}
+                    Users
+                  </h4>
+                </div>
+
+                {/* SOLD */}
+
                 <div
                   className="
                     rounded-2xl
@@ -273,9 +489,14 @@ function Lucky_Draw_History() {
                   </p>
 
                   <h4 className="text-xs font-black text-black">
-                    {item.tickets}
+                    {
+                      item.ticketsSold
+                    }{" "}
+                    Sold
                   </h4>
                 </div>
+
+                {/* DATE */}
 
                 <div
                   className="
@@ -284,14 +505,28 @@ function Lucky_Draw_History() {
                     border
                     border-gray-100
                     p-3
+                    col-span-2
                   "
                 >
                   <p className="text-[10px] uppercase tracking-widest font-black text-gray-400 mb-1">
-                    Date
+                    Completed Date
                   </p>
 
                   <h4 className="text-xs font-black text-black">
-                    {item.date}
+                    {new Date(
+                      item.completedAt ||
+                        item.updatedAt
+                    ).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+
+                        month:
+                          "long",
+
+                        year: "numeric",
+                      }
+                    )}
                   </h4>
                 </div>
               </div>

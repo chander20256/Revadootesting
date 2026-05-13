@@ -1,83 +1,166 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import axios from "axios";
+
+import Swal from "sweetalert2";
 
 function Lucky_Draw_Past() {
-  const pastDraws = [
-    {
-      reward:
-        "₹500 Amazon Gift Card",
+  /* =============================
+     STATE
+  ============================= */
 
-      winners:
-        "1 Winner",
+  const [loading, setLoading] =
+    useState(true);
 
-      date:
-        "12 May 2026",
+  const [pastDraws, setPastDraws] =
+    useState([]);
 
-      tickets:
-        "4,283",
+  /* =============================
+     API
+  ============================= */
 
-      status:
-        "Completed",
+  const API =
+    "https://revadoobackend.onrender.com/api/admin/lucky-draw";
 
-      icon: "🛒",
-    },
+  /* =============================
+     FETCH PAST DRAWS
+  ============================= */
 
-    {
-      reward:
-        "Netflix Premium Subscription",
+  const fetchPastDraws =
+    async () => {
+      try {
+        setLoading(true);
 
-      winners:
-        "5 Winners",
+        const { data } =
+          await axios.get(
+            `${API}/history`,
+            {
+              withCredentials: true,
+            }
+          );
 
-      date:
-        "05 May 2026",
+        /* ONLY LATEST 4 */
 
-      tickets:
-        "3,912",
+        const latestFour =
+          (data || []).slice(
+            0,
+            4
+          );
 
-      status:
-        "Completed",
+        setPastDraws(
+          latestFour
+        );
+      } catch (error) {
+        console.log(error);
 
-      icon: "📺",
-    },
+        Swal.fire({
+          icon: "error",
 
-    {
-      reward:
-        "₹300 Flipkart Voucher",
+          title:
+            "Failed To Load",
 
-      winners:
-        "2 Winners",
+          text:
+            error.response?.data
+              ?.message ||
+            "Unable to load lucky draw history",
 
-      date:
-        "28 Apr 2026",
+          confirmButtonColor:
+            "#f97316",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      tickets:
-        "5,102",
+  /* =============================
+     INITIAL LOAD
+  ============================= */
 
-      status:
-        "Completed",
+  useEffect(() => {
+    fetchPastDraws();
+  }, []);
 
-      icon: "🛍️",
-    },
+  /* =============================
+     LOADING
+  ============================= */
 
-    {
-      reward:
-        "Google Play Redeem Code",
+  if (loading) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          sm:rounded-[32px]
+          p-8
+          flex
+          items-center
+          justify-center
+          min-h-[500px]
+        "
+      >
+        <div className="text-center">
+          <div
+            className="
+              w-14
+              h-14
+              border-4
+              border-orange-200
+              border-t-orange-500
+              rounded-full
+              animate-spin
+              mx-auto
+            "
+          />
 
-      winners:
-        "3 Winners",
+          <p className="mt-5 text-sm font-bold text-gray-500">
+            Loading Past
+            Draws...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-      date:
-        "21 Apr 2026",
+  /* =============================
+     EMPTY
+  ============================= */
 
-      tickets:
-        "2,981",
+  if (
+    pastDraws.length === 0
+  ) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          sm:rounded-[32px]
+          p-8
+          text-center
+        "
+      >
+        <div className="text-6xl mb-5">
+          🎁
+        </div>
 
-      status:
-        "Completed",
+        <h2 className="text-2xl font-black text-black">
+          No Past Draws
+        </h2>
 
-      icon: "🎮",
-    },
-  ];
+        <p className="text-gray-500 mt-3">
+          Completed lucky
+          draws will appear
+          here.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -110,7 +193,10 @@ function Lucky_Draw_Past() {
 
       <div className="space-y-3 sm:space-y-4">
         {pastDraws.map(
-          (item, index) => (
+          (
+            item,
+            index
+          ) => (
             <div
               key={index}
               className="
@@ -129,28 +215,46 @@ function Lucky_Draw_Past() {
               {/* TOP */}
 
               <div className="flex items-start gap-3 sm:gap-4">
-                {/* ICON */}
+                {/* IMAGE */}
 
-                <div
-                  className="
-                    w-12
-                    h-12
-                    sm:w-16
-                    sm:h-16
-                    rounded-2xl
-                    bg-white
-                    border
-                    border-gray-100
-                    flex
-                    items-center
-                    justify-center
-                    text-2xl
-                    sm:text-3xl
-                    shrink-0
-                  "
-                >
-                  {item.icon}
-                </div>
+                {item.rewardImage ? (
+                  <img
+                    src={
+                      item.rewardImage
+                    }
+                    alt="reward"
+                    className="
+                      w-12
+                      h-12
+                      sm:w-16
+                      sm:h-16
+                      rounded-2xl
+                      object-cover
+                      shrink-0
+                    "
+                  />
+                ) : (
+                  <div
+                    className="
+                      w-12
+                      h-12
+                      sm:w-16
+                      sm:h-16
+                      rounded-2xl
+                      bg-white
+                      border
+                      border-gray-100
+                      flex
+                      items-center
+                      justify-center
+                      text-2xl
+                      sm:text-3xl
+                      shrink-0
+                    "
+                  >
+                    🎁
+                  </div>
+                )}
 
                 {/* CONTENT */}
 
@@ -165,11 +269,13 @@ function Lucky_Draw_Past() {
                       leading-tight
                     "
                   >
-                    {item.reward}
+                    {
+                      item.rewardTitle
+                    }
                   </h3>
 
                   <p className="text-xs sm:text-sm text-orange-500 font-bold mt-2">
-                    {item.status}
+                    Completed
                   </p>
                 </div>
               </div>
@@ -201,7 +307,14 @@ function Lucky_Draw_Past() {
                   </p>
 
                   <h4 className="text-xs sm:text-sm font-black text-black">
-                    {item.winners}
+                    {
+                      item.totalWinners
+                    }{" "}
+                    Winner
+                    {item.totalWinners >
+                    1
+                      ? "s"
+                      : ""}
                   </h4>
                 </div>
 
@@ -222,7 +335,20 @@ function Lucky_Draw_Past() {
                   </p>
 
                   <h4 className="text-xs sm:text-sm font-black text-black">
-                    {item.date}
+                    {new Date(
+                      item.completedAt ||
+                        item.updatedAt
+                    ).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+
+                        month:
+                          "short",
+
+                        year: "numeric",
+                      }
+                    )}
                   </h4>
                 </div>
 
@@ -244,7 +370,10 @@ function Lucky_Draw_Past() {
                   </p>
 
                   <h4 className="text-sm sm:text-base font-black text-orange-500">
-                    {item.tickets} Tickets
+                    {
+                      item.ticketsSold
+                    }{" "}
+                    Tickets
                   </h4>
                 </div>
               </div>
