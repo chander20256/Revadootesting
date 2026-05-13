@@ -8,10 +8,11 @@ const router =
    AUTH MIDDLEWARE
 ----------------------------- */
 
-const authMiddleware =
-  require(
-    "../../middleware/auth"
-  );
+const {
+  protect,
+} = require(
+  "../../middleware/auth"
+);
 
 /* -----------------------------
    CONTROLLERS
@@ -43,6 +44,9 @@ const {
 
 router.post(
   "/create",
+
+  protect,
+
   createLuckyDraw
 );
 
@@ -52,6 +56,9 @@ router.post(
 
 router.put(
   "/update/:id",
+
+  protect,
+
   updateLuckyDraw
 );
 
@@ -89,7 +96,7 @@ router.get(
 router.post(
   "/purchase",
 
-  authMiddleware,
+  protect,
 
   purchaseLuckyDrawTickets
 );
@@ -101,6 +108,8 @@ router.post(
 router.post(
   "/pick-winners/:drawId",
 
+  protect,
+
   pickLuckyDrawWinners
 );
 
@@ -110,6 +119,8 @@ router.post(
 
 router.put(
   "/end/:drawId",
+
+  protect,
 
   endLuckyDraw
 );
