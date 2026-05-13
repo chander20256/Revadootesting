@@ -40,6 +40,15 @@ function Lucky_Draw_Active() {
     "https://revadoobackend.onrender.com/api/admin/lucky-draw";
 
   /* =============================
+     TOKEN
+  ============================= */
+
+  const token =
+    localStorage.getItem(
+      "token"
+    );
+
+  /* =============================
      FETCH ACTIVE DRAW
   ============================= */
 
@@ -50,10 +59,7 @@ function Lucky_Draw_Active() {
 
         const { data } =
           await axios.get(
-            `${API}/current`,
-            {
-              withCredentials: true,
-            }
+            `${API}/current`
           );
 
         if (data.success) {
@@ -94,27 +100,20 @@ function Lucky_Draw_Active() {
   ============================= */
 
   useEffect(() => {
-    if (!drawData)
+    if (
+      !drawData?.endsAt
+    )
       return;
-
-    const durationDays =
-      drawData.duration || 1;
-
-    const createdTime =
-      new Date().getTime();
-
-    const endTime =
-      createdTime +
-      durationDays *
-        24 *
-        60 *
-        60 *
-        1000;
 
     const interval =
       setInterval(() => {
         const now =
           new Date().getTime();
+
+        const endTime =
+          new Date(
+            drawData.endsAt
+          ).getTime();
 
         const distance =
           endTime - now;
@@ -200,7 +199,9 @@ function Lucky_Draw_Active() {
      VALUES
   ============================= */
 
-  const maxTickets = 5;
+  const maxTickets =
+    drawData?.maxTicketsPerUser ||
+    5;
 
   const ticketPrice =
     drawData?.entryFee || 0;
@@ -241,6 +242,23 @@ function Lucky_Draw_Active() {
   const handleJoin =
     async () => {
       try {
+        if (!token) {
+          Swal.fire({
+            icon: "warning",
+
+            title:
+              "Login Required",
+
+            text:
+              "Please login first",
+
+            confirmButtonColor:
+              "#f97316",
+          });
+
+          return;
+        }
+
         if (!drawData?._id) {
           return;
         }
@@ -257,7 +275,9 @@ function Lucky_Draw_Active() {
               tickets,
             },
             {
-              withCredentials: true,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
           );
 
@@ -268,15 +288,30 @@ function Lucky_Draw_Active() {
             title:
               "Successfully Joined",
 
-            text: `You purchased ${tickets} ticket${
-              tickets > 1
-                ? "s"
-                : ""
-            } successfully`,
+            html: `
+              <div style="font-size:14px;">
+                <p>
+                  You purchased
+                  <b>${tickets}</b>
+                  ticket${
+                    tickets > 1
+                      ? "s"
+                      : ""
+                  }
+                </p>
+
+                <p style="margin-top:10px;">
+                  Remaining Creds:
+                  <b>${data.remainingCreds}</b>
+                </p>
+              </div>
+            `,
 
             confirmButtonColor:
               "#f97316",
           });
+
+          setTickets(1);
 
           fetchLuckyDraw();
         }
@@ -343,10 +378,6 @@ function Lucky_Draw_Active() {
       </div>
     );
   }
-
-  /* =============================
-     NO DRAW
-  ============================= */
 
   if (!drawData) {
     return (
