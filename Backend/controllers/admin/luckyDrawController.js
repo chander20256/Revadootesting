@@ -10,8 +10,6 @@ const User = require(
   "../../models/User"
 );
 
-
-
 /* =======================================================
    CREATE NEW LUCKY DRAW
 ======================================================= */
@@ -29,9 +27,7 @@ const createLuckyDraw =
         durationDays,
       } = req.body;
 
-      /* -----------------------------
-         VALIDATION
-      ----------------------------- */
+      /* VALIDATION */
 
       if (
         !rewardTitle ||
@@ -49,9 +45,7 @@ const createLuckyDraw =
           });
       }
 
-      /* -----------------------------
-         CHECK ACTIVE DRAW
-      ----------------------------- */
+      /* CHECK ACTIVE DRAW */
 
       const existingDraw =
         await LuckyDraw.findOne(
@@ -74,9 +68,7 @@ const createLuckyDraw =
           });
       }
 
-      /* -----------------------------
-         END DATE
-      ----------------------------- */
+      /* END DATE */
 
       const endsAt =
         new Date();
@@ -88,9 +80,7 @@ const createLuckyDraw =
           )
       );
 
-      /* -----------------------------
-         CREATE DRAW
-      ----------------------------- */
+      /* CREATE */
 
       const newDraw =
         await LuckyDraw.create(
@@ -128,10 +118,6 @@ const createLuckyDraw =
           }
         );
 
-      /* -----------------------------
-         RESPONSE
-      ----------------------------- */
-
       return res
         .status(201)
         .json({
@@ -142,6 +128,111 @@ const createLuckyDraw =
 
           draw:
             newDraw,
+        });
+    } catch (error) {
+      console.log(
+        error
+      );
+
+      return res
+        .status(500)
+        .json({
+          success: false,
+
+          message:
+            "Server error",
+        });
+    }
+  };
+
+/* =======================================================
+   UPDATE DRAW
+======================================================= */
+
+const updateLuckyDraw =
+  async (req, res) => {
+    try {
+      const {
+        id,
+      } = req.params;
+
+      const {
+        rewardTitle,
+        rewardImage,
+        description,
+        entryFee,
+        totalWinners,
+        durationDays,
+      } = req.body;
+
+      const draw =
+        await LuckyDraw.findById(
+          id
+        );
+
+      if (!draw) {
+        return res
+          .status(404)
+          .json({
+            success: false,
+
+            message:
+              "Lucky draw not found",
+          });
+      }
+
+      /* UPDATE */
+
+      draw.rewardTitle =
+        rewardTitle;
+
+      draw.rewardImage =
+        rewardImage;
+
+      draw.description =
+        description;
+
+      draw.entryFee =
+        Number(
+          entryFee
+        );
+
+      draw.totalWinners =
+        Number(
+          totalWinners
+        );
+
+      draw.durationDays =
+        Number(
+          durationDays
+        );
+
+      /* UPDATE END DATE */
+
+      const endsAt =
+        new Date();
+
+      endsAt.setDate(
+        endsAt.getDate() +
+          Number(
+            durationDays
+          )
+      );
+
+      draw.endsAt =
+        endsAt;
+
+      await draw.save();
+
+      return res
+        .status(200)
+        .json({
+          success: true,
+
+          message:
+            "Lucky draw updated successfully",
+
+          draw,
         });
     } catch (error) {
       console.log(
@@ -191,9 +282,7 @@ const getCurrentLuckyDraw =
           });
       }
 
-      /* -----------------------------
-         TIMER
-      ----------------------------- */
+      /* TIMER */
 
       const now =
         new Date();
@@ -246,6 +335,9 @@ const getCurrentLuckyDraw =
         .status(200)
         .json({
           success: true,
+
+          _id:
+            draw._id,
 
           rewardTitle:
             draw.rewardTitle,
@@ -543,6 +635,8 @@ const endLuckyDraw =
 
 module.exports = {
   createLuckyDraw,
+
+  updateLuckyDraw,
 
   getCurrentLuckyDraw,
 

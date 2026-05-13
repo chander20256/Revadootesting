@@ -9,8 +9,6 @@ import Lucky_Draw_Stats from "../../components/admin_Dashboard_comp/Lucky_Draw_c
 
 import Lucky_Draw_Details from "../../components/admin_Dashboard_comp/Lucky_Draw_comp/Lucky_Draw_Details";
 
-import Lucky_Draw_History from "../../components/admin_Dashboard_comp/Lucky_Draw_comp/Lucky_Draw_History";
-
 function Lucky_draw() {
   /* -----------------------------
      STATES
@@ -25,61 +23,88 @@ function Lucky_draw() {
   const [drawData, setDrawData] =
     useState(null);
 
-  const [historyData, setHistoryData] =
-    useState([]);
-
   /* -----------------------------
-     FETCH DATA
+     API URL
   ----------------------------- */
 
-  const fetchLuckyDrawData =
+  const API_URL =
+    "https://revadoobackend.onrender.com/api/admin";
+
+  /* -----------------------------
+     FETCH STATS
+  ----------------------------- */
+
+  const fetchStats =
     async () => {
       try {
-        setLoading(true);
-
-        // STATS API
-
-        const statsRes =
+        const response =
           await fetch(
-            "http://localhost:5000/api/lucky-draw/stats"
+            `${API_URL}/lucky-draw/stats`
           );
 
-        const stats =
-          await statsRes.json();
+        const data =
+          await response.json();
 
-        // ACTIVE DRAW API
+        if (
+          data.success
+        ) {
+          setStatsData(
+            data
+          );
+        }
+      } catch (error) {
+        console.log(
+          "Stats Error:",
+          error
+        );
+      }
+    };
 
-        const drawRes =
+  /* -----------------------------
+     FETCH CURRENT DRAW
+  ----------------------------- */
+
+  const fetchCurrentDraw =
+    async () => {
+      try {
+        const response =
           await fetch(
-            "http://localhost:5000/api/lucky-draw/current"
+            `${API_URL}/lucky-draw/current`
           );
 
-        const draw =
-          await drawRes.json();
+        const data =
+          await response.json();
 
-        // HISTORY API
-
-        const historyRes =
-          await fetch(
-            "http://localhost:5000/api/lucky-draw/history"
+        if (
+          data.success
+        ) {
+          setDrawData(
+            data
           );
+        }
+      } catch (error) {
+        console.log(
+          "Current Draw Error:",
+          error
+        );
+      }
+    };
 
-        const history =
-          await historyRes.json();
+  /* -----------------------------
+     REFRESH
+  ----------------------------- */
 
-        // SET DATA
-
-        setStatsData(
-          stats
+  const refreshData =
+    async () => {
+      try {
+        setLoading(
+          true
         );
 
-        setDrawData(
-          draw
-        );
-
-        setHistoryData(
-          history
-        );
+        await Promise.all([
+          fetchStats(),
+          fetchCurrentDraw(),
+        ]);
       } catch (error) {
         console.log(
           error
@@ -92,11 +117,23 @@ function Lucky_draw() {
     };
 
   /* -----------------------------
-     LOAD
+     INITIAL LOAD
   ----------------------------- */
 
   useEffect(() => {
-    fetchLuckyDrawData();
+    refreshData();
+
+    /* TIMER AUTO REFRESH */
+
+    const interval =
+      setInterval(() => {
+        fetchCurrentDraw();
+      }, 1000);
+
+    return () =>
+      clearInterval(
+        interval
+      );
   }, []);
 
   return (
@@ -112,7 +149,7 @@ function Lucky_draw() {
 
       <Lucky_Draw_Header
         onRefresh={
-          fetchLuckyDrawData
+          refreshData
         }
         loading={
           loading
@@ -122,8 +159,16 @@ function Lucky_draw() {
       {/* STATS */}
 
       <Lucky_Draw_Stats
-        statsData={
-          statsData
+        statsData={{
+          ...statsData,
+
+          timeLeft:
+            drawData?.timer
+              ? `${drawData.timer.days}D : ${drawData.timer.hours}H : ${drawData.timer.minutes}M`
+              : "00D : 00H",
+        }}
+        drawData={
+          drawData
         }
         loading={
           loading
@@ -135,17 +180,6 @@ function Lucky_draw() {
       <Lucky_Draw_Details
         drawData={
           drawData
-        }
-        loading={
-          loading
-        }
-      />
-
-      {/* HISTORY */}
-
-      <Lucky_Draw_History
-        historyData={
-          historyData
         }
         loading={
           loading

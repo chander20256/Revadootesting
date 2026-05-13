@@ -11,6 +11,8 @@ const router =
 const {
   createLuckyDraw,
 
+  updateLuckyDraw,
+
   getCurrentLuckyDraw,
 
   getLuckyDrawStats,
@@ -26,7 +28,6 @@ const {
   "../../controllers/admin/luckyDrawController"
 );
 
-
 /* -----------------------------
    CREATE NEW LUCKY DRAW
 ----------------------------- */
@@ -34,6 +35,15 @@ const {
 router.post(
   "/create",
   createLuckyDraw
+);
+
+/* -----------------------------
+   UPDATE DRAW
+----------------------------- */
+
+router.put(
+  "/update/:id",
+  updateLuckyDraw
 );
 
 /* -----------------------------

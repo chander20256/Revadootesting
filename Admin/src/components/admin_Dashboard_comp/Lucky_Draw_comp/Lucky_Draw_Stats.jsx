@@ -2,8 +2,22 @@ import React from "react";
 
 function Lucky_Draw_Stats({
   statsData,
+  drawData,
   loading,
 }) {
+  /* -----------------------------
+     TIME LEFT
+  ----------------------------- */
+
+  const timeLeft =
+    drawData?.timer
+      ? `${drawData.timer.days}D : ${drawData.timer.hours}H : ${drawData.timer.minutes}M`
+      : "00D : 00H";
+
+  /* -----------------------------
+     STATS
+  ----------------------------- */
+
   const stats = [
     {
       title:
@@ -66,8 +80,7 @@ function Lucky_Draw_Stats({
         "Time Left",
 
       value:
-        statsData?.timeLeft ??
-        "00D : 00H",
+        timeLeft,
 
       label:
         "Draw Countdown",
@@ -81,13 +94,17 @@ function Lucky_Draw_Stats({
       className="
         grid
         grid-cols-2
-        xl:grid-cols-5
+        lg:grid-cols-3
+        2xl:grid-cols-5
         gap-4
         font-['DM_Sans',sans-serif]
       "
     >
       {stats.map(
-        (item, index) => (
+        (
+          item,
+          index
+        ) => (
           <div
             key={index}
             className="
@@ -98,49 +115,99 @@ function Lucky_Draw_Stats({
               sm:rounded-[28px]
               p-4
               sm:p-5
+              transition-all
+              duration-200
+              hover:border-orange-200
             "
           >
             {/* TOP */}
 
-            <div className="flex items-center justify-between">
-              <div className="text-3xl sm:text-4xl">
+            <div className="flex items-center justify-between gap-3">
+              {/* ICON */}
+
+              <div className="text-3xl sm:text-4xl shrink-0">
                 {item.icon}
               </div>
 
+              {/* STATUS */}
+
               <div
                 className="
-                  px-3
-                  py-1.5
+                  px-2.5
+                  sm:px-3
+                  py-1
+                  sm:py-1.5
                   rounded-full
                   bg-orange-50
                   border
                   border-orange-100
                   text-orange-500
-                  text-[10px]
-                  sm:text-xs
+                  text-[9px]
+                  sm:text-[10px]
                   font-black
                   uppercase
                   tracking-wider
+                  whitespace-nowrap
                 "
               >
-                Live
+                {statsData?.currentDraw >
+                0
+                  ? "Live"
+                  : "Offline"}
               </div>
             </div>
 
             {/* CONTENT */}
 
             <div className="mt-5">
-              <p className="text-[11px] sm:text-xs uppercase tracking-widest text-gray-400 font-black">
+              {/* TITLE */}
+
+              <p
+                className="
+                  text-[10px]
+                  sm:text-xs
+                  uppercase
+                  tracking-widest
+                  text-gray-400
+                  font-black
+                  leading-relaxed
+                "
+              >
                 {item.title}
               </p>
 
-              <h2 className="text-xl sm:text-3xl font-black text-black mt-2 tracking-tight break-words leading-tight">
+              {/* VALUE */}
+
+              <h2
+                className="
+                  text-lg
+                  sm:text-2xl
+                  xl:text-3xl
+                  font-black
+                  text-black
+                  mt-2
+                  tracking-tight
+                  break-words
+                  leading-tight
+                "
+              >
                 {loading
                   ? "..."
                   : item.value}
               </h2>
 
-              <p className="text-xs sm:text-sm text-orange-500 font-bold mt-3">
+              {/* LABEL */}
+
+              <p
+                className="
+                  text-[11px]
+                  sm:text-sm
+                  text-orange-500
+                  font-bold
+                  mt-3
+                  leading-relaxed
+                "
+              >
                 {item.label}
               </p>
             </div>
