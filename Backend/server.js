@@ -267,12 +267,7 @@ const sanitizeObject = (
    GLOBAL SANITIZER
 ----------------------------- */
 
-/*
-IMPORTANT:
 
-RAW ADS SYSTEM must bypass XSS
-otherwise scripts become escaped.
-*/
 
 app.use((req, res, next) => {
   /* SKIP RAW ADS ROUTES */
@@ -395,6 +390,17 @@ app.use(
 app.use(
   "/api/admin/creds",
   credsCodesRoutes
+);
+
+/* -----------------------------
+   ADMIN LUCKY DRAW
+----------------------------- */
+
+app.use(
+  "/api/admin/lucky-draw",
+  require(
+    "./routes/admin/luckyDrawRoutes"
+  )
 );
 
 /* -----------------------------

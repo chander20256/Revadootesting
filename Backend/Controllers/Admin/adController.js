@@ -1,4 +1,4 @@
-const Ad = require("../models/Ad");
+const Ad = require("../../models/Ad");
 
 
 // CREATE AD
