@@ -1,10 +1,13 @@
 import { useState } from "react";
+
 import { NavLink } from "react-router-dom";
 
 import {
   FaUsers,
   FaCode,
   FaBullhorn,
+  FaGift,
+  FaTrophy,
 } from "react-icons/fa";
 
 const AdminSidebar = ({
@@ -17,9 +20,10 @@ const AdminSidebar = ({
   const navClass = ({
     isActive,
   }) =>
-    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${isActive
-      ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
-      : "text-white/70 hover:bg-white/10 hover:text-white"
+    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${
+      isActive
+        ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
+        : "text-white/70 hover:bg-white/10 hover:text-white"
     }`;
 
   const content = (
@@ -48,12 +52,16 @@ const AdminSidebar = ({
 
           <button
             onClick={() =>
-              setActivePanel("admin")
+              setActivePanel(
+                "admin"
+              )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel === "admin"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
+              activePanel ===
+              "admin"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-              }`}
+            }`}
           >
             Admin
           </button>
@@ -62,12 +70,16 @@ const AdminSidebar = ({
 
           <button
             onClick={() =>
-              setActivePanel("cms")
+              setActivePanel(
+                "cms"
+              )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel === "cms"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
+              activePanel ===
+              "cms"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-              }`}
+            }`}
           >
             CMS
           </button>
@@ -79,7 +91,8 @@ const AdminSidebar = ({
       <nav className="flex-1 overflow-y-auto p-4">
         {/* ADMIN CONSOLE */}
 
-        {activePanel === "admin" && (
+        {activePanel ===
+          "admin" && (
           <div className="space-y-2">
             <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
               Admin Console
@@ -89,10 +102,16 @@ const AdminSidebar = ({
 
             <NavLink
               to="/admin/users"
-              onClick={closeSidebar}
-              className={navClass}
+              onClick={
+                closeSidebar
+              }
+              className={
+                navClass
+              }
             >
-              <FaUsers size={15} />
+              <FaUsers
+                size={15}
+              />
               Users
             </NavLink>
 
@@ -100,19 +119,59 @@ const AdminSidebar = ({
 
             <NavLink
               to="/admin/credscodes"
-              onClick={closeSidebar}
-              className={navClass}
+              onClick={
+                closeSidebar
+              }
+              className={
+                navClass
+              }
             >
-              <FaCode size={15} />
+              <FaCode
+                size={15}
+              />
               Creds Codes
+            </NavLink>
+
+            {/* REWARDS STORE */}
+
+            <NavLink
+              to="/admin/rewards-store"
+              onClick={
+                closeSidebar
+              }
+              className={
+                navClass
+              }
+            >
+              <FaGift
+                size={15}
+              />
+              Rewards Store
+            </NavLink>
+
+            {/* LUCKY DRAW */}
+
+            <NavLink
+              to="/admin/lucky-draw"
+              onClick={
+                closeSidebar
+              }
+              className={
+                navClass
+              }
+            >
+              <FaTrophy
+                size={15}
+              />
+              Lucky Draw
             </NavLink>
           </div>
         )}
 
         {/* CMS CONSOLE */}
 
-
-        {activePanel === "cms" && (
+        {activePanel ===
+          "cms" && (
           <div className="space-y-2">
             <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
               CMS Console
@@ -122,10 +181,16 @@ const AdminSidebar = ({
 
             <NavLink
               to="/admin/ads"
-              onClick={closeSidebar}
-              className={navClass}
+              onClick={
+                closeSidebar
+              }
+              className={
+                navClass
+              }
             >
-              <FaBullhorn size={15} />
+              <FaBullhorn
+                size={15}
+              />
               Ads Manager
             </NavLink>
           </div>
@@ -150,7 +215,9 @@ const AdminSidebar = ({
             type="button"
             aria-label="Close sidebar"
             className="fixed inset-0 z-[60] bg-black/60 lg:hidden"
-            onClick={closeSidebar}
+            onClick={
+              closeSidebar
+            }
           />
 
           <aside className="fixed left-0 top-0 z-[70] h-full w-[280px] max-w-[86vw] shadow-2xl lg:hidden">

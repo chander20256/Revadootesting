@@ -89,7 +89,7 @@ function Lucky_Draw_Active() {
           <div
             className="
               w-full
-              max-w-[320px]
+              max-w-[420px]
               bg-orange-50
               border
               border-orange-100
@@ -115,6 +115,64 @@ function Lucky_Draw_Active() {
             <p className="text-xs sm:text-sm text-orange-500 font-bold mt-2">
               Premium Reward
             </p>
+
+            {/* TIMER */}
+
+            <div
+              className="
+                mt-5
+                grid
+                grid-cols-4
+                gap-2
+              "
+            >
+              {[
+                {
+                  value: "02",
+                  label: "Days",
+                },
+
+                {
+                  value: "18",
+                  label: "Hours",
+                },
+
+                {
+                  value: "42",
+                  label: "Min",
+                },
+
+                {
+                  value: "12",
+                  label: "Sec",
+                },
+              ].map(
+                (
+                  item,
+                  index
+                ) => (
+                  <div
+                    key={index}
+                    className="
+                      bg-white
+                      border
+                      border-orange-100
+                      rounded-2xl
+                      py-3
+                      text-center
+                    "
+                  >
+                    <h4 className="text-lg sm:text-2xl font-black text-black leading-none">
+                      {item.value}
+                    </h4>
+
+                    <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-orange-500 font-black mt-2">
+                      {item.label}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
 
