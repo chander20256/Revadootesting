@@ -115,8 +115,6 @@ function Lucky_Draw_Active() {
       firstCard.offsetWidth +
       20;
 
-    /* SMOOTH MOVE */
-
     container.style.transition =
       "transform 0.45s ease";
 
@@ -167,8 +165,6 @@ function Lucky_Draw_Active() {
     const cardWidth =
       firstCard.offsetWidth +
       20;
-
-    /* MOVE LAST TO FRONT */
 
     container.insertBefore(
       lastCard,
@@ -224,9 +220,9 @@ function Lucky_Draw_Active() {
           </h2>
         </div>
 
-        {/* BUTTONS */}
+        {/* DESKTOP BUTTONS */}
 
-        <div className="flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <button
             onClick={
               handlePrev
@@ -302,7 +298,20 @@ function Lucky_Draw_Active() {
 
       {/* WRAPPER */}
 
-      <div className="overflow-hidden">
+      <div
+        className="
+          overflow-hidden
+          lg:overflow-hidden
+          overflow-x-auto
+        "
+        style={{
+          scrollbarWidth:
+            "none",
+
+          msOverflowStyle:
+            "none",
+        }}
+      >
         {/* CARDS */}
 
         <div
