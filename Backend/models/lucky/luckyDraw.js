@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose =
+  require("mongoose");
 
 const luckyDrawSchema =
   new mongoose.Schema(
@@ -9,19 +10,25 @@ const luckyDrawSchema =
 
       rewardTitle: {
         type: String,
+
         required: true,
+
         trim: true,
+
         maxlength: 120,
       },
 
       rewardImage: {
         type: String,
+
         default: null,
       },
 
       description: {
         type: String,
+
         default: "",
+
         maxlength: 1000,
       },
 
@@ -31,26 +38,36 @@ const luckyDrawSchema =
 
       entryFee: {
         type: Number,
+
         required: true,
+
         min: 1,
       },
 
       totalWinners: {
         type: Number,
+
         required: true,
+
         min: 1,
       },
 
-      maxTicketsPerUser: {
-        type: Number,
-        default: 5,
-        max: 5,
-        min: 1,
-      },
+      maxTicketsPerUser:
+        {
+          type: Number,
+
+          default: 5,
+
+          max: 5,
+
+          min: 1,
+        },
 
       durationDays: {
         type: Number,
+
         required: true,
+
         min: 1,
       },
 
@@ -60,12 +77,15 @@ const luckyDrawSchema =
 
       status: {
         type: String,
+
         enum: [
           "active",
           "completed",
           "cancelled",
         ],
+
         default: "active",
+
         index: true,
       },
 
@@ -75,19 +95,25 @@ const luckyDrawSchema =
 
       ticketsSold: {
         type: Number,
+
         default: 0,
+
         min: 0,
       },
 
       participants: {
         type: Number,
+
         default: 0,
+
         min: 0,
       },
 
       credsBurned: {
         type: Number,
+
         default: 0,
+
         min: 0,
       },
 
@@ -98,12 +124,14 @@ const luckyDrawSchema =
       startingTicketNumber:
         {
           type: Number,
+
           default: 111111,
         },
 
       currentTicketNumber:
         {
           type: Number,
+
           default: 111111,
         },
 
@@ -113,11 +141,13 @@ const luckyDrawSchema =
 
       winningTickets: [
         {
-          ticketId: String,
+          ticketId:
+            String,
 
           userId: {
             type:
-              mongoose.Schema
+              mongoose
+                .Schema
                 .Types
                 .ObjectId,
 
@@ -135,16 +165,20 @@ const luckyDrawSchema =
 
       startedAt: {
         type: Date,
-        default: Date.now,
+
+        default:
+          Date.now,
       },
 
       endsAt: {
         type: Date,
+
         required: true,
       },
 
       completedAt: {
         type: Date,
+
         default: null,
       },
 
@@ -153,11 +187,11 @@ const luckyDrawSchema =
       ----------------------------- */
 
       createdBy: {
-  type: String,
+        type: String,
 
-  default:
-    "ADMINREVADOO",
-},
+        default:
+          "ADMINREVADOO",
+      },
     },
     {
       timestamps: true,
@@ -170,7 +204,14 @@ const luckyDrawSchema =
 
 luckyDrawSchema.index({
   rewardTitle: "text",
+
   description: "text",
+});
+
+luckyDrawSchema.index({
+  status: 1,
+
+  createdAt: -1,
 });
 
 /* -----------------------------

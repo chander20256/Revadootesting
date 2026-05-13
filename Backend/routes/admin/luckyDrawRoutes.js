@@ -5,6 +5,15 @@ const router =
   express.Router();
 
 /* -----------------------------
+   AUTH MIDDLEWARE
+----------------------------- */
+
+const authMiddleware =
+  require(
+    "../../middleware/auth"
+  );
+
+/* -----------------------------
    CONTROLLERS
 ----------------------------- */
 
@@ -79,6 +88,9 @@ router.get(
 
 router.post(
   "/purchase",
+
+  authMiddleware,
+
   purchaseLuckyDrawTickets
 );
 
@@ -88,6 +100,7 @@ router.post(
 
 router.post(
   "/pick-winners/:drawId",
+
   pickLuckyDrawWinners
 );
 
@@ -97,6 +110,7 @@ router.post(
 
 router.put(
   "/end/:drawId",
+
   endLuckyDraw
 );
 

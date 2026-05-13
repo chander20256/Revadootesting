@@ -10,7 +10,8 @@ const luckyDrawTicketSchema =
 
       drawId: {
         type:
-          mongoose.Schema
+          mongoose
+            .Schema
             .Types
             .ObjectId,
 
@@ -27,7 +28,8 @@ const luckyDrawTicketSchema =
 
       userId: {
         type:
-          mongoose.Schema
+          mongoose
+            .Schema
             .Types
             .ObjectId,
 
@@ -44,14 +46,19 @@ const luckyDrawTicketSchema =
 
       username: {
         type: String,
+
         required: true,
+
         trim: true,
       },
 
       email: {
         type: String,
+
         required: true,
+
         trim: true,
+
         lowercase: true,
       },
 
@@ -61,18 +68,27 @@ const luckyDrawTicketSchema =
 
       ticketNumber: {
         type: Number,
+
         required: true,
+
         unique: true,
+
         index: true,
+
         min: 111111,
+
         max: 999999,
       },
 
       ticketId: {
         type: String,
+
         required: true,
+
         unique: true,
+
         index: true,
+
         trim: true,
       },
 
@@ -82,17 +98,22 @@ const luckyDrawTicketSchema =
 
       status: {
         type: String,
+
         enum: [
           "active",
           "winner",
           "expired",
         ],
-        default: "active",
+
+        default:
+          "active",
+
         index: true,
       },
 
       isWinner: {
         type: Boolean,
+
         default: false,
       },
 
@@ -102,11 +123,13 @@ const luckyDrawTicketSchema =
 
       rewardClaimed: {
         type: Boolean,
+
         default: false,
       },
 
       claimedAt: {
         type: Date,
+
         default: null,
       },
 
@@ -116,11 +139,13 @@ const luckyDrawTicketSchema =
 
       purchaseIP: {
         type: String,
+
         default: null,
       },
 
       userAgent: {
         type: String,
+
         default: null,
       },
     },
@@ -133,14 +158,27 @@ const luckyDrawTicketSchema =
    INDEXES
 ----------------------------- */
 
-luckyDrawTicketSchema.index({
-  drawId: 1,
-  userId: 1,
-});
+luckyDrawTicketSchema.index(
+  {
+    drawId: 1,
 
-luckyDrawTicketSchema.index({
-  ticketId: "text",
-});
+    userId: 1,
+  }
+);
+
+luckyDrawTicketSchema.index(
+  {
+    ticketId: "text",
+  }
+);
+
+luckyDrawTicketSchema.index(
+  {
+    status: 1,
+
+    createdAt: -1,
+  }
+);
 
 /* -----------------------------
    EXPORT

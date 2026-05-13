@@ -369,6 +369,9 @@ const getCurrentLuckyDraw =
           status:
             draw.status,
 
+          endsAt:
+            draw.endsAt,
+
           timer: {
             days:
               String(
@@ -537,13 +540,227 @@ const purchaseLuckyDrawTickets =
     res
   ) => {
     try {
+      const {
+        drawId,
+        tickets,
+      } = req.body;
+
+      /* USER */
+
+      const user =
+        await User.findById(
+          req.user.id
+        );
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({
+            success: false,
+
+            message:
+              "User not found",
+          });
+      }
+
+      /* DRAW */
+
+      const draw =
+        await LuckyDraw.findOne(
+          {
+            _id: drawId,
+
+            status:
+              "active",
+          }
+        );
+
+      if (!draw) {
+        return res
+          .status(404)
+          .json({
+            success: false,
+
+            message:
+              "Lucky draw not found",
+          });
+      }
+
+      /* VALIDATION */
+
+      const totalTickets =
+        Number(tickets);
+
+      if (
+        totalTickets < 1
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              "Invalid ticket quantity",
+          });
+      }
+
+      /* CHECK EXISTING */
+
+      const existingTickets =
+        await LuckyDrawTicket.countDocuments(
+          {
+            drawId:
+              draw._id,
+
+            userId:
+              user._id,
+          }
+        );
+
+      if (
+        existingTickets +
+          totalTickets >
+        draw.maxTicketsPerUser
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message: `Maximum ${draw.maxTicketsPerUser} tickets allowed`,
+          });
+      }
+
+      /* TOTAL PRICE */
+
+      const totalPrice =
+        draw.entryFee *
+        totalTickets;
+
+      /* CHECK USER CREDS */
+
+      if (
+        user.creds <
+        totalPrice
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              "Insufficient creds",
+          });
+      }
+
+      /* CHECK PARTICIPANT */
+
+      const alreadyJoined =
+        await LuckyDrawTicket.exists(
+          {
+            drawId:
+              draw._id,
+
+            userId:
+              user._id,
+          }
+        );
+
+      /* REMOVE USER CREDS */
+
+      user.creds -=
+        totalPrice;
+
+      await user.save();
+
+      /* CREATE TICKETS */
+
+      const createdTickets =
+        [];
+
+      for (
+        let i = 0;
+        i < totalTickets;
+        i++
+      ) {
+        const ticketNumber =
+          draw.currentTicketNumber;
+
+        const ticket =
+          await LuckyDrawTicket.create(
+            {
+              /* DRAW */
+
+              drawId:
+                draw._id,
+
+              /* USER */
+
+              userId:
+                user._id,
+
+              username:
+                user.username,
+
+              email:
+                user.email,
+
+              /* TICKET */
+
+              ticketNumber,
+
+              ticketId: `LD-${ticketNumber}`,
+
+              /* SECURITY */
+
+              purchaseIP:
+                req.ip,
+
+              userAgent:
+                req.headers[
+                  "user-agent"
+                ] || "Unknown",
+            }
+          );
+
+        createdTickets.push(
+          ticket
+        );
+
+        draw.currentTicketNumber += 1;
+      }
+
+      /* UPDATE DRAW */
+
+      draw.ticketsSold +=
+        totalTickets;
+
+      draw.credsBurned +=
+        totalPrice;
+
+      if (
+        !alreadyJoined
+      ) {
+        draw.participants += 1;
+      }
+
+      await draw.save();
+
+      /* RESPONSE */
+
       return res
         .status(200)
         .json({
           success: true,
 
           message:
-            "Ticket purchase API ready",
+            "Tickets purchased successfully",
+
+          tickets:
+            createdTickets,
+
+          remainingCreds:
+            user.creds,
         });
     } catch (error) {
       console.log(
