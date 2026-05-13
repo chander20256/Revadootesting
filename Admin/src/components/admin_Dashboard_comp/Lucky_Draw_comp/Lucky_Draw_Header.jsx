@@ -93,116 +93,119 @@ function Lucky_Draw_Header({
   /* -----------------------------
      CREATE DRAW
   ----------------------------- */
+const handleCreateDraw =
+  async (e) => {
+    e.preventDefault();
 
-  const handleCreateDraw =
-    async (e) => {
-      e.preventDefault();
+    try {
+      setCreating(
+        true
+      );
 
-      try {
-        setCreating(
-          true
+      const adminData =
+        JSON.parse(
+          localStorage.getItem(
+            "adminData"
+          )
         );
 
-        const adminData =
-          JSON.parse(
-            localStorage.getItem(
-              "adminData"
-            )
-          );
+      /* API URL */
 
-        const response =
-          await fetch(
-            "http://localhost:5000/api/admin/lucky-draw/create",
-            {
-              method:
-                "POST",
+      const API_URL =
+        "https://YOUR-RENDER-BACKEND.onrender.com";
 
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
+      const response =
+        await fetch(
+          `${API_URL}/api/admin/lucky-draw/create`,
+          {
+            method:
+              "POST",
 
-              body: JSON.stringify(
-                {
-                  ...formData,
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-                  createdBy:
-                    adminData?._id,
-                }
-              ),
-            }
-          );
+            body: JSON.stringify(
+              {
+                ...formData,
 
-        const data =
-          await response.json();
+                createdBy:
+                  adminData?._id,
+              }
+            ),
+          }
+        );
 
-        if (
-          !response.ok
-        ) {
-          alert(
-            data.message
-          );
+      const data =
+        await response.json();
 
-          return;
-        }
-
+      if (
+        !response.ok
+      ) {
         alert(
-          "Lucky draw created successfully"
+          data.message
         );
 
-        /* RESET */
-
-        setFormData({
-          rewardTitle:
-            "",
-
-          rewardImage:
-            "",
-
-          entryFee:
-            500,
-
-          totalWinners:
-            1,
-
-          maxTicketsPerUser:
-            5,
-
-          durationDays:
-            7,
-
-          description:
-            "",
-        });
-
-        /* CLOSE */
-
-        setOpenForm(
-          false
-        );
-
-        /* REFRESH */
-
-        if (
-          onRefresh
-        ) {
-          onRefresh();
-        }
-      } catch (error) {
-        console.log(
-          error
-        );
-
-        alert(
-          "Failed to create lucky draw"
-        );
-      } finally {
-        setCreating(
-          false
-        );
+        return;
       }
-    };
 
+      alert(
+        "Lucky draw created successfully"
+      );
+
+      /* RESET */
+
+      setFormData({
+        rewardTitle:
+          "",
+
+        rewardImage:
+          "",
+
+        entryFee:
+          500,
+
+        totalWinners:
+          1,
+
+        maxTicketsPerUser:
+          5,
+
+        durationDays:
+          7,
+
+        description:
+          "",
+      });
+
+      /* CLOSE */
+
+      setOpenForm(
+        false
+      );
+
+      /* REFRESH */
+
+      if (
+        onRefresh
+      ) {
+        onRefresh();
+      }
+    } catch (error) {
+      console.log(
+        error
+      );
+
+      alert(
+        "Failed to create lucky draw"
+      );
+    } finally {
+      setCreating(
+        false
+      );
+    }
+  };
   return (
     <>
       {/* HEADER */}
