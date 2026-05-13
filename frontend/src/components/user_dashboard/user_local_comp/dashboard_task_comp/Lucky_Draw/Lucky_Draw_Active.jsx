@@ -1,22 +1,217 @@
 import React, {
+  useEffect,
   useState,
 } from "react";
 
+import axios from "axios";
+
+import Swal from "sweetalert2";
+
 function Lucky_Draw_Active() {
-  /* -----------------------------
+  /* =============================
      STATE
-  ----------------------------- */
+  ============================= */
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [joining, setJoining] =
+    useState(false);
 
   const [tickets, setTickets] =
     useState(1);
 
+  const [drawData, setDrawData] =
+    useState(null);
+
+  const [timeLeft, setTimeLeft] =
+    useState({
+      days: "00",
+      hours: "00",
+      minutes: "00",
+      seconds: "00",
+    });
+
+  /* =============================
+     API
+  ============================= */
+
+  const API =
+    "https://revadoobackend.onrender.com/api/admin/lucky-draw";
+
+  /* =============================
+     FETCH ACTIVE DRAW
+  ============================= */
+
+  const fetchLuckyDraw =
+    async () => {
+      try {
+        setLoading(true);
+
+        const { data } =
+          await axios.get(
+            `${API}/current`,
+            {
+              withCredentials: true,
+            }
+          );
+
+        if (data.success) {
+          setDrawData(data);
+        }
+      } catch (error) {
+        console.log(error);
+
+        Swal.fire({
+          icon: "error",
+
+          title:
+            "Failed To Load",
+
+          text:
+            error.response?.data
+              ?.message ||
+            "Unable to load lucky draw",
+
+          confirmButtonColor:
+            "#f97316",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  /* =============================
+     INITIAL LOAD
+  ============================= */
+
+  useEffect(() => {
+    fetchLuckyDraw();
+  }, []);
+
+  /* =============================
+     LIVE TIMER
+  ============================= */
+
+  useEffect(() => {
+    if (!drawData)
+      return;
+
+    const durationDays =
+      drawData.duration || 1;
+
+    const createdTime =
+      new Date().getTime();
+
+    const endTime =
+      createdTime +
+      durationDays *
+        24 *
+        60 *
+        60 *
+        1000;
+
+    const interval =
+      setInterval(() => {
+        const now =
+          new Date().getTime();
+
+        const distance =
+          endTime - now;
+
+        if (distance <= 0) {
+          clearInterval(
+            interval
+          );
+
+          setTimeLeft({
+            days: "00",
+            hours: "00",
+            minutes: "00",
+            seconds: "00",
+          });
+
+          return;
+        }
+
+        const days =
+          Math.floor(
+            distance /
+              (1000 *
+                60 *
+                60 *
+                24)
+          );
+
+        const hours =
+          Math.floor(
+            (distance %
+              (1000 *
+                60 *
+                60 *
+                24)) /
+              (1000 *
+                60 *
+                60)
+          );
+
+        const minutes =
+          Math.floor(
+            (distance %
+              (1000 *
+                60 *
+                60)) /
+              (1000 *
+                60)
+          );
+
+        const seconds =
+          Math.floor(
+            (distance %
+              (1000 *
+                60)) /
+              1000
+          );
+
+        setTimeLeft({
+          days: String(
+            days
+          ).padStart(2, "0"),
+
+          hours: String(
+            hours
+          ).padStart(2, "0"),
+
+          minutes: String(
+            minutes
+          ).padStart(2, "0"),
+
+          seconds: String(
+            seconds
+          ).padStart(2, "0"),
+        });
+      }, 1000);
+
+    return () =>
+      clearInterval(interval);
+  }, [drawData]);
+
+  /* =============================
+     VALUES
+  ============================= */
+
   const maxTickets = 5;
 
-  const ticketPrice = 500;
+  const ticketPrice =
+    drawData?.entryFee || 0;
 
-  /* -----------------------------
+  const totalPrice =
+    tickets *
+    ticketPrice;
+
+  /* =============================
      FUNCTIONS
-  ----------------------------- */
+  ============================= */
 
   const increaseTickets =
     () => {
@@ -39,19 +234,148 @@ function Lucky_Draw_Active() {
       }
     };
 
+  /* =============================
+     PURCHASE
+  ============================= */
+
   const handleJoin =
-    () => {
-      alert(
-        `You joined the lucky draw with ${tickets} ticket${
-          tickets > 1
-            ? "s"
-            : ""
-        } for ${
-          tickets *
-          ticketPrice
-        } creds`
-      );
+    async () => {
+      try {
+        if (!drawData?._id) {
+          return;
+        }
+
+        setJoining(true);
+
+        const { data } =
+          await axios.post(
+            `${API}/purchase`,
+            {
+              drawId:
+                drawData._id,
+
+              tickets,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+
+            title:
+              "Successfully Joined",
+
+            text: `You purchased ${tickets} ticket${
+              tickets > 1
+                ? "s"
+                : ""
+            } successfully`,
+
+            confirmButtonColor:
+              "#f97316",
+          });
+
+          fetchLuckyDraw();
+        }
+      } catch (error) {
+        console.log(error);
+
+        Swal.fire({
+          icon: "error",
+
+          title:
+            "Purchase Failed",
+
+          text:
+            error.response?.data
+              ?.message ||
+            "Failed to purchase tickets",
+
+          confirmButtonColor:
+            "#f97316",
+        });
+      } finally {
+        setJoining(false);
+      }
     };
+
+  /* =============================
+     LOADING
+  ============================= */
+
+  if (loading) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          p-8
+          flex
+          items-center
+          justify-center
+          min-h-[500px]
+        "
+      >
+        <div className="text-center">
+          <div
+            className="
+              w-14
+              h-14
+              border-4
+              border-orange-200
+              border-t-orange-500
+              rounded-full
+              animate-spin
+              mx-auto
+            "
+          />
+
+          <p className="mt-5 text-sm font-bold text-gray-500">
+            Loading Lucky
+            Draw...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  /* =============================
+     NO DRAW
+  ============================= */
+
+  if (!drawData) {
+    return (
+      <div
+        className="
+          bg-white
+          border
+          border-gray-100
+          rounded-[28px]
+          p-8
+          text-center
+        "
+      >
+        <div className="text-6xl mb-5">
+          🎁
+        </div>
+
+        <h2 className="text-2xl font-black text-black">
+          No Active Lucky
+          Draw
+        </h2>
+
+        <p className="text-gray-500 mt-3">
+          New reward events
+          will appear soon.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -76,15 +400,15 @@ function Lucky_Draw_Active() {
         </p>
 
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight leading-tight">
-          Weekly Reward Event
+          {
+            drawData.rewardTitle
+          }
         </h2>
       </div>
 
-      {/* PYRAMID STATS */}
+      {/* MAIN CARD */}
 
       <div className="mt-2">
-        {/* TOP CARD */}
-
         <div className="flex justify-center">
           <div
             className="
@@ -100,16 +424,37 @@ function Lucky_Draw_Active() {
               text-center
             "
           >
-            <div className="text-5xl sm:text-6xl mb-4">
-              🎁
-            </div>
+            {/* IMAGE */}
+
+            {drawData.rewardImage ? (
+              <img
+                src={
+                  drawData.rewardImage
+                }
+                alt="reward"
+                className="
+                  w-24
+                  h-24
+                  object-cover
+                  rounded-3xl
+                  mx-auto
+                  mb-5
+                "
+              />
+            ) : (
+              <div className="text-5xl sm:text-6xl mb-4">
+                🎁
+              </div>
+            )}
 
             <h3 className="text-xl sm:text-3xl font-black text-black tracking-tight leading-tight">
               Prize Pool
             </h3>
 
             <p className="text-base sm:text-xl font-semibold text-gray-500 mt-4">
-              ₹500 Amazon Card
+              {
+                drawData.rewardTitle
+              }
             </p>
 
             <p className="text-xs sm:text-sm text-orange-500 font-bold mt-2">
@@ -128,22 +473,30 @@ function Lucky_Draw_Active() {
             >
               {[
                 {
-                  value: "02",
+                  value:
+                    timeLeft.days,
+
                   label: "Days",
                 },
 
                 {
-                  value: "18",
+                  value:
+                    timeLeft.hours,
+
                   label: "Hours",
                 },
 
                 {
-                  value: "42",
+                  value:
+                    timeLeft.minutes,
+
                   label: "Min",
                 },
 
                 {
-                  value: "12",
+                  value:
+                    timeLeft.seconds,
+
                   label: "Sec",
                 },
               ].map(
@@ -176,7 +529,7 @@ function Lucky_Draw_Active() {
           </div>
         </div>
 
-        {/* BOTTOM 3 CARDS */}
+        {/* STATS */}
 
         <div
           className="
@@ -187,7 +540,7 @@ function Lucky_Draw_Active() {
             mt-4
           "
         >
-          {/* ENTRY FEE */}
+          {/* ENTRY */}
 
           <div
             className="
@@ -210,7 +563,10 @@ function Lucky_Draw_Active() {
             </h3>
 
             <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
-              500 Creds
+              {
+                drawData.entryFee
+              }{" "}
+              Creds
             </p>
 
             <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
@@ -218,38 +574,7 @@ function Lucky_Draw_Active() {
             </p>
           </div>
 
-          {/* MAX TICKETS */}
-
-          <div
-            className="
-              bg-gray-50
-              border
-              border-gray-100
-              rounded-[20px]
-              sm:rounded-[28px]
-              p-3
-              sm:p-5
-              text-center
-            "
-          >
-            <div className="text-3xl sm:text-5xl mb-3">
-              🎫
-            </div>
-
-            <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
-              Max Tickets
-            </h3>
-
-            <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
-              {maxTickets} Tickets
-            </p>
-
-            <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
-              Per User
-            </p>
-          </div>
-
-          {/* SOLD */}
+          {/* WINNERS */}
 
           <div
             className="
@@ -268,15 +593,51 @@ function Lucky_Draw_Active() {
             </div>
 
             <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
+              Winners
+            </h3>
+
+            <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
+              {
+                drawData.totalWinners
+              }{" "}
+              Users
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
+              Selected
+            </p>
+          </div>
+
+          {/* SOLD */}
+
+          <div
+            className="
+              bg-gray-50
+              border
+              border-gray-100
+              rounded-[20px]
+              sm:rounded-[28px]
+              p-3
+              sm:p-5
+              text-center
+            "
+          >
+            <div className="text-3xl sm:text-5xl mb-3">
+              🎫
+            </div>
+
+            <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
               Tickets Sold
             </h3>
 
             <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
-              248 Entries
+              {
+                drawData.ticketsSold
+              }
             </p>
 
             <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
-              Active Users
+              Live Entries
             </p>
           </div>
         </div>
@@ -302,17 +663,18 @@ function Lucky_Draw_Active() {
       >
         <div>
           <h4 className="text-sm sm:text-base font-black text-black">
-            Join The Revadoo Lucky Draw
+            Join The Revadoo
+            Lucky Draw
           </h4>
 
           <p className="text-xs sm:text-sm text-gray-500 mt-2 leading-relaxed">
-            Use your earned creds to participate in premium reward
-            events and increase your chances of winning exclusive gift
-            cards and digital rewards.
+            {
+              drawData.description
+            }
           </p>
         </div>
 
-        {/* ACTION AREA */}
+        {/* ACTION */}
 
         <div
           className="
@@ -374,10 +736,7 @@ function Lucky_Draw_Active() {
               </h3>
 
               <p className="text-[10px] text-gray-400 font-bold">
-                Max{" "}
-                {
-                  maxTickets
-                }
+                Max 5
               </p>
             </div>
 
@@ -386,8 +745,7 @@ function Lucky_Draw_Active() {
                 increaseTickets
               }
               disabled={
-                tickets ===
-                maxTickets
+                tickets === 5
               }
               className="
                 w-9
@@ -407,12 +765,13 @@ function Lucky_Draw_Active() {
             </button>
           </div>
 
-          {/* JOIN BUTTON */}
+          {/* BUTTON */}
 
           <button
             onClick={
               handleJoin
             }
+            disabled={joining}
             className="
               flex-1
               bg-orange-500
@@ -425,16 +784,16 @@ function Lucky_Draw_Active() {
               rounded-2xl
               transition-all
               duration-200
+              disabled:opacity-50
             "
           >
-            Join For{" "}
-            {tickets *
-              ticketPrice}{" "}
-            Creds
+            {joining
+              ? "Processing..."
+              : `Join For ${totalPrice} Creds`}
           </button>
         </div>
 
-        {/* LIMIT INFO */}
+        {/* INFO */}
 
         <div
           className="
@@ -447,12 +806,17 @@ function Lucky_Draw_Active() {
           "
         >
           <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
-            Each account can purchase a maximum of{" "}
+            Each account can
+            purchase a
+            maximum of{" "}
             <span className="font-black text-orange-500">
-              {maxTickets} tickets
+              5 tickets
             </span>{" "}
-            per lucky draw event to ensure fair participation for all
-            users.
+            per lucky draw
+            event to ensure
+            fair
+            participation
+            for all users.
           </p>
         </div>
       </div>
