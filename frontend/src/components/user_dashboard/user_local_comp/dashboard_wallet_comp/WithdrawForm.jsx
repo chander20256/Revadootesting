@@ -27,9 +27,20 @@ const WithdrawForm = () => {
   ----------------------------- */
 
   const methods = [
-    "Giftcards",
-    "Crypto",
-    "Cash",
+    {
+      name: "Giftcards",
+      badge: "Recommended",
+    },
+
+    {
+      name: "Crypto",
+      badge: "Limited",
+    },
+
+    {
+      name: "Cash",
+      badge: "Beta",
+    },
   ];
 
   /* -----------------------------
@@ -37,10 +48,29 @@ const WithdrawForm = () => {
   ----------------------------- */
 
   const giftBrands = [
-    "Amazon",
-    "Flipkart",
-    "Google Play",
-    "Steam",
+    {
+      name: "Amazon",
+      logo: "🛒",
+      popular: true,
+    },
+
+    {
+      name: "Flipkart",
+      logo: "🛍️",
+      popular: true,
+    },
+
+    {
+      name: "Google Play",
+      logo: "▶️",
+      popular: false,
+    },
+
+    {
+      name: "Steam",
+      logo: "🎮",
+      popular: false,
+    },
   ];
 
   /* -----------------------------
@@ -51,14 +81,19 @@ const WithdrawForm = () => {
     {
       value: "₹100",
       creds: "1000 Creds",
+      bonus: "+25% Founder Bonus",
     },
+
     {
       value: "₹250",
       creds: "2500 Creds",
+      bonus: "+25% Founder Bonus",
     },
+
     {
       value: "₹500",
       creds: "5000 Creds",
+      bonus: "+25% Founder Bonus",
     },
   ];
 
@@ -98,7 +133,7 @@ const WithdrawForm = () => {
       }
 
       alert(
-        `${selectedBrand} ${selectedCard.value} withdrawal requested`
+        `${selectedBrand.name} ${selectedCard.value} redemption requested`
       );
 
       return;
@@ -153,16 +188,34 @@ const WithdrawForm = () => {
       {/* HEADER */}
 
       <div className="mb-5">
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-2">
-          Withdraw System
-        </p>
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-500">
+            Rewards Store
+          </p>
+
+          <span
+            className="
+              bg-orange-100
+              text-orange-500
+              text-[10px]
+              font-black
+              px-2.5
+              py-1
+              rounded-full
+            "
+          >
+            First 100 Users Bonus
+          </span>
+        </div>
 
         <h3 className="text-xl font-black text-black">
-          Withdraw Rewards
+          Redeem Your Rewards
         </h3>
 
         <p className="text-sm text-gray-400 mt-1 leading-relaxed">
-          Choose your preferred withdrawal method and submit your payout request securely.
+          Founder users receive boosted reward values, premium gift card
+          access, and limited-time redemption bonuses.
         </p>
       </div>
 
@@ -176,7 +229,7 @@ const WithdrawForm = () => {
 
         <div>
           <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
-            Withdrawal Method
+            Redemption Method
           </label>
 
           <div
@@ -190,13 +243,16 @@ const WithdrawForm = () => {
             "
           >
             {methods.map(
-              (m) => (
+              (
+                item,
+                index
+              ) => (
                 <button
-                  key={m}
+                  key={index}
                   type="button"
                   onClick={() => {
                     setMethod(
-                      m
+                      item.name
                     );
 
                     setSelectedBrand(
@@ -209,7 +265,7 @@ const WithdrawForm = () => {
                   }}
                   className={`
                     flex-1
-                    min-w-[90px]
+                    min-w-[100px]
                     py-3
                     px-4
                     rounded-xl
@@ -217,15 +273,41 @@ const WithdrawForm = () => {
                     font-bold
                     transition-all
                     duration-200
+                    relative
                     ${
                       method ===
-                      m
+                      item.name
                         ? "bg-orange-500 text-white shadow-sm"
                         : "bg-transparent text-gray-500 hover:bg-white"
                     }
                   `}
                 >
-                  {m}
+                  <div className="flex flex-col items-center">
+                    
+                    <span>
+                      {
+                        item.name
+                      }
+                    </span>
+
+                    <span
+                      className={`
+                        text-[10px]
+                        mt-1
+                        font-bold
+                        ${
+                          method ===
+                          item.name
+                            ? "text-white/80"
+                            : "text-orange-500"
+                        }
+                      `}
+                    >
+                      {
+                        item.badge
+                      }
+                    </span>
+                  </div>
                 </button>
               )
             )}
@@ -238,6 +320,36 @@ const WithdrawForm = () => {
           "Giftcards" && (
           <div className="space-y-5">
             
+            {/* INFO */}
+
+            <div
+              className="
+                bg-orange-50
+                border
+                border-orange-100
+                rounded-2xl
+                p-4
+              "
+            >
+              <div className="flex items-start gap-3">
+                
+                <div className="text-2xl">
+                  🎁
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-black text-black">
+                    Most Popular Redemption Method
+                  </h4>
+
+                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                    Gift cards offer instant delivery, better reward value,
+                    and exclusive founder bonuses for early users.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* BRAND */}
 
             <div>
@@ -267,19 +379,61 @@ const WithdrawForm = () => {
                         rounded-2xl
                         border
                         p-4
-                        text-sm
-                        font-bold
                         transition-all
                         duration-200
+                        relative
                         ${
-                          selectedBrand ===
-                          brand
-                            ? "border-orange-500 bg-orange-50 text-orange-500"
-                            : "border-gray-100 text-black hover:border-orange-200"
+                          selectedBrand?.name ===
+                          brand.name
+                            ? "border-orange-500 bg-orange-50"
+                            : "border-gray-100 hover:border-orange-200"
                         }
                       `}
                     >
-                      {brand}
+                      {brand.popular && (
+                        <div
+                          className="
+                            absolute
+                            top-2
+                            right-2
+                            text-[9px]
+                            font-black
+                            bg-orange-500
+                            text-white
+                            px-2
+                            py-1
+                            rounded-full
+                          "
+                        >
+                          HOT
+                        </div>
+                      )}
+
+                      <div className="flex flex-col items-center justify-center">
+                        
+                        <span className="text-3xl mb-2">
+                          {
+                            brand.logo
+                          }
+                        </span>
+
+                        <p
+                          className={`
+                            text-sm
+                            font-bold
+                            ${
+                              selectedBrand?.name ===
+                              brand.name
+                                ? "text-orange-500"
+                                : "text-black"
+                            }
+                          `}
+                        >
+                          {
+                            brand.name
+                          }
+                        </p>
+                      </div>
                     </button>
                   )
                 )}
@@ -291,7 +445,10 @@ const WithdrawForm = () => {
             {selectedBrand && (
               <div>
                 <label className="block text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">
-                  {selectedBrand} Gift Cards
+                  {
+                    selectedBrand.name
+                  }{" "}
+                  Gift Cards
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -315,6 +472,8 @@ const WithdrawForm = () => {
                           p-4
                           transition-all
                           duration-200
+                          relative
+                          overflow-hidden
                           ${
                             selectedCard?.value ===
                             card.value
@@ -323,23 +482,52 @@ const WithdrawForm = () => {
                           }
                         `}
                       >
-                        <p className="text-sm font-black text-black">
-                          {
-                            selectedBrand
-                          }
-                        </p>
+                        <div className="flex items-center justify-between">
+                          
+                          <div>
+                            <p className="text-sm font-black text-black">
+                              {
+                                selectedBrand.name
+                              }
+                            </p>
 
-                        <p className="text-orange-500 text-xl font-black mt-2">
-                          {
-                            card.value
-                          }
-                        </p>
+                            <p className="text-orange-500 text-2xl font-black mt-2">
+                              {
+                                card.value
+                              }
+                            </p>
 
-                        <p className="text-xs text-gray-400 mt-1 font-semibold">
-                          {
-                            card.creds
-                          }
-                        </p>
+                            <p className="text-xs text-gray-400 mt-1 font-semibold">
+                              {
+                                card.creds
+                              }
+                            </p>
+
+                            <div
+                              className="
+                                inline-flex
+                                mt-3
+                                bg-orange-100
+                                text-orange-500
+                                text-[10px]
+                                font-black
+                                px-2.5
+                                py-1
+                                rounded-full
+                              "
+                            >
+                              {
+                                card.bonus
+                              }
+                            </div>
+                          </div>
+
+                          <span className="text-4xl">
+                            {
+                              selectedBrand.logo
+                            }
+                          </span>
+                        </div>
                       </button>
                     )
                   )}
@@ -355,69 +543,91 @@ const WithdrawForm = () => {
           "Cash" ||
           method ===
             "Crypto") && (
-          <div>
-            <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
-              Withdrawal Amount
-            </label>
-
+          <div className="space-y-4">
+            
             <div
               className="
-                flex
-                items-center
+                bg-gray-50
                 border
-                border-gray-200
+                border-gray-100
                 rounded-2xl
-                overflow-hidden
-                focus-within:border-orange-500
-                transition-colors
+                p-4
               "
             >
-              <span
+              <p className="text-sm font-bold text-black">
+                Lower Priority Redemption
+              </p>
+
+              <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                Gift cards provide faster processing and higher reward value
+                compared to cash and crypto withdrawals.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">
+                Withdrawal Amount
+              </label>
+
+              <div
                 className="
-                  px-4
-                  text-orange-500
-                  font-black
-                  text-sm
-                  border-r
-                  border-gray-200
-                  bg-gray-50
-                  self-stretch
                   flex
                   items-center
+                  border
+                  border-gray-200
+                  rounded-2xl
+                  overflow-hidden
+                  focus-within:border-orange-500
+                  transition-colors
                 "
               >
-                ₹
-              </span>
+                <span
+                  className="
+                    px-4
+                    text-orange-500
+                    font-black
+                    text-sm
+                    border-r
+                    border-gray-200
+                    bg-gray-50
+                    self-stretch
+                    flex
+                    items-center
+                  "
+                >
+                  ₹
+                </span>
 
-              <input
-                type="number"
-                min="1"
-                placeholder="Enter amount"
-                value={
-                  withdrawAmount
-                }
-                onChange={(
-                  e
-                ) =>
-                  setWithdrawAmount(
-                    e.target
-                      .value
-                  )
-                }
-                required
-                className="
-                  flex-1
-                  px-4
-                  py-3
-                  text-sm
-                  font-semibold
-                  text-black
-                  bg-transparent
-                  outline-none
-                  placeholder:text-gray-300
-                  min-w-0
-                "
-              />
+                <input
+                  type="number"
+                  min="1"
+                  placeholder="Enter amount"
+                  value={
+                    withdrawAmount
+                  }
+                  onChange={(
+                    e
+                  ) =>
+                    setWithdrawAmount(
+                      e.target
+                        .value
+                    )
+                  }
+                  required
+                  className="
+                    flex-1
+                    px-4
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-black
+                    bg-transparent
+                    outline-none
+                    placeholder:text-gray-300
+                    min-w-0
+                  "
+                />
+              </div>
             </div>
           </div>
         )}
@@ -476,15 +686,15 @@ const WithdrawForm = () => {
             duration-200
           "
         >
-          Request Withdrawal
+          Redeem Rewards
         </button>
 
         {/* FOOTER */}
 
         <div className="text-center">
           <p className="text-xs text-gray-400 leading-relaxed">
-            Minimum withdrawal amount is ₹100. Processing time may vary
-            depending on the selected payout method.
+            Founder users receive boosted redemption rewards and priority
+            processing during the early access phase.
           </p>
         </div>
       </form>

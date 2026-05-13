@@ -6,6 +6,8 @@ import Creds_main from "../../components/user_dashboard/user_local_comp/dashboar
 
 import Captcha_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/Captcha_task/Captcha_main";
 
+import Lucky_Draw_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/Lucky_Draw/Lucky_Draw_main";
+
 const DashboardTasks = () => {
   const { category } =
     useParams();
@@ -25,7 +27,6 @@ const DashboardTasks = () => {
     );
   }
 
-
   /* --------------------------------
      CAPTCHA TASKS
   -------------------------------- */
@@ -37,6 +38,21 @@ const DashboardTasks = () => {
     return (
       <div className="w-full min-h-screen p-4 md:p-6">
         <Captcha_main />
+      </div>
+    );
+  }
+
+  /* --------------------------------
+     LUCKY DRAW
+  -------------------------------- */
+
+  if (
+    category ===
+    "lucky-draw"
+  ) {
+    return (
+      <div className="w-full min-h-screen p-4 md:p-6">
+        <Lucky_Draw_main />
       </div>
     );
   }
