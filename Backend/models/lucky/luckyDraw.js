@@ -153,15 +153,11 @@ const luckyDrawSchema =
       ----------------------------- */
 
       createdBy: {
-        type:
-          mongoose.Schema
-            .Types
-            .ObjectId,
+  type: String,
 
-        ref: "User",
-
-        required: true,
-      },
+  default:
+    "ADMINREVADOO",
+},
     },
     {
       timestamps: true,
