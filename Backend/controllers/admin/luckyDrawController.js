@@ -1,9 +1,9 @@
 const LuckyDraw = require(
-  "../../models/lucky/LuckyDraw"
+  "../../models/lucky/luckyDraw"
 );
 
 const LuckyDrawTicket = require(
-  "../../models/lucky/LuckyDrawTicket"
+  "../../models/lucky/luckyDrawTicket"
 );
 
 const User = require(
