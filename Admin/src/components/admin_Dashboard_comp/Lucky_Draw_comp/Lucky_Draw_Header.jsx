@@ -93,6 +93,11 @@ function Lucky_Draw_Header({
   /* -----------------------------
      CREATE DRAW
   ----------------------------- */
+
+ /* -----------------------------
+   CREATE DRAW
+----------------------------- */
+
 const handleCreateDraw =
   async (e) => {
     e.preventDefault();
@@ -109,14 +114,20 @@ const handleCreateDraw =
           )
         );
 
-      /* API URL */
+      /* -----------------------------
+         API URL
+      ----------------------------- */
 
       const API_URL =
-        "https://YOUR-RENDER-BACKEND.onrender.com";
+        "https://revadoobackend.onrender.com/api/admin";
+
+      /* -----------------------------
+         REQUEST
+      ----------------------------- */
 
       const response =
         await fetch(
-          `${API_URL}/api/admin/lucky-draw/create`,
+          `${API_URL}/lucky-draw/create`,
           {
             method:
               "POST",
@@ -140,6 +151,10 @@ const handleCreateDraw =
       const data =
         await response.json();
 
+      /* -----------------------------
+         ERROR
+      ----------------------------- */
+
       if (
         !response.ok
       ) {
@@ -149,6 +164,10 @@ const handleCreateDraw =
 
         return;
       }
+
+      /* -----------------------------
+         SUCCESS
+      ----------------------------- */
 
       alert(
         "Lucky draw created successfully"
@@ -206,6 +225,7 @@ const handleCreateDraw =
       );
     }
   };
+
   return (
     <>
       {/* HEADER */}
