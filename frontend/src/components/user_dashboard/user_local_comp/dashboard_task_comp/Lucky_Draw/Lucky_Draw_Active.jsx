@@ -275,26 +275,6 @@ function Lucky_Draw_Active() {
         </div>
       </div>
 
-      {/* MOBILE HINT */}
-
-      <div
-        className="
-          flex
-          items-center
-          gap-2
-          text-xs
-          font-bold
-          text-orange-500
-          mb-4
-          lg:hidden
-        "
-      >
-        <span className="text-base">
-          👉
-        </span>
-
-        Swipe to explore more lucky draws
-      </div>
 
       {/* WRAPPER */}
 
@@ -333,24 +313,37 @@ function Lucky_Draw_Active() {
                   border
                   border-gray-100
                   bg-gray-50
-                  p-5
+                  p-4
+                  sm:p-5
                   transition-all
                   duration-300
                   hover:border-orange-200
                   hover:bg-orange-50/40
                   shrink-0
-                  w-[85%]
+
+                  /* MOBILE */
+                  w-[78%]
+                  min-w-[220px]
+
+                  /* TABLET */
                   sm:w-[48%]
+
+                  /* DESKTOP */
                   lg:w-[32%]
-                  min-w-[260px]
+
+                  /* HEIGHT */
+                  min-h-[260px]
+                  sm:min-h-[300px]
                 "
               >
                 {/* ICON */}
 
                 <div
                   className="
-                    w-14
-                    h-14
+                    w-12
+                    h-12
+                    sm:w-14
+                    sm:h-14
                     rounded-2xl
                     bg-white
                     border
@@ -358,8 +351,9 @@ function Lucky_Draw_Active() {
                     flex
                     items-center
                     justify-center
-                    text-3xl
-                    mb-5
+                    text-2xl
+                    sm:text-3xl
+                    mb-4
                   "
                 >
                   {item.icon}
@@ -367,13 +361,13 @@ function Lucky_Draw_Active() {
 
                 {/* CONTENT */}
 
-                <div className="space-y-3">
+                <div className="space-y-3 flex flex-col justify-between h-full">
                   <div>
-                    <h3 className="text-xl font-black text-black">
+                    <h3 className="text-lg sm:text-xl font-black text-black">
                       {item.title}
                     </h3>
 
-                    <p className="text-sm text-gray-500 mt-1 font-medium">
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
                       {item.reward}
                     </p>
                   </div>
@@ -389,26 +383,27 @@ function Lucky_Draw_Active() {
                       bg-white
                       border
                       border-gray-100
-                      px-4
+                      px-3
+                      sm:px-4
                       py-3
                     "
                   >
                     <div>
-                      <p className="text-[11px] uppercase font-bold tracking-wider text-gray-400">
+                      <p className="text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-gray-400">
                         Entry Cost
                       </p>
 
-                      <h4 className="text-sm font-black text-orange-500 mt-1">
+                      <h4 className="text-xs sm:text-sm font-black text-orange-500 mt-1">
                         {item.tickets}
                       </h4>
                     </div>
 
                     <div className="text-right">
-                      <p className="text-[11px] uppercase font-bold tracking-wider text-gray-400">
+                      <p className="text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-gray-400">
                         Participants
                       </p>
 
-                      <h4 className="text-sm font-black text-black mt-1">
+                      <h4 className="text-xs sm:text-sm font-black text-black mt-1">
                         {item.users}
                       </h4>
                     </div>
@@ -419,11 +414,12 @@ function Lucky_Draw_Active() {
                   <button
                     className="
                       w-full
-                      mt-2
+                      mt-1
                       bg-orange-500
                       hover:bg-orange-600
                       text-white
-                      text-sm
+                      text-xs
+                      sm:text-sm
                       font-black
                       py-3
                       rounded-2xl
