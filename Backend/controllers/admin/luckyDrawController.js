@@ -10,6 +10,8 @@ const User = require(
   "../../models/User"
 );
 
+
+
 /* =======================================================
    CREATE NEW LUCKY DRAW
 ======================================================= */
@@ -25,7 +27,6 @@ const createLuckyDraw =
         totalWinners,
         maxTicketsPerUser,
         durationDays,
-        createdBy,
       } = req.body;
 
       /* -----------------------------
@@ -36,8 +37,7 @@ const createLuckyDraw =
         !rewardTitle ||
         !entryFee ||
         !totalWinners ||
-        !durationDays ||
-        !createdBy
+        !durationDays
       ) {
         return res
           .status(400)
@@ -101,21 +101,36 @@ const createLuckyDraw =
 
             description,
 
-            entryFee,
+            entryFee:
+              Number(
+                entryFee
+              ),
 
-            totalWinners,
+            totalWinners:
+              Number(
+                totalWinners
+              ),
 
             maxTicketsPerUser:
-              maxTicketsPerUser ||
-              5,
+              Number(
+                maxTicketsPerUser
+              ) || 5,
 
-            durationDays,
+            durationDays:
+              Number(
+                durationDays
+              ),
 
             endsAt,
 
-            createdBy,
+            createdBy:
+              "ADMINREVADOO",
           }
         );
+
+      /* -----------------------------
+         RESPONSE
+      ----------------------------- */
 
       return res
         .status(201)
