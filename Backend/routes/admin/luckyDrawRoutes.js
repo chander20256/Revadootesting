@@ -23,7 +23,7 @@ const {
 
   endLuckyDraw,
 } = require(
-  "../../Controllers/Admin/luckyDrawController"
+  "../../controllers/admin/luckyDrawController"
 );
 
 /* -----------------------------
