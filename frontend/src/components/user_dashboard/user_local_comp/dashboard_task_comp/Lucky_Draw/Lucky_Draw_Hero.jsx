@@ -6,13 +6,14 @@ function Lucky_Draw_Hero() {
       className="
         relative
         overflow-hidden
-        rounded-[32px]
+        rounded-[26px]
+        sm:rounded-[32px]
         border
         border-gray-100
         bg-white
-        p-6
-        sm:p-8
-        lg:p-10
+        p-4
+        sm:p-6
+        lg:p-8
         font-['DM_Sans',sans-serif]
       "
     >
@@ -22,11 +23,10 @@ function Lucky_Draw_Hero() {
         className="
           flex
           flex-col
+          gap-6
           lg:flex-row
-          items-start
           lg:items-center
-          justify-between
-          gap-10
+          lg:justify-between
         "
       >
         {/* LEFT */}
@@ -39,16 +39,19 @@ function Lucky_Draw_Hero() {
               inline-flex
               items-center
               gap-2
-              px-4
-              py-2
+              px-3
+              py-1.5
+              sm:px-4
+              sm:py-2
               rounded-full
               bg-orange-100
               text-orange-500
-              text-xs
+              text-[10px]
+              sm:text-xs
               font-black
               uppercase
               tracking-wider
-              mb-5
+              mb-4
             "
           >
             🎟️ Revadoo Lucky Draw
@@ -56,10 +59,10 @@ function Lucky_Draw_Hero() {
 
           {/* TITLE */}
 
-          <div className="space-y-3">
+          <div className="space-y-1 sm:space-y-2">
             <h1
               className="
-                text-3xl
+                text-2xl
                 sm:text-4xl
                 lg:text-5xl
                 font-black
@@ -73,7 +76,7 @@ function Lucky_Draw_Hero() {
 
             <h1
               className="
-                text-3xl
+                text-2xl
                 sm:text-4xl
                 lg:text-5xl
                 font-black
@@ -88,10 +91,10 @@ function Lucky_Draw_Hero() {
 
           {/* DESCRIPTION */}
 
-          <div className="mt-5 space-y-4">
+          <div className="mt-4 sm:mt-5 space-y-3">
             <p
               className="
-                text-sm
+                text-xs
                 sm:text-base
                 leading-relaxed
                 text-gray-600
@@ -100,13 +103,14 @@ function Lucky_Draw_Hero() {
               "
             >
               Participate in Revadoo lucky draw events using your earned
-              creds and unlock chances to win free gift cards, shopping
-              vouchers, subscriptions, gaming rewards, digital products,
-              and exclusive premium giveaways.
+              creds and unlock chances to win free gift cards,
+              subscriptions, gaming rewards, and premium giveaways.
             </p>
 
             <p
               className="
+                hidden
+                sm:block
                 text-sm
                 sm:text-base
                 leading-relaxed
@@ -116,8 +120,7 @@ function Lucky_Draw_Hero() {
             >
               Every completed task on Revadoo helps you collect more
               creds and increase your chances of winning exciting
-              rewards through secure and community-powered lucky draw
-              systems.
+              rewards through secure lucky draw systems.
             </p>
           </div>
 
@@ -127,26 +130,30 @@ function Lucky_Draw_Hero() {
             className="
               flex
               flex-wrap
-              gap-3
-              mt-6
+              gap-2
+              sm:gap-3
+              mt-5
             "
           >
             {[
               "🎁 Gift Cards",
-              "🛍️ Shopping Vouchers",
-              "🎮 Gaming Rewards",
-              "📺 Subscriptions",
+              "🛍️ Vouchers",
+              "🎮 Gaming",
+              "📺 Premium",
             ].map((item, index) => (
               <div
                 key={index}
                 className="
-                  px-4
-                  py-2.5
+                  px-3
+                  py-2
+                  sm:px-4
+                  sm:py-2.5
                   rounded-2xl
                   border
                   border-orange-100
                   bg-orange-50
-                  text-sm
+                  text-[11px]
+                  sm:text-sm
                   font-bold
                   text-black
                 "
@@ -162,10 +169,11 @@ function Lucky_Draw_Hero() {
         <div
           className="
             w-full
-            lg:max-w-[360px]
+            lg:max-w-[320px]
             grid
             grid-cols-2
-            gap-4
+            gap-3
+            sm:gap-4
           "
         >
           {[
@@ -192,19 +200,22 @@ function Lucky_Draw_Hero() {
             <div
               key={index}
               className="
-                rounded-3xl
+                rounded-2xl
+                sm:rounded-3xl
                 border
                 border-gray-100
                 bg-gray-50
-                px-5
-                py-5
+                px-3
+                py-4
+                sm:px-5
+                sm:py-5
               "
             >
-              <h3 className="text-xl sm:text-2xl font-black text-orange-500">
+              <h3 className="text-lg sm:text-2xl font-black text-orange-500">
                 {item.value}
               </h3>
 
-              <p className="text-xs sm:text-sm text-gray-500 mt-2 font-semibold leading-relaxed">
+              <p className="text-[10px] sm:text-sm text-gray-500 mt-1 sm:mt-2 font-semibold leading-relaxed">
                 {item.label}
               </p>
             </div>

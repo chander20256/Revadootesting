@@ -1,198 +1,57 @@
 import React, {
-  useRef,
   useState,
 } from "react";
 
 function Lucky_Draw_Active() {
-  const scrollRef =
-    useRef(null);
-
-  const [isAnimating, setIsAnimating] =
-    useState(false);
-
-  const draws = [
-    {
-      title:
-        "Amazon Gift Card",
-
-      reward:
-        "₹500 Voucher",
-
-      tickets:
-        "500 Creds",
-
-      users:
-        "248 Entries",
-
-      icon: "🛒",
-    },
-
-    {
-      title:
-        "Netflix Premium",
-
-      reward:
-        "3 Months Access",
-
-      tickets:
-        "350 Creds",
-
-      users:
-        "184 Entries",
-
-      icon: "📺",
-    },
-
-    {
-      title:
-        "Google Play",
-
-      reward:
-        "₹250 Redeem Code",
-
-      tickets:
-        "250 Creds",
-
-      users:
-        "392 Entries",
-
-      icon: "🎮",
-    },
-
-    {
-      title:
-        "Steam Wallet",
-
-      reward:
-        "₹500 Gaming Card",
-
-      tickets:
-        "450 Creds",
-
-      users:
-        "127 Entries",
-
-      icon: "🔥",
-    },
-
-    {
-      title:
-        "Flipkart Voucher",
-
-      reward:
-        "₹300 Shopping Card",
-
-      tickets:
-        "300 Creds",
-
-      users:
-        "219 Entries",
-
-      icon: "🛍️",
-    },
-  ];
-
   /* -----------------------------
-     NEXT
+     STATE
   ----------------------------- */
 
-  const handleNext = () => {
-    if (
-      !scrollRef.current ||
-      isAnimating
-    )
-      return;
+  const [tickets, setTickets] =
+    useState(1);
 
-    setIsAnimating(true);
+  const maxTickets = 5;
 
-    const container =
-      scrollRef.current;
+  const ticketPrice = 500;
 
-    const firstCard =
-      container.children[0];
+  /* -----------------------------
+     FUNCTIONS
+  ----------------------------- */
 
-    const cardWidth =
-      firstCard.offsetWidth +
-      20;
-
-    container.style.transition =
-      "transform 0.45s ease";
-
-    container.style.transform =
-      `translateX(-${cardWidth}px)`;
-
-    setTimeout(() => {
-      container.style.transition =
-        "none";
-
-      container.appendChild(
-        firstCard
-      );
-
-      container.style.transform =
-        "translateX(0px)";
-
-      requestAnimationFrame(() => {
-        setIsAnimating(
-          false
+  const increaseTickets =
+    () => {
+      if (
+        tickets <
+        maxTickets
+      ) {
+        setTickets(
+          tickets + 1
         );
-      });
-    }, 450);
-  };
+      }
+    };
 
-  /* -----------------------------
-     PREV
-  ----------------------------- */
+  const decreaseTickets =
+    () => {
+      if (tickets > 1) {
+        setTickets(
+          tickets - 1
+        );
+      }
+    };
 
-  const handlePrev = () => {
-    if (
-      !scrollRef.current ||
-      isAnimating
-    )
-      return;
-
-    setIsAnimating(true);
-
-    const container =
-      scrollRef.current;
-
-    const lastCard =
-      container.lastElementChild;
-
-    const firstCard =
-      container.children[0];
-
-    const cardWidth =
-      firstCard.offsetWidth +
-      20;
-
-    container.insertBefore(
-      lastCard,
-      firstCard
-    );
-
-    container.style.transition =
-      "none";
-
-    container.style.transform =
-      `translateX(-${cardWidth}px)`;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        container.style.transition =
-          "transform 0.45s ease";
-
-        container.style.transform =
-          "translateX(0px)";
-      });
-    });
-
-    setTimeout(() => {
-      setIsAnimating(
-        false
+  const handleJoin =
+    () => {
+      alert(
+        `You joined the lucky draw with ${tickets} ticket${
+          tickets > 1
+            ? "s"
+            : ""
+        } for ${
+          tickets *
+          ticketPrice
+        } creds`
       );
-    }, 450);
-  };
+    };
 
   return (
     <div
@@ -200,239 +59,343 @@ function Lucky_Draw_Active() {
         bg-white
         border
         border-gray-100
-        rounded-[32px]
-        p-6
-        sm:p-8
+        rounded-[28px]
+        sm:rounded-[32px]
+        p-4
+        sm:p-6
+        lg:p-8
         font-['DM_Sans',sans-serif]
-        overflow-hidden
+        h-full
       "
     >
       {/* TOP */}
 
-      <div className="flex items-center justify-between gap-4 flex-wrap mb-8">
-        <div>
-          <p className="text-xs font-black uppercase tracking-widest text-orange-500 mb-2">
-            Active Lucky Draws
-          </p>
+      <div className="mb-6 sm:mb-8">
+        <p className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-orange-500 mb-2">
+          Active Lucky Draw
+        </p>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-black tracking-tight">
-            Participate & Win
-          </h2>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight leading-tight">
+          Weekly Reward Event
+        </h2>
+      </div>
+
+      {/* PYRAMID STATS */}
+
+      <div className="mt-2">
+        {/* TOP CARD */}
+
+        <div className="flex justify-center">
+          <div
+            className="
+              w-full
+              max-w-[320px]
+              bg-orange-50
+              border
+              border-orange-100
+              rounded-[22px]
+              sm:rounded-[28px]
+              p-5
+              sm:p-6
+              text-center
+            "
+          >
+            <div className="text-5xl sm:text-6xl mb-4">
+              🎁
+            </div>
+
+            <h3 className="text-xl sm:text-3xl font-black text-black tracking-tight leading-tight">
+              Prize Pool
+            </h3>
+
+            <p className="text-base sm:text-xl font-semibold text-gray-500 mt-4">
+              ₹500 Amazon Card
+            </p>
+
+            <p className="text-xs sm:text-sm text-orange-500 font-bold mt-2">
+              Premium Reward
+            </p>
+          </div>
         </div>
 
-        {/* DESKTOP BUTTONS */}
+        {/* BOTTOM 3 CARDS */}
 
-        <div className="hidden lg:flex items-center gap-3">
-          <button
-            onClick={
-              handlePrev
-            }
-            disabled={
-              isAnimating
-            }
+        <div
+          className="
+            grid
+            grid-cols-3
+            gap-3
+            sm:gap-5
+            mt-4
+          "
+        >
+          {/* ENTRY FEE */}
+
+          <div
             className="
-              w-11
-              h-11
-              rounded-2xl
+              bg-gray-50
               border
               border-gray-100
-              bg-gray-50
-              hover:bg-orange-50
-              hover:border-orange-200
-              text-lg
-              transition-all
-              duration-200
-              disabled:opacity-50
+              rounded-[20px]
+              sm:rounded-[28px]
+              p-3
+              sm:p-5
+              text-center
             "
           >
-            ←
-          </button>
+            <div className="text-3xl sm:text-5xl mb-3">
+              🎟️
+            </div>
 
-          <button
-            onClick={
-              handleNext
-            }
-            disabled={
-              isAnimating
-            }
+            <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
+              Entry Fee
+            </h3>
+
+            <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
+              500 Creds
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
+              Per Ticket
+            </p>
+          </div>
+
+          {/* MAX TICKETS */}
+
+          <div
             className="
-              w-11
-              h-11
-              rounded-2xl
+              bg-gray-50
               border
               border-gray-100
-              bg-gray-50
-              hover:bg-orange-50
-              hover:border-orange-200
-              text-lg
-              transition-all
-              duration-200
-              disabled:opacity-50
+              rounded-[20px]
+              sm:rounded-[28px]
+              p-3
+              sm:p-5
+              text-center
             "
           >
-            →
-          </button>
+            <div className="text-3xl sm:text-5xl mb-3">
+              🎫
+            </div>
+
+            <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
+              Max Tickets
+            </h3>
+
+            <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
+              {maxTickets} Tickets
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
+              Per User
+            </p>
+          </div>
+
+          {/* SOLD */}
+
+          <div
+            className="
+              bg-gray-50
+              border
+              border-gray-100
+              rounded-[20px]
+              sm:rounded-[28px]
+              p-3
+              sm:p-5
+              text-center
+            "
+          >
+            <div className="text-3xl sm:text-5xl mb-3">
+              🏆
+            </div>
+
+            <h3 className="text-xs sm:text-xl font-black text-black leading-tight">
+              Tickets Sold
+            </h3>
+
+            <p className="text-[11px] sm:text-base font-semibold text-gray-500 mt-3">
+              248 Entries
+            </p>
+
+            <p className="text-[10px] sm:text-xs text-orange-500 font-bold mt-2">
+              Active Users
+            </p>
+          </div>
         </div>
       </div>
 
-
-      {/* WRAPPER */}
+      {/* INFO */}
 
       <div
         className="
-          overflow-hidden
-          lg:overflow-hidden
-          overflow-x-auto
+          mt-6
+          sm:mt-8
+          rounded-2xl
+          border
+          border-orange-100
+          bg-orange-50
+          p-4
+          sm:px-5
+          sm:py-4
+          flex
+          flex-col
+          gap-4
         "
-        style={{
-          scrollbarWidth:
-            "none",
-
-          msOverflowStyle:
-            "none",
-        }}
       >
-        {/* CARDS */}
+        <div>
+          <h4 className="text-sm sm:text-base font-black text-black">
+            Join The Revadoo Lucky Draw
+          </h4>
+
+          <p className="text-xs sm:text-sm text-gray-500 mt-2 leading-relaxed">
+            Use your earned creds to participate in premium reward
+            events and increase your chances of winning exclusive gift
+            cards and digital rewards.
+          </p>
+        </div>
+
+        {/* ACTION AREA */}
 
         <div
-          ref={scrollRef}
           className="
             flex
-            gap-5
-            will-change-transform
+            flex-col
+            sm:flex-row
+            sm:items-center
+            gap-3
           "
         >
-          {draws.map(
-            (item, index) => (
-              <div
-                key={index}
-                className="
-                  relative
-                  overflow-hidden
-                  rounded-[28px]
-                  border
-                  border-gray-100
-                  bg-gray-50
-                  p-4
-                  sm:p-5
-                  transition-all
-                  duration-300
-                  hover:border-orange-200
-                  hover:bg-orange-50/40
-                  shrink-0
+          {/* COUNTER */}
 
-                  /* MOBILE */
-                  w-[78%]
-                  min-w-[220px]
+          <div
+            className="
+              flex
+              items-center
+              justify-between
+              bg-white
+              border
+              border-orange-100
+              rounded-2xl
+              px-3
+              py-2
+              w-full
+              sm:w-[180px]
+            "
+          >
+            <button
+              onClick={
+                decreaseTickets
+              }
+              disabled={
+                tickets === 1
+              }
+              className="
+                w-9
+                h-9
+                rounded-xl
+                bg-orange-50
+                text-orange-500
+                text-lg
+                font-black
+                hover:bg-orange-100
+                transition-all
+                duration-200
+                disabled:opacity-40
+              "
+            >
+              −
+            </button>
 
-                  /* TABLET */
-                  sm:w-[48%]
+            <div className="text-center">
+              <h3 className="text-sm font-black text-black">
+                {tickets}{" "}
+                Ticket
+                {tickets > 1
+                  ? "s"
+                  : ""}
+              </h3>
 
-                  /* DESKTOP */
-                  lg:w-[32%]
+              <p className="text-[10px] text-gray-400 font-bold">
+                Max{" "}
+                {
+                  maxTickets
+                }
+              </p>
+            </div>
 
-                  /* HEIGHT */
-                  min-h-[260px]
-                  sm:min-h-[300px]
-                "
-              >
-                {/* ICON */}
+            <button
+              onClick={
+                increaseTickets
+              }
+              disabled={
+                tickets ===
+                maxTickets
+              }
+              className="
+                w-9
+                h-9
+                rounded-xl
+                bg-orange-500
+                text-white
+                text-lg
+                font-black
+                hover:bg-orange-600
+                transition-all
+                duration-200
+                disabled:opacity-40
+              "
+            >
+              +
+            </button>
+          </div>
 
-                <div
-                  className="
-                    w-12
-                    h-12
-                    sm:w-14
-                    sm:h-14
-                    rounded-2xl
-                    bg-white
-                    border
-                    border-gray-100
-                    flex
-                    items-center
-                    justify-center
-                    text-2xl
-                    sm:text-3xl
-                    mb-4
-                  "
-                >
-                  {item.icon}
-                </div>
+          {/* JOIN BUTTON */}
 
-                {/* CONTENT */}
+          <button
+            onClick={
+              handleJoin
+            }
+            className="
+              flex-1
+              bg-orange-500
+              hover:bg-orange-600
+              text-white
+              text-sm
+              font-black
+              px-6
+              py-3.5
+              rounded-2xl
+              transition-all
+              duration-200
+            "
+          >
+            Join For{" "}
+            {tickets *
+              ticketPrice}{" "}
+            Creds
+          </button>
+        </div>
 
-                <div className="space-y-3 flex flex-col justify-between h-full">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-black text-black">
-                      {item.title}
-                    </h3>
+        {/* LIMIT INFO */}
 
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
-                      {item.reward}
-                    </p>
-                  </div>
-
-                  {/* INFO */}
-
-                  <div
-                    className="
-                      flex
-                      items-center
-                      justify-between
-                      rounded-2xl
-                      bg-white
-                      border
-                      border-gray-100
-                      px-3
-                      sm:px-4
-                      py-3
-                    "
-                  >
-                    <div>
-                      <p className="text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-gray-400">
-                        Entry Cost
-                      </p>
-
-                      <h4 className="text-xs sm:text-sm font-black text-orange-500 mt-1">
-                        {item.tickets}
-                      </h4>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-gray-400">
-                        Participants
-                      </p>
-
-                      <h4 className="text-xs sm:text-sm font-black text-black mt-1">
-                        {item.users}
-                      </h4>
-                    </div>
-                  </div>
-
-                  {/* BUTTON */}
-
-                  <button
-                    className="
-                      w-full
-                      mt-1
-                      bg-orange-500
-                      hover:bg-orange-600
-                      text-white
-                      text-xs
-                      sm:text-sm
-                      font-black
-                      py-3
-                      rounded-2xl
-                      transition-all
-                      duration-200
-                    "
-                  >
-                    Join Lucky Draw
-                  </button>
-                </div>
-              </div>
-            )
-          )}
+        <div
+          className="
+            bg-white
+            border
+            border-orange-100
+            rounded-2xl
+            px-4
+            py-3
+          "
+        >
+          <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
+            Each account can purchase a maximum of{" "}
+            <span className="font-black text-orange-500">
+              {maxTickets} tickets
+            </span>{" "}
+            per lucky draw event to ensure fair participation for all
+            users.
+          </p>
         </div>
       </div>
     </div>
