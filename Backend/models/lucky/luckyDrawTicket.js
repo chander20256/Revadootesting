@@ -67,18 +67,16 @@ const luckyDrawTicketSchema =
       ----------------------------- */
 
       ticketNumber: {
-        type: Number,
+  type: Number,
 
-        required: true,
+  required: true,
 
-        unique: true,
+  index: true,
 
-        index: true,
+  min: 111111,
 
-        min: 111111,
-
-        max: 999999,
-      },
+  max: 999999,
+},
 
       ticketId: {
         type: String,
