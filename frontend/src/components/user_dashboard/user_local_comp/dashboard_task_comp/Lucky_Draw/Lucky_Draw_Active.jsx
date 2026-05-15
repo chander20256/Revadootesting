@@ -55,6 +55,16 @@ function Lucky_Draw_Active() {
       "token"
     );
 
+  const authConfig =
+    token
+      ? {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      : {};
+
   /* =============================
      FETCH ACTIVE DRAW
   ============================= */
@@ -66,11 +76,30 @@ function Lucky_Draw_Active() {
 
         const { data } =
           await axios.get(
-            `${API}/current`
+            `${API}/current`,
+
+            authConfig
           );
 
         if (data.success) {
-          setDrawData(data);
+          if (data.noDraw) {
+            setDrawData(null);
+
+            setDrawStatus(
+              "active"
+            );
+
+            return;
+          }
+
+          setDrawData(
+            data
+          );
+
+          setDrawStatus(
+            data.status ||
+              "active"
+          );
         }
       } catch (error) {
         console.log(error);
@@ -154,7 +183,9 @@ useEffect(() => {
       try {
         const { data } =
           await axios.get(
-            `${API}/current`
+            `${API}/current`,
+
+            authConfig
           );
 
         if (
@@ -176,7 +207,7 @@ useEffect(() => {
       }
     },
 
-    12000
+    10000
   );
 
   return;

@@ -6,6 +6,10 @@ const mongoose = require(
   "mongoose"
 );
 
+const jwt = require(
+  "jsonwebtoken"
+);
+
 const LuckyDrawTicket = require(
   "../../models/lucky/luckyDrawTicket"
 );
@@ -13,6 +17,10 @@ const LuckyDrawTicket = require(
 const User = require(
   "../../models/User"
 );
+
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  "dev-secret";
 
 /* =======================================================
    CREATE NEW LUCKY DRAW
@@ -422,8 +430,45 @@ const getCurrentLuckyDraw =
       let isCurrentUserWinner =
         false;
 
+      let currentUserId =
+        req.user?.id;
+
+      if (!currentUserId) {
+        const authHeader =
+          req.headers.authorization ||
+          "";
+
+        const [
+          scheme,
+          token,
+        ] =
+          authHeader.split(
+            " "
+          );
+
+        if (
+          scheme ===
+            "Bearer" &&
+          token
+        ) {
+          try {
+            const decoded =
+              jwt.verify(
+                token,
+                JWT_SECRET
+              );
+
+            currentUserId =
+              decoded.id;
+          } catch (error) {
+            currentUserId =
+              null;
+          }
+        }
+      }
+
       if (
-        req.user?.id
+        currentUserId
       ) {
         userPurchasedTickets =
           await LuckyDrawTicket.countDocuments(
@@ -432,7 +477,7 @@ const getCurrentLuckyDraw =
                 draw._id,
 
               userId:
-                req.user.id,
+                currentUserId,
             }
           );
       }
@@ -451,7 +496,7 @@ const getCurrentLuckyDraw =
                 winner.userId
               ) ===
               String(
-                req.user?.id
+                currentUserId
               )
           );
       }
@@ -916,10 +961,7 @@ const purchaseLuckyDrawTickets =
 
       const latestTicket =
         await LuckyDrawTicket.findOne(
-          {
-            drawId:
-              draw._id,
-          }
+          {}
         )
           .sort({
             ticketNumber:
@@ -950,6 +992,12 @@ const purchaseLuckyDrawTickets =
   i < totalTickets;
   i++
 ) {
+  let ticket =
+    null;
+
+  let attempts =
+    0;
+
   /* SAFE DEFAULT */
 
   if (
@@ -961,50 +1009,97 @@ const purchaseLuckyDrawTickets =
 
   /* SAFE NUMBER */
 
-  const ticketNumber =
-    Number(
-      draw.currentTicketNumber
-    );
-
   /* CREATE TICKET */
 
-  const ticket =
-    await LuckyDrawTicket.create(
-      {
-        /* DRAW */
+  while (
+    !ticket &&
+    attempts < 25
+  ) {
+    try {
+      const ticketNumber =
+        Number(
+          draw.currentTicketNumber
+        );
 
-        drawId:
-          draw._id,
+      if (
+        ticketNumber >
+        999999
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
 
-        /* USER */
-
-        userId:
-          user._id,
-
-        username:
-          user.username,
-
-        email:
-          user.email,
-
-        /* TICKET */
-
-        ticketNumber,
-
-       ticketId:
-  `REVA-LD-${draw._id}-${ticketNumber}`,
-
-        /* SECURITY */
-
-        purchaseIP:
-          req.ip,
-
-        userAgent:
-          req.headers[
-            "user-agent"
-          ] || "Unknown",
+            message:
+              "Ticket numbers are finished for this lucky draw",
+          });
       }
-    );
+
+      ticket =
+        await LuckyDrawTicket.create(
+          {
+            /* DRAW */
+
+            drawId:
+              draw._id,
+
+            /* USER */
+
+            userId:
+              user._id,
+
+            username:
+              user.username,
+
+            email:
+              user.email,
+
+            /* TICKET */
+
+            ticketNumber:
+              ticketNumber,
+
+           ticketId:
+      `REVA-LD-${draw._id}-${ticketNumber}`,
+
+            /* SECURITY */
+
+            purchaseIP:
+              req.ip,
+
+            userAgent:
+              req.headers[
+                "user-agent"
+              ] || "Unknown",
+          }
+        );
+    } catch (error) {
+      if (
+        error.code !==
+        11000
+      ) {
+        throw error;
+      }
+
+      draw.currentTicketNumber =
+        Number(
+          draw.currentTicketNumber
+        ) + 1;
+
+      attempts += 1;
+    }
+  }
+
+  if (!ticket) {
+    return res
+      .status(409)
+      .json({
+        success: false,
+
+        message:
+          "Ticket number conflict. Please try again.",
+      });
+  }
 
   createdTickets.push(
     ticket
@@ -1013,7 +1108,9 @@ const purchaseLuckyDrawTickets =
   /* NEXT NUMBER */
 
   draw.currentTicketNumber =
-    ticketNumber + 1;
+    Number(
+      ticket.ticketNumber
+    ) + 1;
 }
 
       /* UPDATE DRAW */

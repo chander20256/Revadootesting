@@ -78,7 +78,7 @@ const startLuckyDrawScheduler =
               ) =>
                 setTimeout(
                   resolve,
-                  12000
+                  8000
                 )
             );
 
@@ -263,9 +263,9 @@ const startLuckyDrawScheduler =
         }
       },
 
-      /* CHECK EVERY 1 MINUTE */
+      /* CHECK EVERY SECOND */
 
-      60 * 1000
+      1000
     );
   };
 
