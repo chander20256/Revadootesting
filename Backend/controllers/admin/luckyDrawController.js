@@ -399,16 +399,17 @@ const getCurrentLuckyDraw =
         });
 
       if (!draw) {
-        return res
-          .status(404)
-          .json({
-            success: false,
+  return res
+    .status(200)
+    .json({
+      success: true,
 
-            message:
-              "No active draw found",
-          });
-      }
+      noDraw: true,
 
+      message:
+        "No lucky draw available",
+    });
+}
       /* =======================================================
          USER PURCHASED TICKETS
       ======================================================= */
@@ -884,61 +885,81 @@ const purchaseLuckyDrawTickets =
       const createdTickets =
         [];
 
-      for (
-        let i = 0;
-        i < totalTickets;
-        i++
-      ) {
-       const ticketNumber =
-  draw.currentTicketNumber ||
-  111111;
+     for (
+  let i = 0;
+  i < totalTickets;
+  i++
+) {
+  /* SAFE DEFAULT */
 
-        const ticket =
-          await LuckyDrawTicket.create(
-            {
-              /* DRAW */
+  if (
+    !draw.currentTicketNumber
+  ) {
+    draw.currentTicketNumber =
+      111111;
+  }
 
-              drawId:
-                draw._id,
+  /* SAFE NUMBER */
 
-              /* USER */
+  const ticketNumber =
+    Number(
+      draw.currentTicketNumber
+    );
 
-              userId:
-                user._id,
+  console.log(
+    "CURRENT TICKET:",
+    ticketNumber
+  );
 
-              username:
-                user.username,
+  /* CREATE TICKET */
 
-              email:
-                user.email,
+  const ticket =
+    await LuckyDrawTicket.create(
+      {
+        /* DRAW */
 
-              /* TICKET */
+        drawId:
+          draw._id,
 
-              ticketNumber,
+        /* USER */
 
-              ticketId:
-                `REVA-LD-${ticketNumber}`,
+        userId:
+          user._id,
 
-              /* SECURITY */
+        username:
+          user.username,
 
-              purchaseIP:
-                req.ip,
+        email:
+          user.email,
 
-              userAgent:
-                req.headers[
-                "user-agent"
-                ] || "Unknown",
-            }
-          );
+        /* TICKET */
 
-        createdTickets.push(
-          ticket
-        );
+        ticketNumber,
 
-       draw.currentTicketNumber =
-  (draw.currentTicketNumber ||
-    111111) + 1;
+        ticketId:
+          `REVA-LD-${ticketNumber}`,
+
+        /* SECURITY */
+
+        purchaseIP:
+          req.ip,
+
+        userAgent:
+          req.headers[
+            "user-agent"
+          ] || "Unknown",
       }
+    );
+
+  createdTickets.push(
+    ticket
+  );
+
+  /* NEXT NUMBER */
+
+  draw.currentTicketNumber =
+    ticketNumber + 1;
+}
 
       /* UPDATE DRAW */
 
