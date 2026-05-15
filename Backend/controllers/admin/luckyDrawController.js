@@ -914,6 +914,37 @@ const purchaseLuckyDrawTickets =
       const createdTickets =
         [];
 
+      const latestTicket =
+        await LuckyDrawTicket.findOne(
+          {
+            drawId:
+              draw._id,
+          }
+        )
+          .sort({
+            ticketNumber:
+              -1,
+          })
+          .select(
+            "ticketNumber"
+          );
+
+      const nextTicketNumber =
+        Math.max(
+          Number(
+            draw.currentTicketNumber
+          ) || 111111,
+
+          latestTicket
+            ? Number(
+                latestTicket.ticketNumber
+              ) + 1
+            : 111111
+        );
+
+      draw.currentTicketNumber =
+        nextTicketNumber;
+
      for (
   let i = 0;
   i < totalTickets;
@@ -934,11 +965,6 @@ const purchaseLuckyDrawTickets =
     Number(
       draw.currentTicketNumber
     );
-
-  console.log(
-    "CURRENT TICKET:",
-    ticketNumber
-  );
 
   /* CREATE TICKET */
 
