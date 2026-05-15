@@ -76,18 +76,19 @@ const luckyDrawSchema =
       ----------------------------- */
 
       status: {
-        type: String,
+  type: String,
 
-        enum: [
-          "active",
-          "completed",
-          "cancelled",
-        ],
+  enum: [
+    "active",
+    "picking",
+    "completed",
+    "cancelled",
+  ],
 
-        default: "active",
+  default: "active",
 
-        index: true,
-      },
+  index: true,
+},
 
       /* -----------------------------
          Draw Statistics

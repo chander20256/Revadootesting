@@ -7,6 +7,10 @@ import axios from "axios";
 
 import Swal from "sweetalert2";
 
+import Lucky_Draw_Picking from "./Lucky_Draw_Picking";
+
+import Lucky_Draw_Result from "./Lucky_Draw_Result";
+
 function Lucky_Draw_Active() {
   /* =============================
      STATE
@@ -31,6 +35,9 @@ function Lucky_Draw_Active() {
       minutes: "00",
       seconds: "00",
     });
+
+    const [drawStatus, setDrawStatus] =
+  useState("active");
 
   /* =============================
      API
@@ -123,19 +130,57 @@ useEffect(() => {
       /* STOP NEGATIVE TIMER */
 
       if (distance <= 0) {
-        clearInterval(
-          interval
+  clearInterval(
+    interval
+  );
+
+  setTimeLeft({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+  });
+
+  /* SHOW PICKING SCREEN */
+
+  setDrawStatus(
+    "picking"
+  );
+
+  /* REFRESH RESULT */
+
+  setTimeout(
+    async () => {
+      try {
+        const { data } =
+          await axios.get(
+            `${API}/current`
+          );
+
+        if (
+          data?.status ===
+          "completed"
+        ) {
+          setDrawData(
+            data
+          );
+
+          setDrawStatus(
+            "completed"
+          );
+        }
+      } catch (error) {
+        console.log(
+          error
         );
-
-        setTimeLeft({
-          days: "00",
-          hours: "00",
-          minutes: "00",
-          seconds: "00",
-        });
-
-        return;
       }
+    },
+
+    12000
+  );
+
+  return;
+}
 
       const days =
         Math.floor(
@@ -453,7 +498,38 @@ const totalPrice =
     );
   }
 
+  /* =============================
+   PICKING STATE
+============================= */
+
+if (
+  drawStatus ===
+  "picking"
+) {
+  return (
+    <Lucky_Draw_Picking />
+  );
+}
+
+/* =============================
+   RESULT STATE
+============================= */
+
+if (
+  drawStatus ===
+  "completed"
+) {
+  return (
+    <Lucky_Draw_Result
+      drawData={
+        drawData
+      }
+    />
+  );
+}
+
   if (!drawData) {
+    
     return (
       <div
         className="

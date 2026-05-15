@@ -75,9 +75,9 @@ const createLuckyDraw =
 
       endsAt.setDate(
         endsAt.getDate() +
-          Number(
-            durationDays
-          )
+        Number(
+          durationDays
+        )
       );
 
       /* CREATE */
@@ -188,37 +188,37 @@ const updateLuckyDraw =
       const entryFee =
         req.body.entryFee !==
           "" &&
-        req.body.entryFee !==
+          req.body.entryFee !==
           undefined
           ? Number(
-              req.body.entryFee
-            )
+            req.body.entryFee
+          )
           : draw.entryFee;
 
       const totalWinners =
         req.body
           .totalWinners !==
           "" &&
-        req.body
-          .totalWinners !==
+          req.body
+            .totalWinners !==
           undefined
           ? Number(
-              req.body
-                .totalWinners
-            )
+            req.body
+              .totalWinners
+          )
           : draw.totalWinners;
 
       const durationDays =
         req.body
           .durationDays !==
           "" &&
-        req.body
-          .durationDays !==
+          req.body
+            .durationDays !==
           undefined
           ? Number(
-              req.body
-                .durationDays
-            )
+            req.body
+              .durationDays
+          )
           : draw.durationDays;
 
       /* UPDATE DRAW */
@@ -248,7 +248,7 @@ const updateLuckyDraw =
 
       endsAt.setDate(
         endsAt.getDate() +
-          durationDays
+        durationDays
       );
 
       draw.endsAt =
@@ -297,8 +297,13 @@ const getCurrentLuckyDraw =
       const draw =
         await LuckyDraw.findOne(
           {
-            status:
-              "active",
+            status: {
+              $in: [
+                "active",
+                "picking",
+                "completed",
+              ],
+            },
           }
         ).sort({
           createdAt:
@@ -321,6 +326,8 @@ const getCurrentLuckyDraw =
       ======================================================= */
 
       let userPurchasedTickets = 0;
+      let isCurrentUserWinner =
+        false;
 
       if (
         req.user?.id
@@ -336,7 +343,25 @@ const getCurrentLuckyDraw =
             }
           );
       }
+      /* CHECK IF CURRENT USER WON */
 
+      if (
+        draw.status ===
+        "completed"
+      ) {
+        isCurrentUserWinner =
+          draw.winningTickets.some(
+            (
+              winner
+            ) =>
+              String(
+                winner.userId
+              ) ===
+              String(
+                req.user?.id
+              )
+          );
+      }
       /* =======================================================
          REMAINING TICKETS
       ======================================================= */
@@ -345,7 +370,7 @@ const getCurrentLuckyDraw =
         Math.max(
           0,
           draw.maxTicketsPerUser -
-            userPurchasedTickets
+          userPurchasedTickets
         );
 
       /* =======================================================
@@ -369,10 +394,10 @@ const getCurrentLuckyDraw =
       const days =
         Math.floor(
           distance /
-            (1000 *
-              60 *
-              60 *
-              24)
+          (1000 *
+            60 *
+            60 *
+            24)
         );
 
       const hours =
@@ -382,9 +407,9 @@ const getCurrentLuckyDraw =
               60 *
               60 *
               24)) /
-            (1000 *
-              60 *
-              60)
+          (1000 *
+            60 *
+            60)
         );
 
       const minutes =
@@ -393,8 +418,8 @@ const getCurrentLuckyDraw =
             (1000 *
               60 *
               60)) /
-            (1000 *
-              60)
+          (1000 *
+            60)
         );
 
       const seconds =
@@ -402,7 +427,7 @@ const getCurrentLuckyDraw =
           (distance %
             (1000 *
               60)) /
-            1000
+          1000
         );
 
       /* =======================================================
@@ -456,6 +481,10 @@ const getCurrentLuckyDraw =
 
           endsAt:
             draw.endsAt,
+          winningTickets:
+            draw.winningTickets,
+
+          isCurrentUserWinner,
 
           timer: {
             days:
@@ -520,8 +549,12 @@ const getLuckyDrawStats =
       const activeDraw =
         await LuckyDraw.findOne(
           {
-            status:
-              "active",
+           status: {
+  $in: [
+    "active",
+    "picking",
+  ],
+},
           }
         );
 
@@ -704,7 +737,7 @@ const purchaseLuckyDrawTickets =
 
       if (
         existingTickets +
-          totalTickets >
+        totalTickets >
         draw.maxTicketsPerUser
       ) {
         return res
@@ -794,8 +827,8 @@ const purchaseLuckyDrawTickets =
 
               ticketNumber,
 
-            ticketId:
-  `REVA-LD-${ticketNumber}`,
+              ticketId:
+                `REVA-LD-${ticketNumber}`,
 
               /* SECURITY */
 
@@ -804,7 +837,7 @@ const purchaseLuckyDrawTickets =
 
               userAgent:
                 req.headers[
-                  "user-agent"
+                "user-agent"
                 ] || "Unknown",
             }
           );
