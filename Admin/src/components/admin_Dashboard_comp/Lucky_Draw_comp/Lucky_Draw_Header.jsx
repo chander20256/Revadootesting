@@ -24,7 +24,11 @@ function Lucky_Draw_Header({
 
       maxTicketsPerUser: 5,
 
-      durationDays: 7,
+      durationDays: 0,
+
+durationHours: 0,
+
+durationMinutes: 5,
 
       description: "",
     });
@@ -67,10 +71,10 @@ function Lucky_Draw_Header({
       Number(value);
 
     if (
-      numberValue < 1
-    ) {
-      numberValue = 1;
-    }
+  numberValue < 0
+) {
+  numberValue = 0;
+}
 
     /* MAX 5 */
 
@@ -113,6 +117,10 @@ const handleCreateDraw =
             "adminData"
           )
         );
+      const token =
+  localStorage.getItem(
+    "token"
+  );
 
       /* -----------------------------
          API URL
@@ -133,9 +141,11 @@ const handleCreateDraw =
               "POST",
 
             headers: {
-              "Content-Type":
-                "application/json",
-            },
+  "Content-Type":
+    "application/json",
+
+  Authorization: `Bearer ${token}`,
+},
 
             body: JSON.stringify(
               {
@@ -191,9 +201,14 @@ const handleCreateDraw =
         maxTicketsPerUser:
           5,
 
-        durationDays:
-          7,
+      durationDays:
+  0,
 
+durationHours:
+  0,
+
+durationMinutes:
+  5,
         description:
           "",
       });
@@ -616,40 +631,113 @@ const handleCreateDraw =
 
                 {/* DURATION */}
 
-                <div>
-                  <label className="text-sm font-black text-black block mb-2">
-                    Duration (Days)
-                  </label>
+               {/* DAYS */}
 
-                  <p className="text-xs text-gray-500 mb-3 leading-relaxed">
-                    Total number of days the lucky draw stays active.
-                  </p>
+<div>
+  <label className="text-sm font-black text-black block mb-2">
+    Duration Days
+  </label>
 
-                  <input
-                    type="number"
-                    min="1"
-                    name="durationDays"
-                    value={
-                      formData.durationDays
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    placeholder="7"
-                    className="
-                      w-full
-                      h-14
-                      rounded-2xl
-                      border
-                      border-gray-200
-                      px-4
-                      text-sm
-                      outline-none
-                      focus:border-orange-400
-                    "
-                    required
-                  />
-                </div>
+  <p className="text-xs text-gray-500 mb-3 leading-relaxed">
+    Number of full days the lucky draw will stay active.
+  </p>
+
+  <input
+    type="number"
+    min="0"
+    name="durationDays"
+    value={
+      formData.durationDays
+    }
+    onChange={
+      handleChange
+    }
+    placeholder="0"
+    className="
+      w-full
+      h-14
+      rounded-2xl
+      border
+      border-gray-200
+      px-4
+      text-sm
+      outline-none
+      focus:border-orange-400
+    "
+  />
+</div>
+
+{/* HOURS */}
+
+<div>
+  <label className="text-sm font-black text-black block mb-2">
+    Duration Hours
+  </label>
+
+  <p className="text-xs text-gray-500 mb-3 leading-relaxed">
+    Optional custom hours for shorter lucky draws.
+  </p>
+
+  <input
+    type="number"
+    min="0"
+    name="durationHours"
+    value={
+      formData.durationHours
+    }
+    onChange={
+      handleChange
+    }
+    placeholder="0"
+    className="
+      w-full
+      h-14
+      rounded-2xl
+      border
+      border-gray-200
+      px-4
+      text-sm
+      outline-none
+      focus:border-orange-400
+    "
+  />
+</div>
+
+{/* MINUTES */}
+
+<div>
+  <label className="text-sm font-black text-black block mb-2">
+    Duration Minutes
+  </label>
+
+  <p className="text-xs text-gray-500 mb-3 leading-relaxed">
+    Use minutes for instant or testing lucky draws.
+  </p>
+
+  <input
+    type="number"
+    min="0"
+    name="durationMinutes"
+    value={
+      formData.durationMinutes
+    }
+    onChange={
+      handleChange
+    }
+    placeholder="5"
+    className="
+      w-full
+      h-14
+      rounded-2xl
+      border
+      border-gray-200
+      px-4
+      text-sm
+      outline-none
+      focus:border-orange-400
+    "
+  />
+</div>
               </div>
 
               {/* TICKET INFO */}

@@ -8,49 +8,69 @@ function Lucky_Draw_Stats({
   /* -----------------------------
      TIME LEFT
   ----------------------------- */
-const safeDays =
-  Math.max(
-    0,
-    Number(
-      drawData?.timer?.days || 0
-    )
-  );
 
-const safeHours =
-  Math.max(
-    0,
-    Number(
-      drawData?.timer?.hours || 0
-    )
-  );
+  const safeDays =
+    Math.max(
+      0,
+      Number(
+        drawData?.timer
+          ?.days || 0
+      )
+    );
 
-const safeMinutes =
-  Math.max(
-    0,
-    Number(
-      drawData?.timer?.minutes || 0
-    )
-  );
+  const safeHours =
+    Math.max(
+      0,
+      Number(
+        drawData?.timer
+          ?.hours || 0
+      )
+    );
 
-const timeLeft =
-  drawData?.timer
-    ? `${String(
-        safeDays
-      ).padStart(
-        2,
-        "0"
-      )}D : ${String(
-        safeHours
-      ).padStart(
-        2,
-        "0"
-      )}H : ${String(
-        safeMinutes
-      ).padStart(
-        2,
-        "0"
-      )}M`
-    : "00D : 00H : 00M";
+  const safeMinutes =
+    Math.max(
+      0,
+      Number(
+        drawData?.timer
+          ?.minutes || 0
+      )
+    );
+
+  const timeLeft =
+    drawData?.timer
+      ? `${String(
+          safeDays
+        ).padStart(
+          2,
+          "0"
+        )}D : ${String(
+          safeHours
+        ).padStart(
+          2,
+          "0"
+        )}H : ${String(
+          safeMinutes
+        ).padStart(
+          2,
+          "0"
+        )}M`
+      : "00D : 00H : 00M";
+
+  /* -----------------------------
+     STATUS LABEL
+  ----------------------------- */
+
+  const statusLabel =
+    drawData?.status ===
+    "active"
+      ? "Live"
+      : drawData?.status ===
+        "picking"
+      ? "Picking"
+      : drawData?.status ===
+        "completed"
+      ? "Completed"
+      : "Offline";
 
   /* -----------------------------
      STATS
@@ -188,10 +208,7 @@ const timeLeft =
                   whitespace-nowrap
                 "
               >
-                {statsData?.currentDraw >
-                0
-                  ? "Live"
-                  : "Offline"}
+                {statusLabel}
               </div>
             </div>
 

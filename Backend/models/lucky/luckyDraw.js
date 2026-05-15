@@ -64,12 +64,28 @@ const luckyDrawSchema =
         },
 
       durationDays: {
-        type: Number,
+  type: Number,
 
-        required: true,
+  default: 0,
 
-        min: 1,
-      },
+  min: 0,
+},
+
+durationHours: {
+  type: Number,
+
+  default: 0,
+
+  min: 0,
+},
+
+durationMinutes: {
+  type: Number,
+
+  default: 0,
+
+  min: 0,
+},
 
       /* -----------------------------
          Draw Status

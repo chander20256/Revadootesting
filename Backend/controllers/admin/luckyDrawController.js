@@ -17,24 +17,25 @@ const User = require(
 const createLuckyDraw =
   async (req, res) => {
     try {
-      const {
-        rewardTitle,
-        rewardImage,
-        description,
-        entryFee,
-        totalWinners,
-        maxTicketsPerUser,
-        durationDays,
-      } = req.body;
+     const {
+  rewardTitle,
+  rewardImage,
+  description,
+  entryFee,
+  totalWinners,
+  maxTicketsPerUser,
+  durationDays,
+  durationHours,
+  durationMinutes,
+} = req.body;
 
       /* VALIDATION */
 
       if (
-        !rewardTitle ||
-        !entryFee ||
-        !totalWinners ||
-        !durationDays
-      ) {
+  !rewardTitle ||
+  !entryFee ||
+  !totalWinners
+) {
         return res
           .status(400)
           .json({
@@ -70,15 +71,40 @@ const createLuckyDraw =
 
       /* END DATE */
 
-      const endsAt =
-        new Date();
+      const now =
+  new Date();
 
-      endsAt.setDate(
-        endsAt.getDate() +
-        Number(
-          durationDays
-        )
-      );
+const totalMilliseconds =
+  (
+    Number(
+      durationDays || 0
+    ) *
+    24 *
+    60 *
+    60 *
+    1000
+  ) +
+  (
+    Number(
+      durationHours || 0
+    ) *
+    60 *
+    60 *
+    1000
+  ) +
+  (
+    Number(
+      durationMinutes || 0
+    ) *
+    60 *
+    1000
+  );
+
+const endsAt =
+  new Date(
+    now.getTime() +
+    totalMilliseconds
+  );
 
       /* CREATE */
 
@@ -106,10 +132,20 @@ const createLuckyDraw =
                 maxTicketsPerUser
               ) || 5,
 
-            durationDays:
-              Number(
-                durationDays
-              ),
+           durationDays:
+  Number(
+    durationDays
+  ) || 0,
+
+durationHours:
+  Number(
+    durationHours
+  ) || 0,
+
+durationMinutes:
+  Number(
+    durationMinutes
+  ) || 0,
 
             endsAt,
 
@@ -161,15 +197,17 @@ const updateLuckyDraw =
         );
 
       if (!draw) {
-        return res
-          .status(404)
-          .json({
-            success: false,
+  return res
+    .status(200)
+    .json({
+      success: true,
 
-            message:
-              "Lucky draw not found",
-          });
-      }
+      noDraw: true,
+
+      message:
+        "No lucky draw available",
+    });
+}
 
       /* SAFE VALUES */
 
@@ -221,6 +259,32 @@ const updateLuckyDraw =
           )
           : draw.durationDays;
 
+      const durationHours =
+  req.body
+    .durationHours !==
+    "" &&
+    req.body
+      .durationHours !==
+    undefined
+    ? Number(
+        req.body
+          .durationHours
+      )
+    : draw.durationHours;
+
+const durationMinutes =
+  req.body
+    .durationMinutes !==
+    "" &&
+    req.body
+      .durationMinutes !==
+    undefined
+    ? Number(
+        req.body
+          .durationMinutes
+      )
+    : draw.durationMinutes;
+
       /* UPDATE DRAW */
 
       draw.rewardTitle =
@@ -243,16 +307,40 @@ const updateLuckyDraw =
 
       /* UPDATE TIMER */
 
-      const endsAt =
-        new Date();
+      const now =
+  new Date();
 
-      endsAt.setDate(
-        endsAt.getDate() +
-        durationDays
-      );
+const totalMilliseconds =
+  (
+    Number(
+      durationDays || 0
+    ) *
+    24 *
+    60 *
+    60 *
+    1000
+  ) +
+  (
+    Number(
+      durationHours || 0
+    ) *
+    60 *
+    60 *
+    1000
+  ) +
+  (
+    Number(
+      durationMinutes || 0
+    ) *
+    60 *
+    1000
+  );
 
-      draw.endsAt =
-        endsAt;
+draw.endsAt =
+  new Date(
+    now.getTime() +
+    totalMilliseconds
+  );
 
       await draw.save();
 

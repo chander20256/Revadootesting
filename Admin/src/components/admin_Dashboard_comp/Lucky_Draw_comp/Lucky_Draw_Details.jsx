@@ -142,39 +142,37 @@ function Lucky_Draw_Details({
   /* -----------------------------
      AUTO FILL
   ----------------------------- */
+useEffect(() => {
+  if (
+    openEdit
+  ) {
+    setFormData({
+      rewardTitle:
+        drawData?.rewardTitle ||
+        "",
 
-  useEffect(() => {
-    if (
-      openEdit
-    ) {
-      setFormData({
-        rewardTitle:
-          drawData?.rewardTitle ||
-          "",
+      rewardImage:
+        drawData?.rewardImage ||
+        "",
 
-        rewardImage:
-          drawData?.rewardImage ||
-          "",
+      description:
+        drawData?.description ||
+        "",
 
-        description:
-          drawData?.description ||
-          "",
+      entryFee:
+        drawData?.entryFee ||
+        "",
 
-        entryFee:
-          drawData?.entryFee ||
-          "",
+      totalWinners:
+        drawData?.totalWinners ||
+        "",
 
-        totalWinners:
-          drawData?.totalWinners ||
-          "",
-
-        durationDays:
-          drawData?.durationDays ||
-          "",
-      });
-    }
-  }, [openEdit]);
-
+      durationDays:
+        drawData?.durationDays ||
+        "",
+    });
+  }
+}, [openEdit]);
   /* -----------------------------
      HANDLE CHANGE
   ----------------------------- */
