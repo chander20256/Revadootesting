@@ -533,38 +533,48 @@ const totalPrice =
 
             {drawData.rewardImage ? (
               <img
-                src={
-                  drawData.rewardImage
-                }
-                alt="reward"
-                className="
-                  w-24
-                  h-24
-                  object-cover
-                  rounded-3xl
-                  mx-auto
-                  mb-5
-                "
-              />
+  src={
+    drawData.rewardImage
+  }
+  alt="reward"
+  className="
+    w-28
+    h-28
+    sm:w-36
+    sm:h-36
+    lg:w-44
+    lg:h-44
+    object-cover
+    rounded-[32px]
+    mx-auto
+    mb-6
+    shadow-lg
+    shadow-orange-200/40
+    border
+    border-orange-100
+  "
+/>
             ) : (
               <div className="text-5xl sm:text-6xl mb-4">
                 🎁
               </div>
             )}
 
-            <h3 className="text-xl sm:text-3xl font-black text-black tracking-tight leading-tight">
-              Prize Pool
-            </h3>
+           <h3 className="text-xl sm:text-3xl font-black text-black tracking-tight leading-tight">
+  Prize Pool
+</h3>
 
-            <p className="text-base sm:text-xl font-semibold text-gray-500 mt-4">
-              {
-                drawData.rewardTitle
-              }
-            </p>
+<p className="text-base sm:text-xl font-semibold text-gray-700 mt-4 leading-relaxed">
+  {
+    drawData.description
+      ? drawData.description
+      : drawData.rewardTitle
+  }
+</p>
 
-            <p className="text-xs sm:text-sm text-orange-500 font-bold mt-2">
-              Premium Reward
-            </p>
+<p className="text-xs sm:text-sm text-orange-500 font-bold mt-3 uppercase tracking-wider">
+  Premium Reward Event
+</p>
 
             {/* TIMER */}
 
@@ -771,12 +781,6 @@ const totalPrice =
             Join The Revadoo
             Lucky Draw
           </h4>
-
-          <p className="text-xs sm:text-sm text-gray-500 mt-2 leading-relaxed">
-            {
-              drawData.description
-            }
-          </p>
         </div>
 
         {/* ACTION */}
@@ -912,18 +916,36 @@ const totalPrice =
           "
         >
           <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
-            Each account can
-            purchase a
-            maximum of{" "}
-            <span className="font-black text-orange-500">
-  {remainingTickets} tickets remaining
-</span>{" "}
-            per lucky draw
-            event to ensure
-            fair
-            participation
-            for all users.
-          </p>
+  Each account can
+  purchase a
+  maximum of{" "}
+  <span className="font-black text-orange-500">
+    {maxTickets} tickets
+  </span>{" "}
+  per lucky draw
+  event.
+
+  {remainingTickets > 0 ? (
+    <>
+      {" "}
+      You currently have{" "}
+      <span className="font-black text-orange-500">
+        {remainingTickets} ticket
+        {remainingTickets > 1
+          ? "s"
+          : ""}
+      </span>{" "}
+      remaining.
+    </>
+  ) : (
+    <>
+      {" "}
+      <span className="font-black text-red-500">
+        You have reached your ticket limit for this event.
+      </span>
+    </>
+  )}
+</p>
         </div>
       </div>
     </div>

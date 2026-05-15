@@ -794,7 +794,8 @@ const purchaseLuckyDrawTickets =
 
               ticketNumber,
 
-              ticketId: `LD-${ticketNumber}`,
+            ticketId:
+  `REVA-LD-${ticketNumber}`,
 
               /* SECURITY */
 
