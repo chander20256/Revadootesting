@@ -148,22 +148,12 @@ const createLuckyDraw =
 /* =======================================================
    UPDATE DRAW
 ======================================================= */
-
 const updateLuckyDraw =
   async (req, res) => {
     try {
       const {
         id,
       } = req.params;
-
-      const {
-        rewardTitle,
-        rewardImage,
-        description,
-        entryFee,
-        totalWinners,
-        durationDays,
-      } = req.body;
 
       const draw =
         await LuckyDraw.findById(
@@ -181,7 +171,57 @@ const updateLuckyDraw =
           });
       }
 
-      /* UPDATE */
+      /* SAFE VALUES */
+
+      const rewardTitle =
+        req.body.rewardTitle ??
+        draw.rewardTitle;
+
+      const rewardImage =
+        req.body.rewardImage ??
+        draw.rewardImage;
+
+      const description =
+        req.body.description ??
+        draw.description;
+
+      const entryFee =
+        req.body.entryFee !==
+          "" &&
+        req.body.entryFee !==
+          undefined
+          ? Number(
+              req.body.entryFee
+            )
+          : draw.entryFee;
+
+      const totalWinners =
+        req.body
+          .totalWinners !==
+          "" &&
+        req.body
+          .totalWinners !==
+          undefined
+          ? Number(
+              req.body
+                .totalWinners
+            )
+          : draw.totalWinners;
+
+      const durationDays =
+        req.body
+          .durationDays !==
+          "" &&
+        req.body
+          .durationDays !==
+          undefined
+          ? Number(
+              req.body
+                .durationDays
+            )
+          : draw.durationDays;
+
+      /* UPDATE DRAW */
 
       draw.rewardTitle =
         rewardTitle;
@@ -193,30 +233,22 @@ const updateLuckyDraw =
         description;
 
       draw.entryFee =
-        Number(
-          entryFee
-        );
+        entryFee;
 
       draw.totalWinners =
-        Number(
-          totalWinners
-        );
+        totalWinners;
 
       draw.durationDays =
-        Number(
-          durationDays
-        );
+        durationDays;
 
-      /* UPDATE END DATE */
+      /* UPDATE TIMER */
 
       const endsAt =
         new Date();
 
       endsAt.setDate(
         endsAt.getDate() +
-          Number(
-            durationDays
-          )
+          durationDays
       );
 
       draw.endsAt =
@@ -245,14 +277,12 @@ const updateLuckyDraw =
           success: false,
 
           message:
+            error.message ||
             "Server error",
         });
     }
   };
 
-/* =======================================================
-   GET CURRENT DRAW
-======================================================= */
 
 /* =======================================================
    GET CURRENT DRAW
