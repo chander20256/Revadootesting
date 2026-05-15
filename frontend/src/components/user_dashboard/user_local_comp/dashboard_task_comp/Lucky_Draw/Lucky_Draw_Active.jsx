@@ -141,6 +141,18 @@ useEffect(() => {
   )
     return;
 
+  if (
+    drawData.status !==
+    "active"
+  ) {
+    setDrawStatus(
+      drawData.status ||
+        "active"
+    );
+
+    return;
+  }
+
   /* MOVE ENDTIME OUTSIDE */
 
   const endTime =

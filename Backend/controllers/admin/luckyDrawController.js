@@ -395,20 +395,35 @@ const getCurrentLuckyDraw =
   ) => {
     try {
       const draw =
-        await LuckyDraw.findOne(
-          {
-            status: {
-              $in: [
-                "active",
-                "picking",
+        (
+          await LuckyDraw.findOne(
+            {
+              status: {
+                $in: [
+                  "active",
+                  "picking",
+                ],
+              },
+            }
+          ).sort({
+            createdAt:
+              -1,
+          })
+        ) ||
+        (
+          await LuckyDraw.findOne(
+            {
+              status:
                 "completed",
-              ],
-            },
-          }
-        ).sort({
-          createdAt:
-            -1,
-        });
+            }
+          ).sort({
+            completedAt:
+              -1,
+
+            createdAt:
+              -1,
+          })
+        );
 
       if (!draw) {
   return res
