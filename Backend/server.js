@@ -38,6 +38,11 @@ const hcaptchaRoutes = require(
   "./routes/auth/hcaptcha"
 );
 
+const startLuckyDrawScheduler =
+  require(
+    "./utils/luckyDrawScheduler"
+  );
+
 const app = express();
 
 /* -----------------------------
@@ -467,16 +472,20 @@ mongoose
   })
 
   .then(() => {
-    console.log(
-      "✅ MongoDB connected"
-    );
+  console.log(
+    "✅ MongoDB connected"
+  );
 
-    app.listen(PORT, () => {
-      console.log(
-        `🚀 Server running on port ${PORT}`
-      );
-    });
-  })
+  /* START LUCKY DRAW SCHEDULER */
+
+  startLuckyDrawScheduler();
+
+  app.listen(PORT, () => {
+    console.log(
+      `🚀 Server running on port ${PORT}`
+    );
+  });
+})
 
   .catch((err) => {
     console.error(
