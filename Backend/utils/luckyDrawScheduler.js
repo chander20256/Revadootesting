@@ -1,11 +1,11 @@
 const LuckyDraw =
   require(
-    "../models/LuckyDraw"
+    "../models/lucky/luckyDraw"
   );
 
 const LuckyDrawTicket =
   require(
-    "../models/LuckyDrawTicket"
+    "../models/lucky/luckyDrawTicket"
   );
 
 /* =================================
