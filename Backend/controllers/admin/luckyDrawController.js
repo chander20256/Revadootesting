@@ -889,8 +889,9 @@ const purchaseLuckyDrawTickets =
         i < totalTickets;
         i++
       ) {
-        const ticketNumber =
-          draw.currentTicketNumber;
+       const ticketNumber =
+  draw.currentTicketNumber ||
+  111111;
 
         const ticket =
           await LuckyDrawTicket.create(
@@ -934,7 +935,9 @@ const purchaseLuckyDrawTickets =
           ticket
         );
 
-        draw.currentTicketNumber += 1;
+       draw.currentTicketNumber =
+  (draw.currentTicketNumber ||
+    111111) + 1;
       }
 
       /* UPDATE DRAW */
