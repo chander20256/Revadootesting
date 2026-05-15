@@ -2,6 +2,10 @@ const LuckyDraw = require(
   "../../models/lucky/luckyDraw"
 );
 
+const mongoose = require(
+  "mongoose"
+);
+
 const LuckyDrawTicket = require(
   "../../models/lucky/luckyDrawTicket"
 );
@@ -752,6 +756,21 @@ const purchaseLuckyDrawTickets =
         tickets,
       } = req.body;
 
+      if (
+        !mongoose.Types.ObjectId.isValid(
+          drawId
+        )
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              "Invalid lucky draw id",
+          });
+      }
+
       /* USER */
 
       const user =
@@ -799,6 +818,9 @@ const purchaseLuckyDrawTickets =
         Number(tickets);
 
       if (
+        !Number.isInteger(
+          totalTickets
+        ) ||
         totalTickets < 1
       ) {
         return res
@@ -808,6 +830,20 @@ const purchaseLuckyDrawTickets =
 
             message:
               "Invalid ticket quantity",
+          });
+      }
+
+      if (
+        !user.username ||
+        !user.email
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              "Your account profile is incomplete. Please update your username and email before joining the lucky draw.",
           });
       }
 
@@ -872,13 +908,6 @@ const purchaseLuckyDrawTickets =
               user._id,
           }
         );
-
-      /* REMOVE USER CREDS */
-
-      user.creds -=
-        totalPrice;
-
-      await user.save();
 
       /* CREATE TICKETS */
 
@@ -963,6 +992,9 @@ const purchaseLuckyDrawTickets =
 
       /* UPDATE DRAW */
 
+      user.creds -=
+        totalPrice;
+
       draw.ticketsSold +=
         totalTickets;
 
@@ -974,6 +1006,8 @@ const purchaseLuckyDrawTickets =
       ) {
         draw.participants += 1;
       }
+
+      await user.save();
 
       await draw.save();
 
@@ -997,6 +1031,41 @@ const purchaseLuckyDrawTickets =
       console.log(
         error
       );
+
+      if (
+        error.code ===
+        11000
+      ) {
+        return res
+          .status(409)
+          .json({
+            success: false,
+
+            message:
+              "Ticket number conflict. Please try again.",
+          });
+      }
+
+      if (
+        error.name ===
+        "ValidationError"
+      ) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              Object.values(
+                error.errors
+              )
+                .map(
+                  (err) =>
+                    err.message
+                )
+                .join(", "),
+          });
+      }
 
       return res
         .status(500)
