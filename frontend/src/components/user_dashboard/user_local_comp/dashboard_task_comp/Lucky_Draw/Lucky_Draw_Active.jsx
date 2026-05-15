@@ -99,132 +99,140 @@ function Lucky_Draw_Active() {
      LIVE TIMER
   ============================= */
 
-  useEffect(() => {
-    if (
-      !drawData?.endsAt
-    )
-      return;
+useEffect(() => {
+  if (
+    !drawData?.endsAt
+  )
+    return;
 
-    const interval =
-      setInterval(() => {
-        const now =
-          new Date().getTime();
+  /* MOVE ENDTIME OUTSIDE */
 
-        const endTime =
-          new Date(
-            drawData.endsAt
-          ).getTime();
+  const endTime =
+    new Date(
+      drawData.endsAt
+    ).getTime();
 
-        const distance =
-          endTime - now;
+  const interval =
+    setInterval(() => {
+      const now =
+        new Date().getTime();
 
-        if (distance <= 0) {
-          clearInterval(
-            interval
-          );
+      const distance =
+        endTime - now;
 
-          setTimeLeft({
-            days: "00",
-            hours: "00",
-            minutes: "00",
-            seconds: "00",
-          });
+      /* STOP NEGATIVE TIMER */
 
-          return;
-        }
-
-        const days =
-          Math.floor(
-            distance /
-              (1000 *
-                60 *
-                60 *
-                24)
-          );
-
-        const hours =
-          Math.floor(
-            (distance %
-              (1000 *
-                60 *
-                60 *
-                24)) /
-              (1000 *
-                60 *
-                60)
-          );
-
-        const minutes =
-          Math.floor(
-            (distance %
-              (1000 *
-                60 *
-                60)) /
-              (1000 *
-                60)
-          );
-
-        const seconds =
-          Math.floor(
-            (distance %
-              (1000 *
-                60)) /
-              1000
-          );
+      if (distance <= 0) {
+        clearInterval(
+          interval
+        );
 
         setTimeLeft({
-          days: String(
-            days
-          ).padStart(2, "0"),
-
-          hours: String(
-            hours
-          ).padStart(2, "0"),
-
-          minutes: String(
-            minutes
-          ).padStart(2, "0"),
-
-          seconds: String(
-            seconds
-          ).padStart(2, "0"),
+          days: "00",
+          hours: "00",
+          minutes: "00",
+          seconds: "00",
         });
-      }, 1000);
 
-    return () =>
-      clearInterval(interval);
-  }, [drawData]);
+        return;
+      }
 
-  /* =============================
-     VALUES
-  ============================= */
+      const days =
+        Math.floor(
+          distance /
+            (1000 *
+              60 *
+              60 *
+              24)
+        );
 
-  const maxTickets =
-    drawData?.maxTicketsPerUser ||
-    5;
+      const hours =
+        Math.floor(
+          (distance %
+            (1000 *
+              60 *
+              60 *
+              24)) /
+            (1000 *
+              60 *
+              60)
+        );
 
-  const ticketPrice =
-    drawData?.entryFee || 0;
+      const minutes =
+        Math.floor(
+          (distance %
+            (1000 *
+              60 *
+              60)) /
+            (1000 *
+              60)
+        );
 
-  const totalPrice =
-    tickets *
-    ticketPrice;
+      const seconds =
+        Math.floor(
+          (distance %
+            (1000 *
+              60)) /
+            1000
+        );
+
+      setTimeLeft({
+        days: String(
+          days
+        ).padStart(2, "0"),
+
+        hours: String(
+          hours
+        ).padStart(2, "0"),
+
+        minutes: String(
+          minutes
+        ).padStart(2, "0"),
+
+        seconds: String(
+          seconds
+        ).padStart(2, "0"),
+      });
+    }, 1000);
+
+  return () =>
+    clearInterval(interval);
+}, [drawData]);
+
+/* =============================
+   VALUES
+============================= */
+// eslint-disable-next-line no-unused-vars
+const maxTickets =
+  drawData?.maxTicketsPerUser ||
+  5;
+
+const remainingTickets =
+  drawData?.remainingTickets ||
+  0;
+
+const ticketPrice =
+  drawData?.entryFee || 0;
+
+const totalPrice =
+  tickets *
+  ticketPrice;
 
   /* =============================
      FUNCTIONS
   ============================= */
 
   const increaseTickets =
-    () => {
-      if (
-        tickets <
-        maxTickets
-      ) {
-        setTickets(
-          tickets + 1
-        );
-      }
-    };
+  () => {
+    if (
+      tickets <
+      remainingTickets
+    ) {
+      setTickets(
+        tickets + 1
+      );
+    }
+  };
 
   const decreaseTickets =
     () => {
@@ -240,102 +248,168 @@ function Lucky_Draw_Active() {
   ============================= */
 
   const handleJoin =
-    async () => {
-      try {
-        if (!token) {
-          Swal.fire({
-            icon: "warning",
+  async () => {
+    try {
+      /* LOGIN CHECK */
 
-            title:
-              "Login Required",
-
-            text:
-              "Please login first",
-
-            confirmButtonColor:
-              "#f97316",
-          });
-
-          return;
-        }
-
-        if (!drawData?._id) {
-          return;
-        }
-
-        setJoining(true);
-
-        const { data } =
-          await axios.post(
-            `${API}/purchase`,
-            {
-              drawId:
-                drawData._id,
-
-              tickets,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-        if (data.success) {
-          Swal.fire({
-            icon: "success",
-
-            title:
-              "Successfully Joined",
-
-            html: `
-              <div style="font-size:14px;">
-                <p>
-                  You purchased
-                  <b>${tickets}</b>
-                  ticket${
-                    tickets > 1
-                      ? "s"
-                      : ""
-                  }
-                </p>
-
-                <p style="margin-top:10px;">
-                  Remaining Creds:
-                  <b>${data.remainingCreds}</b>
-                </p>
-              </div>
-            `,
-
-            confirmButtonColor:
-              "#f97316",
-          });
-
-          setTickets(1);
-
-          fetchLuckyDraw();
-        }
-      } catch (error) {
-        console.log(error);
-
+      if (!token) {
         Swal.fire({
-          icon: "error",
+          icon: "warning",
 
           title:
-            "Purchase Failed",
+            "Login Required",
 
           text:
-            error.response?.data
-              ?.message ||
-            "Failed to purchase tickets",
+            "Please login first",
 
           confirmButtonColor:
             "#f97316",
         });
-      } finally {
-        setJoining(false);
+
+        return;
       }
-    };
+
+      /* DRAW CHECK */
+
+      if (!drawData?._id) {
+        return;
+      }
+
+      /* REMAINING TICKETS CHECK */
+
+      if (
+        remainingTickets <= 0
+      ) {
+        Swal.fire({
+          icon: "warning",
+
+          title:
+            "Ticket Limit Reached",
+
+          text:
+            "You already purchased the maximum allowed tickets for this lucky draw.",
+
+          confirmButtonColor:
+            "#f97316",
+        });
+
+        return;
+      }
+
+      /* USER TRYING TO BUY MORE */
+
+      if (
+        tickets >
+        remainingTickets
+      ) {
+        Swal.fire({
+          icon: "warning",
+
+          title:
+            "Not Enough Ticket Slots",
+
+          text: `You only have ${remainingTickets} ticket slot${
+            remainingTickets > 1
+              ? "s"
+              : ""
+          } remaining.`,
+
+          confirmButtonColor:
+            "#f97316",
+        });
+
+        return;
+      }
+
+      setJoining(true);
+
+      /* PURCHASE */
+
+      const { data } =
+        await axios.post(
+          `${API}/purchase`,
+          {
+            drawId:
+              drawData._id,
+
+            tickets,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+      /* SUCCESS */
+
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+
+          title:
+            "Successfully Joined",
+
+          html: `
+            <div style="font-size:14px;">
+              <p>
+                You purchased
+                <b>${tickets}</b>
+                ticket${
+                  tickets > 1
+                    ? "s"
+                    : ""
+                }
+              </p>
+
+              <p style="margin-top:10px;">
+                Remaining Creds:
+                <b>${data.remainingCreds}</b>
+              </p>
+
+              <p style="margin-top:10px;">
+                Remaining Ticket Slots:
+                <b>${
+                  remainingTickets -
+                  tickets
+                }</b>
+              </p>
+            </div>
+          `,
+
+          confirmButtonColor:
+            "#f97316",
+        });
+
+        /* RESET */
+
+        setTickets(1);
+
+        /* REFRESH DRAW */
+
+        fetchLuckyDraw();
+      }
+    } catch (error) {
+      console.log(error);
+
+      Swal.fire({
+        icon: "error",
+
+        title:
+          "Purchase Failed",
+
+        text:
+          error.response?.data
+            ?.message ||
+          "Failed to purchase tickets",
+
+        confirmButtonColor:
+          "#f97316",
+      });
+    } finally {
+      setJoining(false);
+    }
+  };
 
   /* =============================
      LOADING
@@ -766,18 +840,19 @@ function Lucky_Draw_Active() {
                   : ""}
               </h3>
 
-              <p className="text-[10px] text-gray-400 font-bold">
-                Max 5
-              </p>
+             <p className="text-[10px] text-gray-400 font-bold">
+  {remainingTickets} Left
+</p>
             </div>
 
             <button
               onClick={
                 increaseTickets
               }
-              disabled={
-                tickets === 5
-              }
+             disabled={
+  tickets >=
+  remainingTickets
+}
               className="
                 w-9
                 h-9
@@ -841,8 +916,8 @@ function Lucky_Draw_Active() {
             purchase a
             maximum of{" "}
             <span className="font-black text-orange-500">
-              5 tickets
-            </span>{" "}
+  {remainingTickets} tickets remaining
+</span>{" "}
             per lucky draw
             event to ensure
             fair

@@ -18,8 +18,21 @@ function Lucky_Draw_Details({
   const [saving, setSaving] =
     useState(false);
 
+  /* -----------------------------
+     API
+  ----------------------------- */
+
   const API_URL =
     "https://revadoobackend.onrender.com/api/admin";
+
+  /* -----------------------------
+     TOKEN
+  ----------------------------- */
+
+  const token =
+    localStorage.getItem(
+      "token"
+    );
 
   /* -----------------------------
      BACKEND DATA
@@ -46,11 +59,10 @@ function Lucky_Draw_Details({
       "0",
 
     entryFee:
-      drawData?.entryFee ??
-      "0",
+      drawData?.entryFee ?? "0",
 
     duration:
-      drawData?.duration ??
+      drawData?.durationDays ??
       "0",
 
     status:
@@ -65,13 +77,47 @@ function Lucky_Draw_Details({
       drawData?.rewardImage ??
       "",
 
-    timer:
-      drawData?.timer ?? {
-        days: "00",
-        hours: "00",
-        minutes: "00",
-        seconds: "00",
-      },
+    timer: {
+      days: String(
+        Math.max(
+          0,
+          Number(
+            drawData?.timer
+              ?.days || 0
+          )
+        )
+      ).padStart(2, "0"),
+
+      hours: String(
+        Math.max(
+          0,
+          Number(
+            drawData?.timer
+              ?.hours || 0
+          )
+        )
+      ).padStart(2, "0"),
+
+      minutes: String(
+        Math.max(
+          0,
+          Number(
+            drawData?.timer
+              ?.minutes || 0
+          )
+        )
+      ).padStart(2, "0"),
+
+      seconds: String(
+        Math.max(
+          0,
+          Number(
+            drawData?.timer
+              ?.seconds || 0
+          )
+        )
+      ).padStart(2, "0"),
+    },
   };
 
   /* -----------------------------
@@ -98,37 +144,37 @@ function Lucky_Draw_Details({
   ----------------------------- */
 
   useEffect(() => {
-  if (
-    drawData &&
-    openEdit
-  ) {
-    setFormData({
-      rewardTitle:
-        drawData.rewardTitle ||
-        "",
+    if (
+      openEdit
+    ) {
+      setFormData({
+        rewardTitle:
+          drawData?.rewardTitle ||
+          "",
 
-      rewardImage:
-        drawData.rewardImage ||
-        "",
+        rewardImage:
+          drawData?.rewardImage ||
+          "",
 
-      description:
-        drawData.description ||
-        "",
+        description:
+          drawData?.description ||
+          "",
 
-      entryFee:
-        drawData.entryFee ||
-        "",
+        entryFee:
+          drawData?.entryFee ||
+          "",
 
-      totalWinners:
-        drawData.totalWinners ||
-        "",
+        totalWinners:
+          drawData?.totalWinners ||
+          "",
 
-      durationDays:
-        drawData.duration ||
-        "",
-    });
-  }
-}, [openEdit]);
+        durationDays:
+          drawData?.durationDays ||
+          "",
+      });
+    }
+  }, [openEdit]);
+
   /* -----------------------------
      HANDLE CHANGE
   ----------------------------- */
@@ -141,12 +187,16 @@ function Lucky_Draw_Details({
       value,
     } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData(
+      (
+        prev
+      ) => ({
+        ...prev,
 
-      [name]:
-        value,
-    });
+        [name]:
+          value,
+      })
+    );
   };
 
   /* -----------------------------
@@ -172,6 +222,8 @@ function Lucky_Draw_Details({
               headers: {
                 "Content-Type":
                   "application/json",
+
+                Authorization: `Bearer ${token}`,
               },
 
               body: JSON.stringify(
@@ -187,7 +239,8 @@ function Lucky_Draw_Details({
           !response.ok
         ) {
           alert(
-            data.message
+            data.message ||
+              "Update failed"
           );
 
           return;
@@ -220,7 +273,6 @@ function Lucky_Draw_Details({
         );
       }
     };
-
   return (
     <>
       <div
@@ -438,86 +490,37 @@ function Lucky_Draw_Details({
 
             {/* RIGHT */}
 
-            <div
-              className="
-                flex
-                flex-col
-                gap-3
-                w-full
-                xl:w-[220px]
-              "
-            >
-              {/* EDIT */}
-
-              <button
-                onClick={() =>
-                  setOpenEdit(
-                    true
-                  )
-                }
-                className="
-                  w-full
-                  px-6
-                  py-3.5
-                  rounded-2xl
-                  bg-orange-500
-                  hover:bg-orange-600
-                  text-white
-                  text-sm
-                  font-black
-                  transition-all
-                  duration-200
-                  shadow-lg
-                  shadow-orange-500/20
-                "
-              >
-                Manage Draw
-              </button>
-
-              {/* PICK */}
-
-              <button
-                className="
-                  w-full
-                  px-6
-                  py-3.5
-                  rounded-2xl
-                  border
-                  border-gray-200
-                  bg-white
-                  hover:border-orange-200
-                  text-black
-                  text-sm
-                  font-black
-                  transition-all
-                  duration-200
-                "
-              >
-                Pick Winners
-              </button>
-
-              {/* END */}
-
-              <button
-                className="
-                  w-full
-                  px-6
-                  py-3.5
-                  rounded-2xl
-                  border
-                  border-red-100
-                  bg-red-50
-                  hover:bg-red-100
-                  text-red-500
-                  text-sm
-                  font-black
-                  transition-all
-                  duration-200
-                "
-              >
-                End Draw
-              </button>
-            </div>
+           <div
+  className="
+    w-full
+    xl:w-[220px]
+  "
+>
+  <button
+    onClick={() =>
+      setOpenEdit(
+        true
+      )
+    }
+    className="
+      w-full
+      px-6
+      py-3.5
+      rounded-2xl
+      bg-orange-500
+      hover:bg-orange-600
+      text-white
+      text-sm
+      font-black
+      transition-all
+      duration-200
+      shadow-lg
+      shadow-orange-500/20
+    "
+  >
+    Manage Draw
+  </button>
+</div>
           </div>
 
           {/* STATS */}

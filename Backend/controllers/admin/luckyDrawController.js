@@ -254,6 +254,10 @@ const updateLuckyDraw =
    GET CURRENT DRAW
 ======================================================= */
 
+/* =======================================================
+   GET CURRENT DRAW
+======================================================= */
+
 const getCurrentLuckyDraw =
   async (
     req,
@@ -282,15 +286,55 @@ const getCurrentLuckyDraw =
           });
       }
 
-      /* TIMER */
+      /* =======================================================
+         USER PURCHASED TICKETS
+      ======================================================= */
+
+      let userPurchasedTickets = 0;
+
+      if (
+        req.user?.id
+      ) {
+        userPurchasedTickets =
+          await LuckyDrawTicket.countDocuments(
+            {
+              drawId:
+                draw._id,
+
+              userId:
+                req.user.id,
+            }
+          );
+      }
+
+      /* =======================================================
+         REMAINING TICKETS
+      ======================================================= */
+
+      const remainingTickets =
+        Math.max(
+          0,
+          draw.maxTicketsPerUser -
+            userPurchasedTickets
+        );
+
+      /* =======================================================
+         TIMER
+      ======================================================= */
 
       const now =
         new Date();
 
-      const distance =
+      let distance =
         new Date(
           draw.endsAt
         ) - now;
+
+      /* PREVENT NEGATIVE TIMER */
+
+      if (distance < 0) {
+        distance = 0;
+      }
 
       const days =
         Math.floor(
@@ -331,6 +375,10 @@ const getCurrentLuckyDraw =
             1000
         );
 
+      /* =======================================================
+         RESPONSE
+      ======================================================= */
+
       return res
         .status(200)
         .json({
@@ -353,6 +401,13 @@ const getCurrentLuckyDraw =
 
           totalWinners:
             draw.totalWinners,
+
+          maxTicketsPerUser:
+            draw.maxTicketsPerUser,
+
+          userPurchasedTickets,
+
+          remainingTickets,
 
           ticketsSold:
             draw.ticketsSold,
