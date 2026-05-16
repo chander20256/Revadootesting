@@ -5,11 +5,6 @@ import React, {
 import axios from "axios";
 
 function Shortlink_generate() {
-  const [
-    useDeveloperApi,
-    setUseDeveloperApi,
-  ] = useState(false);
-
   const [loading, setLoading] =
     useState(false);
 
@@ -35,7 +30,7 @@ function Shortlink_generate() {
 
       status: "active",
 
-      provider: "internal",
+      provider: "gplinks",
 
       apiKey: "",
     });
@@ -81,12 +76,10 @@ function Shortlink_generate() {
 
       status: "active",
 
-      provider: "internal",
+      provider: "gplinks",
 
       apiKey: "",
     });
-
-    setUseDeveloperApi(false);
   };
 
   /* =========================================
@@ -101,8 +94,7 @@ function Shortlink_generate() {
         const payload = {
           ...formData,
 
-          apiMode:
-            useDeveloperApi,
+          apiMode: true,
         };
 
         const token =
@@ -111,17 +103,17 @@ function Shortlink_generate() {
           );
 
         const response =
-  await axios.post(
-    "https://revadoobackend.onrender.com/api/admin/shortlinks/create",
+          await axios.post(
+            "https://revadoobackend.onrender.com/api/admin/shortlinks/create",
 
-    payload,
+            payload,
 
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
         if (
           response.data.success
@@ -186,101 +178,11 @@ function Shortlink_generate() {
             color: "#6b7280",
           }}
         >
-          Create and publish new
+          Create and publish
+          multi-provider reward
           shortlinks directly from
           the CMS dashboard.
         </p>
-      </div>
-
-      {/* TOGGLE */}
-
-      <div
-        className="
-          flex
-          items-center
-          justify-between
-          gap-4
-          rounded-2xl
-          border
-          p-4
-          mb-6
-        "
-        style={{
-          borderColor:
-            "rgba(0,0,0,0.08)",
-
-          background:
-            "#fafafa",
-        }}
-      >
-        <div>
-          <h3
-            className="
-              text-sm
-              sm:text-base
-              font-semibold
-            "
-            style={{
-              color: "#111827",
-            }}
-          >
-            Developer API Mode
-          </h3>
-
-          <p
-            className="
-              text-xs
-              mt-1
-              leading-relaxed
-            "
-            style={{
-              color: "#6b7280",
-            }}
-          >
-            Enable external
-            provider integration
-            using API keys.
-          </p>
-        </div>
-
-        <button
-          onClick={() =>
-            setUseDeveloperApi(
-              !useDeveloperApi
-            )
-          }
-          className={`
-            relative
-            w-14
-            h-8
-            rounded-full
-            transition-all
-            duration-300
-            ${
-              useDeveloperApi
-                ? "bg-orange-500"
-                : "bg-gray-300"
-            }
-          `}
-        >
-          <div
-            className={`
-              absolute
-              top-1
-              w-6
-              h-6
-              rounded-full
-              bg-white
-              transition-all
-              duration-300
-              ${
-                useDeveloperApi
-                  ? "left-7"
-                  : "left-1"
-              }
-            `}
-          />
-        </button>
       </div>
 
       {/* FORM */}
@@ -359,40 +261,86 @@ function Shortlink_generate() {
           />
         </div>
 
+        {/* PROVIDER */}
+
+        <div className="flex flex-col gap-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            Shortlink Provider
+          </label>
+
+          <select
+            name="provider"
+            value={
+              formData.provider
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              h-12
+              rounded-xl
+              border
+              px-4
+              text-sm
+              outline-none
+              bg-white
+            "
+          >
+            <option value="gplinks">
+              GPlinks
+            </option>
+
+            <option value="shrinkme">
+              ShrinkMe
+            </option>
+
+            <option value="exeio">
+              Exe.io
+            </option>
+
+            <option value="linkvertise">
+              Linkvertise
+            </option>
+          </select>
+        </div>
+
         {/* API KEY */}
 
-        {useDeveloperApi && (
-          <div className="flex flex-col gap-2 lg:col-span-2">
-            <label
-              className="
-                text-sm
-                font-semibold
-              "
-            >
-              Developer API Key
-            </label>
+        <div className="flex flex-col gap-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            Provider API Key
+          </label>
 
-            <input
-              type="text"
-              name="apiKey"
-              value={
-                formData.apiKey
-              }
-              onChange={
-                handleChange
-              }
-              placeholder="Enter API key"
-              className="
-                h-12
-                rounded-xl
-                border
-                px-4
-                text-sm
-                outline-none
-              "
-            />
-          </div>
-        )}
+          <input
+            type="text"
+            name="apiKey"
+            value={
+              formData.apiKey
+            }
+            onChange={
+              handleChange
+            }
+            placeholder="Enter provider API key"
+            className="
+              h-12
+              rounded-xl
+              border
+              px-4
+              text-sm
+              outline-none
+            "
+          />
+        </div>
 
         {/* REWARD */}
 
@@ -428,6 +376,40 @@ function Shortlink_generate() {
           />
         </div>
 
+        {/* EXP */}
+
+        <div className="flex flex-col gap-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            EXP Reward
+          </label>
+
+          <input
+            type="number"
+            min="0"
+            name="expReward"
+            value={
+              formData.expReward
+            }
+            onChange={
+              handleChange
+            }
+            placeholder="Enter EXP reward"
+            className="
+              h-12
+              rounded-xl
+              border
+              px-4
+              text-sm
+              outline-none
+            "
+          />
+        </div>
+
         {/* TIMER */}
 
         <div className="flex flex-col gap-2">
@@ -437,7 +419,7 @@ function Shortlink_generate() {
               font-semibold
             "
           >
-            Timer
+            Timer (Seconds)
           </label>
 
           <input
@@ -484,7 +466,74 @@ function Shortlink_generate() {
             onChange={
               handleChange
             }
-            placeholder="Enter daily chances"
+            placeholder="Daily chances"
+            className="
+              h-12
+              rounded-xl
+              border
+              px-4
+              text-sm
+              outline-none
+            "
+          />
+        </div>
+
+        {/* COOLDOWN */}
+
+        <div className="flex flex-col gap-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            Cooldown (Minutes)
+          </label>
+
+          <input
+            type="number"
+            min="0"
+            name="cooldown"
+            value={
+              formData.cooldown
+            }
+            onChange={
+              handleChange
+            }
+            placeholder="Cooldown time"
+            className="
+              h-12
+              rounded-xl
+              border
+              px-4
+              text-sm
+              outline-none
+            "
+          />
+        </div>
+
+        {/* CATEGORY */}
+
+        <div className="flex flex-col gap-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            Category
+          </label>
+
+          <input
+            type="text"
+            name="category"
+            value={
+              formData.category
+            }
+            onChange={
+              handleChange
+            }
+            placeholder="general"
             className="
               h-12
               rounded-xl
@@ -523,6 +572,7 @@ function Shortlink_generate() {
               px-4
               text-sm
               outline-none
+              bg-white
             "
           >
             <option value="active">
@@ -532,7 +582,44 @@ function Shortlink_generate() {
             <option value="paused">
               Paused
             </option>
+
+            <option value="disabled">
+              Disabled
+            </option>
           </select>
+        </div>
+
+        {/* DESCRIPTION */}
+
+        <div className="flex flex-col gap-2 lg:col-span-2">
+          <label
+            className="
+              text-sm
+              font-semibold
+            "
+          >
+            Description
+          </label>
+
+          <textarea
+            rows="4"
+            name="description"
+            value={
+              formData.description
+            }
+            onChange={
+              handleChange
+            }
+            placeholder="Enter shortlink description"
+            className="
+              rounded-xl
+              border
+              p-4
+              text-sm
+              outline-none
+              resize-none
+            "
+          />
         </div>
       </div>
 

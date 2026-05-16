@@ -295,145 +295,234 @@ function Shortlinks_grid() {
                 >
                   {/* TOP */}
 
-                  <div className="flex items-start justify-between gap-2">
-                    {/* ICON */}
+              {/* TOP */}
 
-                    <div
-                      className="
-                        w-10
-                        h-10
-                        sm:w-12
-                        sm:h-12
-                        rounded-2xl
-                        flex
-                        items-center
-                        justify-center
-                        text-lg
-                        sm:text-xl
-                        font-black
-                      "
-                      style={{
-                        background:
-                          "rgba(255,107,0,0.10)",
+<div className="flex items-start justify-between gap-2">
+  {/* PROVIDER ICON */}
 
-                        color:
-                          "#FF6B00",
-                      }}
-                    >
-                      🔗
-                    </div>
+  <div
+    className="
+      min-w-[40px]
+      h-10
+      sm:min-w-[48px]
+      sm:h-12
+      px-2
+      rounded-2xl
+      flex
+      items-center
+      justify-center
+      text-[10px]
+      sm:text-xs
+      font-black
+      uppercase
+    "
+    style={{
+      background:
+        link.provider ===
+        "gplinks"
+          ? "rgba(34,197,94,0.12)"
+          : link.provider ===
+            "shrinkme"
+          ? "rgba(249,115,22,0.12)"
+          : link.provider ===
+            "exeio"
+          ? "rgba(59,130,246,0.12)"
+          : "rgba(168,85,247,0.12)",
 
-                    {/* FAVORITE */}
+      color:
+        link.provider ===
+        "gplinks"
+          ? "#16a34a"
+          : link.provider ===
+            "shrinkme"
+          ? "#f97316"
+          : link.provider ===
+            "exeio"
+          ? "#2563eb"
+          : "#9333ea",
+    }}
+  >
+    {link.provider ===
+    "gplinks"
+      ? "GP"
 
-                    <button
-                      onClick={() =>
-                        toggleFavorite(
-                          link._id
-                        )
-                      }
-                      className="
-                        w-8
-                        h-8
-                        rounded-xl
-                        flex
-                        items-center
-                        justify-center
-                        transition-all
-                        duration-300
-                      "
-                      style={{
-                        background:
-                          isFavorite
-                            ? "rgba(255,107,0,0.12)"
-                            : "rgba(0,0,0,0.04)",
-                      }}
-                    >
-                      <span className="text-sm">
-                        {isFavorite
-                          ? "⭐"
-                          : "☆"}
-                      </span>
-                    </button>
-                  </div>
+      : link.provider ===
+        "shrinkme"
+      ? "SM"
 
-                  {/* CONTENT */}
+      : link.provider ===
+        "exeio"
+      ? "EX"
 
-                  <div className="mt-4 sm:mt-5">
-                    <h2
-                      className="
-                        text-sm
-                        sm:text-lg
-                        font-black
-                        leading-snug
-                        line-clamp-2
-                      "
-                      style={{
-                        color:
-                          "#030712",
-                      }}
-                    >
-                      {link.title ||
-                        "Untitled Link"}
-                    </h2>
+      : "LV"}
+  </div>
 
-                    <div
-                      className="
-                        flex
-                        items-center
-                        gap-2
-                        mt-2
-                        flex-wrap
-                      "
-                    >
-                      {/* REWARD */}
+  {/* FAVORITE */}
 
-                      <div
-                        className="
-                          px-2
-                          py-1
-                          rounded-full
-                          text-[10px]
-                          sm:text-xs
-                          font-bold
-                        "
-                        style={{
-                          background:
-                            "rgba(255,107,0,0.10)",
+  <button
+    onClick={() =>
+      toggleFavorite(
+        link._id
+      )
+    }
+    className="
+      w-8
+      h-8
+      rounded-xl
+      flex
+      items-center
+      justify-center
+      transition-all
+      duration-300
+    "
+    style={{
+      background:
+        isFavorite
+          ? "rgba(255,107,0,0.12)"
+          : "rgba(0,0,0,0.04)",
+    }}
+  >
+    <span className="text-sm">
+      {isFavorite
+        ? "⭐"
+        : "☆"}
+    </span>
+  </button>
+</div>
 
-                          color:
-                            "#FF6B00",
-                        }}
-                      >
-                        {link.reward ||
-                          0}{" "}
-                        Creds
-                      </div>
+{/* CONTENT */}
 
-                      {/* TIMER */}
+<div className="mt-4 sm:mt-5">
+  <h2
+    className="
+      text-sm
+      sm:text-lg
+      font-black
+      leading-snug
+      line-clamp-2
+    "
+    style={{
+      color: "#030712",
+    }}
+  >
+    {link.title ||
+      "Untitled Link"}
+  </h2>
 
-                      <div
-                        className="
-                          px-2
-                          py-1
-                          rounded-full
-                          text-[10px]
-                          sm:text-xs
-                          font-bold
-                        "
-                        style={{
-                          background:
-                            "rgba(0,0,0,0.05)",
+  {/* PROVIDER LABEL */}
 
-                          color:
-                            "#6b7280",
-                        }}
-                      >
-                        {link.timer ||
-                          0}{" "}
-                        Sec
-                      </div>
-                    </div>
-                  </div>
+  <div
+    className="
+      mt-2
+      inline-flex
+      items-center
+      gap-2
+      px-2
+      py-1
+      rounded-full
+      text-[10px]
+      sm:text-xs
+      font-bold
+    "
+    style={{
+      background:
+        link.provider ===
+        "gplinks"
+          ? "rgba(34,197,94,0.10)"
+          : link.provider ===
+            "shrinkme"
+          ? "rgba(249,115,22,0.10)"
+          : link.provider ===
+            "exeio"
+          ? "rgba(59,130,246,0.10)"
+          : "rgba(168,85,247,0.10)",
+
+      color:
+        link.provider ===
+        "gplinks"
+          ? "#16a34a"
+          : link.provider ===
+            "shrinkme"
+          ? "#f97316"
+          : link.provider ===
+            "exeio"
+          ? "#2563eb"
+          : "#9333ea",
+    }}
+  >
+    {link.provider ===
+    "gplinks"
+      ? "GPlinks"
+
+      : link.provider ===
+        "shrinkme"
+      ? "ShrinkMe"
+
+      : link.provider ===
+        "exeio"
+      ? "Exe.io"
+
+      : "Linkvertise"}
+  </div>
+
+  <div
+    className="
+      flex
+      items-center
+      gap-2
+      mt-3
+      flex-wrap
+    "
+  >
+    {/* REWARD */}
+
+    <div
+      className="
+        px-2
+        py-1
+        rounded-full
+        text-[10px]
+        sm:text-xs
+        font-bold
+      "
+      style={{
+        background:
+          "rgba(255,107,0,0.10)",
+
+        color:
+          "#FF6B00",
+      }}
+    >
+      {link.reward ||
+        0}{" "}
+      Creds
+    </div>
+
+    {/* TIMER */}
+
+    <div
+      className="
+        px-2
+        py-1
+        rounded-full
+        text-[10px]
+        sm:text-xs
+        font-bold
+      "
+      style={{
+        background:
+          "rgba(0,0,0,0.05)",
+
+        color:
+          "#6b7280",
+      }}
+    >
+      {link.timer ||
+        0}{" "}
+      Sec
+    </div>
+  </div>
+</div>
 
                   {/* STATS */}
 
