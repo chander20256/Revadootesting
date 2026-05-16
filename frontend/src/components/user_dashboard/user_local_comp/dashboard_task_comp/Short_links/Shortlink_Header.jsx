@@ -6,8 +6,9 @@ function Shortlink_Header() {
       className="
         relative
         overflow-hidden
-        rounded-[32px]
-        p-6
+        rounded-[24px]
+        sm:rounded-[32px]
+        p-4
         sm:p-8
         lg:p-10
       "
@@ -18,7 +19,6 @@ function Shortlink_Header() {
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
-      
       {/* CONTENT */}
 
       <div
@@ -27,7 +27,8 @@ function Shortlink_Header() {
           z-10
           flex
           flex-col
-          gap-8
+          gap-4
+          sm:gap-8
         "
       >
         {/* TOP */}
@@ -39,19 +40,22 @@ function Shortlink_Header() {
             lg:flex-row
             lg:items-center
             lg:justify-between
-            gap-6
+            gap-4
+            sm:gap-6
           "
         >
           {/* LEFT */}
 
-          <div className="space-y-5">
+          <div className="space-y-3 sm:space-y-5">
             {/* BADGE */}
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <div
                 className="
-                  w-12
-                  h-12
+                  w-10
+                  h-10
+                  sm:w-12
+                  sm:h-12
                   rounded-2xl
                   flex
                   items-center
@@ -62,7 +66,7 @@ function Shortlink_Header() {
                     "rgba(255,107,0,0.10)",
                 }}
               >
-                <span className="text-2xl">
+                <span className="text-lg sm:text-2xl">
                   🔗
                 </span>
               </div>
@@ -70,10 +74,12 @@ function Shortlink_Header() {
               <div>
                 <p
                   className="
-                    text-xs
+                    text-[10px]
+                    sm:text-xs
                     uppercase
                     font-black
-                    tracking-[3px]
+                    tracking-[2px]
+                    sm:tracking-[3px]
                   "
                   style={{
                     color: "#FF6B00",
@@ -84,8 +90,10 @@ function Shortlink_Header() {
 
                 <p
                   className="
-                    text-sm
-                    mt-1
+                    text-xs
+                    sm:text-sm
+                    mt-0.5
+                    sm:mt-1
                     font-medium
                   "
                   style={{
@@ -100,10 +108,10 @@ function Shortlink_Header() {
 
             {/* TITLE */}
 
-            <div className="space-y-3">
+            <div className="space-y-1 sm:space-y-3">
               <h1
                 className="
-                  text-3xl
+                  text-2xl
                   sm:text-4xl
                   lg:text-5xl
                   font-black
@@ -119,7 +127,7 @@ function Shortlink_Header() {
 
               <h1
                 className="
-                  text-3xl
+                  text-2xl
                   sm:text-4xl
                   lg:text-5xl
                   font-black
@@ -138,7 +146,7 @@ function Shortlink_Header() {
             <p
               className="
                 max-w-3xl
-                text-sm
+                text-xs
                 sm:text-base
                 leading-relaxed
               "
@@ -149,12 +157,8 @@ function Shortlink_Header() {
               Complete premium
               shortlinks, unlock
               bonus rewards, earn
-              daily EXP, increase
-              your streak level,
-              and collect instant
-              Revadoo credits with
-              every successful
-              visit.
+              daily EXP, and collect
+              instant Revadoo creds.
             </p>
           </div>
 
@@ -163,12 +167,15 @@ function Shortlink_Header() {
           <div
             className="
               w-full
-              lg:w-[320px]
-              rounded-3xl
-              p-6
+              lg:w-[300px]
+              rounded-[22px]
+              sm:rounded-3xl
+              p-4
+              sm:p-6
               flex
               flex-col
-              gap-5
+              gap-3
+              sm:gap-5
             "
             style={{
               background:
@@ -181,7 +188,8 @@ function Shortlink_Header() {
             <div className="flex items-center justify-between">
               <h3
                 className="
-                  text-lg
+                  text-sm
+                  sm:text-lg
                   font-black
                 "
                 style={{
@@ -193,10 +201,12 @@ function Shortlink_Header() {
 
               <div
                 className="
-                  px-3
+                  px-2
+                  sm:px-3
                   py-1
                   rounded-full
-                  text-xs
+                  text-[9px]
+                  sm:text-xs
                   font-bold
                 "
                 style={{
@@ -212,7 +222,7 @@ function Shortlink_Header() {
 
             {/* STATS */}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
               {[
                 {
                   title: "Available",
@@ -239,7 +249,8 @@ function Shortlink_Header() {
                     key={index}
                     className="
                       rounded-2xl
-                      p-4
+                      p-3
+                      sm:p-4
                     "
                     style={{
                       background:
@@ -251,7 +262,7 @@ function Shortlink_Header() {
                   >
                     <h2
                       className="
-                        text-lg
+                        text-sm
                         sm:text-xl
                         font-black
                       "
@@ -265,7 +276,8 @@ function Shortlink_Header() {
 
                     <p
                       className="
-                        text-xs
+                        text-[10px]
+                        sm:text-xs
                         mt-1
                       "
                       style={{
@@ -288,12 +300,13 @@ function Shortlink_Header() {
           className="
             flex
             flex-col
-            lg:flex-row
-            lg:items-center
-            lg:justify-between
-            gap-4
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+            gap-3
             rounded-2xl
-            p-4
+            p-3
+            sm:p-4
           "
           style={{
             background:
@@ -308,12 +321,16 @@ function Shortlink_Header() {
           <div className="flex items-center gap-3">
             <div
               className="
-                w-10
-                h-10
+                w-9
+                h-9
+                sm:w-10
+                sm:h-10
                 rounded-xl
                 flex
                 items-center
                 justify-center
+                text-sm
+                sm:text-base
               "
               style={{
                 background:
@@ -326,22 +343,23 @@ function Shortlink_Header() {
             <div>
               <p
                 className="
-                  text-sm
+                  text-xs
+                  sm:text-sm
                   font-bold
                 "
                 style={{
                   color: "#030712",
                 }}
               >
-                Complete more links
-                to unlock bonus
+                Unlock bonus
                 multipliers
               </p>
 
               <p
                 className="
-                  text-xs
-                  mt-1
+                  text-[10px]
+                  sm:text-xs
+                  mt-0.5
                 "
                 style={{
                   color: "#6b7280",
@@ -357,10 +375,13 @@ function Shortlink_Header() {
 
           <button
             className="
-              h-12
-              px-6
+              h-10
+              sm:h-12
+              px-4
+              sm:px-6
               rounded-2xl
-              text-sm
+              text-xs
+              sm:text-sm
               font-bold
               transition-all
               duration-300

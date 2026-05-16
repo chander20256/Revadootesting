@@ -20,6 +20,8 @@ import Lucky_draw from "./pages/admin_dashboard/Lucky_draw";
 
 import CMS_AdsManager from "./pages/CMS_dashboard/CMS_AdsManager";
 
+import CMS_Shortlinks from "./pages/CMS_dashboard/CMS_Shortlinks";
+
 import NotFoundPage from "./pages/NotFoundPage";
 
 import LoginPage from "./pages/LoginPage";
@@ -89,6 +91,15 @@ function App() {
             path="ads"
             element={
               <CMS_AdsManager />
+            }
+          />
+
+          {/* CMS SHORTLINKS */}
+
+          <Route
+            path="cms/shortlinks"
+            element={
+              <CMS_Shortlinks />
             }
           />
         </Route>

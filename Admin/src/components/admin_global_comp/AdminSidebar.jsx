@@ -8,6 +8,7 @@ import {
   FaBullhorn,
   FaGift,
   FaTrophy,
+  FaLink,
 } from "react-icons/fa";
 
 const AdminSidebar = ({
@@ -20,10 +21,9 @@ const AdminSidebar = ({
   const navClass = ({
     isActive,
   }) =>
-    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${
-      isActive
-        ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
-        : "text-white/70 hover:bg-white/10 hover:text-white"
+    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${isActive
+      ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
+      : "text-white/70 hover:bg-white/10 hover:text-white"
     }`;
 
   const content = (
@@ -56,12 +56,11 @@ const AdminSidebar = ({
                 "admin"
               )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
-              activePanel ===
-              "admin"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel ===
+                "admin"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-            }`}
+              }`}
           >
             Admin
           </button>
@@ -74,12 +73,11 @@ const AdminSidebar = ({
                 "cms"
               )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
-              activePanel ===
-              "cms"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel ===
+                "cms"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-            }`}
+              }`}
           >
             CMS
           </button>
@@ -93,108 +91,118 @@ const AdminSidebar = ({
 
         {activePanel ===
           "admin" && (
-          <div className="space-y-2">
-            <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
-              Admin Console
+            <div className="space-y-2">
+              <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
+                Admin Console
+              </div>
+
+              {/* USERS */}
+
+              <NavLink
+                to="/admin/users"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaUsers
+                  size={15}
+                />
+                Users
+              </NavLink>
+
+              {/* CREDS CODES */}
+
+              <NavLink
+                to="/admin/credscodes"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaCode
+                  size={15}
+                />
+                Creds Codes
+              </NavLink>
+
+              {/* REWARDS STORE */}
+
+              <NavLink
+                to="/admin/rewards-store"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaGift
+                  size={15}
+                />
+                Rewards Store
+              </NavLink>
+
+              {/* LUCKY DRAW */}
+
+              <NavLink
+                to="/admin/lucky-draw"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaTrophy
+                  size={15}
+                />
+                Lucky Draw
+              </NavLink>
             </div>
-
-            {/* USERS */}
-
-            <NavLink
-              to="/admin/users"
-              onClick={
-                closeSidebar
-              }
-              className={
-                navClass
-              }
-            >
-              <FaUsers
-                size={15}
-              />
-              Users
-            </NavLink>
-
-            {/* CREDS CODES */}
-
-            <NavLink
-              to="/admin/credscodes"
-              onClick={
-                closeSidebar
-              }
-              className={
-                navClass
-              }
-            >
-              <FaCode
-                size={15}
-              />
-              Creds Codes
-            </NavLink>
-
-            {/* REWARDS STORE */}
-
-            <NavLink
-              to="/admin/rewards-store"
-              onClick={
-                closeSidebar
-              }
-              className={
-                navClass
-              }
-            >
-              <FaGift
-                size={15}
-              />
-              Rewards Store
-            </NavLink>
-
-            {/* LUCKY DRAW */}
-
-            <NavLink
-              to="/admin/lucky-draw"
-              onClick={
-                closeSidebar
-              }
-              className={
-                navClass
-              }
-            >
-              <FaTrophy
-                size={15}
-              />
-              Lucky Draw
-            </NavLink>
-          </div>
-        )}
+          )}
 
         {/* CMS CONSOLE */}
 
         {activePanel ===
           "cms" && (
-          <div className="space-y-2">
-            <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
-              CMS Console
+            <div className="space-y-2">
+              <div className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/35">
+                CMS Console
+              </div>
+
+              {/* ADS MANAGER */}
+
+              <NavLink
+                to="/admin/ads"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaBullhorn
+                  size={15}
+                />
+                Ads Manager
+              </NavLink>
+
+              <NavLink
+                to="/admin/cms/shortlinks"
+                onClick={closeSidebar}
+                className={navClass}
+              >
+                <FaLink size={15} />
+                Shortlinks
+              </NavLink>
+
             </div>
-
-            {/* ADS MANAGER */}
-
-            <NavLink
-              to="/admin/ads"
-              onClick={
-                closeSidebar
-              }
-              className={
-                navClass
-              }
-            >
-              <FaBullhorn
-                size={15}
-              />
-              Ads Manager
-            </NavLink>
-          </div>
-        )}
+          )}
       </nav>
     </div>
   );
