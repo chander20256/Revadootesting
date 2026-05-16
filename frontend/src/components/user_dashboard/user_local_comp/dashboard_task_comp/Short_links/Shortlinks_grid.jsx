@@ -478,34 +478,74 @@ function Shortlinks_grid() {
 
                     {/* BUTTON */}
 
-                    <button
-                      className="
-                        h-9
-                        sm:h-10
-                        px-3
-                        sm:px-4
-                        rounded-xl
-                        text-[10px]
-                        sm:text-sm
-                        font-bold
-                        transition-all
-                        duration-300
-                        hover:scale-[1.03]
-                        active:scale-[0.97]
-                      "
-                      style={{
-                        background:
-                          "#FF6B00",
+                   <button
+  onClick={async () => {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
 
-                        color:
-                          "#ffffff",
+      const response =
+        await axios.post(
+          `https://revadoobackend.onrender.com/api/shortlinks/start/${link._id}`,
 
-                        boxShadow:
-                          "0 8px 20px rgba(255,107,0,0.25)",
-                      }}
-                    >
-                      Visit
-                    </button>
+          {},
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+      if (
+        response.data.success
+      ) {
+        window.location.href =
+          response.data.shortlink;
+      } else {
+        alert(
+          response.data
+            .message ||
+            "Failed to open shortlink"
+        );
+      }
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Failed to start shortlink"
+      );
+    }
+  }}
+  className="
+    h-9
+    sm:h-10
+    px-3
+    sm:px-4
+    rounded-xl
+    text-[10px]
+    sm:text-sm
+    font-bold
+    transition-all
+    duration-300
+    hover:scale-[1.03]
+    active:scale-[0.97]
+  "
+  style={{
+    background:
+      "#FF6B00",
+
+    color:
+      "#ffffff",
+
+    boxShadow:
+      "0 8px 20px rgba(255,107,0,0.25)",
+  }}
+>
+  Visit
+</button>
                   </div>
 
                   {/* BADGE */}
