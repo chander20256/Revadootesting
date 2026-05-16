@@ -1,6 +1,6 @@
 import React from "react";
 
-function Short_link_Header() {
+function Shortlink_Header() {
   return (
     <div
       className="
@@ -382,4 +382,4 @@ function Short_link_Header() {
   );
 }
 
-export default Short_link_Header;
+export default Shortlink_Header;

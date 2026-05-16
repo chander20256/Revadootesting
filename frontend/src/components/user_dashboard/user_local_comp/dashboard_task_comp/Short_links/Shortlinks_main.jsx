@@ -1,6 +1,6 @@
 import React from "react";
 
-import Short_link_Header from "./Short_link_Header";
+import Short_link_Header from "./Shortlink_Header";
 
 function Shortlinks_main() {
   return (
