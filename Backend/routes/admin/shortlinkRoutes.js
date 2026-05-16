@@ -25,12 +25,10 @@ const {
    MIDDLEWARE
 ----------------------------- */
 
-const authMiddleware = require(
-  "../../middleware/authMiddleware"
-);
-
-const adminMiddleware = require(
-  "../../middleware/adminMiddleware"
+const {
+  protect,
+} = require(
+  "../../middleware/auth"
 );
 
 /* ==================================================
@@ -43,8 +41,7 @@ const adminMiddleware = require(
 
 router.post(
   "/create",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   createShortlink
 );
 
@@ -54,8 +51,7 @@ router.post(
 
 router.get(
   "/all",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   getAllShortlinks
 );
 
@@ -65,8 +61,7 @@ router.get(
 
 router.get(
   "/:id",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   getSingleShortlink
 );
 
@@ -76,8 +71,7 @@ router.get(
 
 router.put(
   "/update/:id",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   updateShortlink
 );
 
@@ -87,8 +81,7 @@ router.put(
 
 router.delete(
   "/delete/:id",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   deleteShortlink
 );
 
@@ -98,8 +91,7 @@ router.delete(
 
 router.patch(
   "/toggle-status/:id",
-  authMiddleware,
-  adminMiddleware,
+  protect,
   toggleShortlinkStatus
 );
 
