@@ -72,29 +72,69 @@ exports.createShortlink =
              GPLINKS
           ----------------------------- */
 
-          if (
-            provider ===
-            "gplinks"
-          ) {
-            const apiUrl =
-              `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
-                originalUrl
-              )}&format=json`;
+          /* -----------------------------
+   GPLINKS
+----------------------------- */
 
-            const response =
-              await axios.get(
-                apiUrl
-              );
+if (
+  shortlink.provider ===
+  "gplinks"
+) {
+  const apiUrl =
+    `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
+      callbackUrl
+    )}&alias=${sessionId.slice(
+      0,
+      6
+    )}`;
 
-            console.log(
-              "GPLINKS RESPONSE:",
-              response.data
-            );
+  console.log(
+    "GPLINKS URL:",
+    apiUrl
+  );
 
-            generatedShortUrl =
-              response.data
-                .shortenedUrl;
-          }
+  const response =
+    await axios.get(apiUrl);
+
+  console.log(
+    "GPLINKS RAW RESPONSE:",
+    response.data
+  );
+
+  /* -----------------------------
+     STRING RESPONSE
+  ----------------------------- */
+
+  if (
+    typeof response.data ===
+    "string"
+  ) {
+    generatedShortlink =
+      response.data;
+  }
+
+  /* -----------------------------
+     JSON RESPONSE
+  ----------------------------- */
+
+  else if (
+    response.data
+      ?.shortenedUrl
+  ) {
+    generatedShortlink =
+      response.data
+        .shortenedUrl;
+  }
+
+  /* -----------------------------
+     FALLBACK
+  ----------------------------- */
+
+  else {
+    generatedShortlink =
+      null;
+  }
+}
 
           /* -----------------------------
              SHRINKME
