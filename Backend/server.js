@@ -348,6 +348,12 @@ app.use(
   require("./routes/auth/update")
 );
 
+app.use(
+  "/api/shortlinks",
+  require(
+    "./routes/auth/shortlinkRoutes"
+  )
+);
 /* -----------------------------
    USER PROGRESS
 ----------------------------- */
