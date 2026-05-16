@@ -72,20 +72,17 @@ exports.createShortlink =
              GPLINKS
           ----------------------------- */
 
-          /* -----------------------------
+        /* -----------------------------
    GPLINKS
 ----------------------------- */
 
 if (
-  shortlink.provider ===
+  provider ===
   "gplinks"
 ) {
   const apiUrl =
     `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
-      callbackUrl
-    )}&alias=${sessionId.slice(
-      0,
-      6
+      originalUrl
     )}`;
 
   console.log(
@@ -97,41 +94,29 @@ if (
     await axios.get(apiUrl);
 
   console.log(
-    "GPLINKS RAW RESPONSE:",
+    "GPLINKS RESPONSE:",
     response.data
   );
-
-  /* -----------------------------
-     STRING RESPONSE
-  ----------------------------- */
 
   if (
     typeof response.data ===
     "string"
   ) {
-    generatedShortlink =
+    generatedShortUrl =
       response.data;
   }
-
-  /* -----------------------------
-     JSON RESPONSE
-  ----------------------------- */
 
   else if (
     response.data
       ?.shortenedUrl
   ) {
-    generatedShortlink =
+    generatedShortUrl =
       response.data
         .shortenedUrl;
   }
 
-  /* -----------------------------
-     FALLBACK
-  ----------------------------- */
-
   else {
-    generatedShortlink =
+    generatedShortUrl =
       null;
   }
 }

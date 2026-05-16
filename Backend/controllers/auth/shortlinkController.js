@@ -117,9 +117,9 @@ if (
   "gplinks"
 ) {
   const apiUrl =
-    `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
-      callbackUrl
-    )}&alias=revadoo`;
+  `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
+    callbackUrl
+  )}&alias=${sessionId.slice(0,6)}`;
 
   const response =
     await axios.get(apiUrl);
