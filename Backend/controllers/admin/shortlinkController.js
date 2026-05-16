@@ -2,6 +2,10 @@
    Backend/controllers/admin/shortlinkController.js
 ========================================= */
 
+const axios = require(
+  "axios"
+);
+
 const Shortlink = require(
   "../../models/shortlinks/shortlink"
 );
@@ -53,6 +57,123 @@ exports.createShortlink =
       }
 
       /* -----------------------------
+         GENERATE PROVIDER SHORTLINK
+      ----------------------------- */
+
+      let generatedShortUrl =
+        null;
+
+      if (
+        apiMode &&
+        apiKey
+      ) {
+        try {
+          /* -----------------------------
+             GPLINKS
+          ----------------------------- */
+
+          if (
+            provider ===
+            "gplinks"
+          ) {
+            const apiUrl =
+              `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
+                originalUrl
+              )}&format=json`;
+
+            const response =
+              await axios.get(
+                apiUrl
+              );
+
+            console.log(
+              "GPLINKS RESPONSE:",
+              response.data
+            );
+
+            generatedShortUrl =
+              response.data
+                .shortenedUrl;
+          }
+
+          /* -----------------------------
+             SHRINKME
+          ----------------------------- */
+
+          if (
+            provider ===
+            "shrinkme"
+          ) {
+            const apiUrl =
+              `https://shrinkme.io/api?api=${apiKey}&url=${encodeURIComponent(
+                originalUrl
+              )}&format=json`;
+
+            const response =
+              await axios.get(
+                apiUrl
+              );
+
+            console.log(
+              "SHRINKME RESPONSE:",
+              response.data
+            );
+
+            generatedShortUrl =
+              response.data
+                .shortenedUrl;
+          }
+
+          /* -----------------------------
+             EXE.IO
+          ----------------------------- */
+
+          if (
+            provider ===
+            "exeio"
+          ) {
+            const apiUrl =
+              `https://exe.io/api?api=${apiKey}&url=${encodeURIComponent(
+                originalUrl
+              )}&format=json`;
+
+            const response =
+              await axios.get(
+                apiUrl
+              );
+
+            console.log(
+              "EXE.IO RESPONSE:",
+              response.data
+            );
+
+            generatedShortUrl =
+              response.data
+                .shortenedUrl;
+          }
+
+          /* -----------------------------
+             LINKVERTISE
+          ----------------------------- */
+
+          if (
+            provider ===
+            "linkvertise"
+          ) {
+            generatedShortUrl =
+              originalUrl;
+          }
+        } catch (
+          providerError
+        ) {
+          console.log(
+            "PROVIDER ERROR:",
+            providerError
+          );
+        }
+      }
+
+      /* -----------------------------
          CREATE SHORTLINK
       ----------------------------- */
 
@@ -64,26 +185,35 @@ exports.createShortlink =
 
           originalUrl,
 
+          shortUrl:
+            generatedShortUrl,
+
           reward:
-            Number(reward) || 0,
+            Number(reward) ||
+            0,
 
           expReward:
-            Number(expReward) ||
-            0,
+            Number(
+              expReward
+            ) || 0,
 
           timer:
-            Number(timer) || 0,
+            Number(timer) ||
+            0,
 
           dailyLimit:
-            Number(dailyLimit) ||
-            0,
+            Number(
+              dailyLimit
+            ) || 0,
 
           cooldown:
-            Number(cooldown) ||
-            0,
+            Number(
+              cooldown
+            ) || 0,
 
           status:
-            status || "active",
+            status ||
+            "active",
 
           category:
             category ||
@@ -97,7 +227,7 @@ exports.createShortlink =
 
           provider:
             provider ||
-            "internal",
+            "gplinks",
 
           apiKey:
             apiKey || null,
@@ -149,6 +279,10 @@ exports.getAllShortlinks =
           )
 
           .sort({
+            featured: -1,
+
+            priority: -1,
+
             createdAt: -1,
           });
 
@@ -182,7 +316,8 @@ exports.getAllShortlinks =
 exports.getSingleShortlink =
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
       const shortlink =
         await Shortlink.findById(
@@ -228,7 +363,8 @@ exports.getSingleShortlink =
 exports.updateShortlink =
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
       const updatedShortlink =
         await Shortlink.findByIdAndUpdate(
@@ -238,11 +374,14 @@ exports.updateShortlink =
 
           {
             new: true,
+
             runValidators: true,
           }
         );
 
-      if (!updatedShortlink) {
+      if (
+        !updatedShortlink
+      ) {
         return res.status(404).json({
           success: false,
 
@@ -282,14 +421,17 @@ exports.updateShortlink =
 exports.deleteShortlink =
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
       const deletedShortlink =
         await Shortlink.findByIdAndDelete(
           id
         );
 
-      if (!deletedShortlink) {
+      if (
+        !deletedShortlink
+      ) {
         return res.status(404).json({
           success: false,
 
@@ -326,7 +468,8 @@ exports.deleteShortlink =
 exports.toggleShortlinkStatus =
   async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } =
+        req.params;
 
       const shortlink =
         await Shortlink.findById(

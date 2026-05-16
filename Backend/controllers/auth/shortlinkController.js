@@ -91,6 +91,149 @@ exports.startShortlink =
           .toString("hex");
 
       /* -----------------------------
+         CALLBACK URL
+      ----------------------------- */
+
+      const callbackUrl =
+        `https://revadoobackend.onrender.com/api/shortlinks/complete/${sessionId}`;
+
+      /* -----------------------------
+         PROVIDER SYSTEM
+      ----------------------------- */
+
+      let generatedShortlink =
+        null;
+
+      const apiKey =
+        shortlink.apiKey;
+
+      /* -----------------------------
+         GPLINKS
+      ----------------------------- */
+
+
+if (
+  shortlink.provider ===
+  "gplinks"
+) {
+  const apiUrl =
+    `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(
+      callbackUrl
+    )}&alias=revadoo`;
+
+  const response =
+    await axios.get(apiUrl);
+
+  console.log(
+    "GPLINKS RESPONSE:",
+    response.data
+  );
+
+  /* -----------------------------
+     SAFE URL EXTRACTION
+  ----------------------------- */
+
+  if (
+    typeof response.data ===
+    "string"
+  ) {
+    generatedShortlink =
+      response.data;
+  }
+
+  else if (
+    response.data
+      ?.shortenedUrl
+  ) {
+    generatedShortlink =
+      response.data
+        .shortenedUrl;
+  }
+
+  else if (
+    response.data?.url
+  ) {
+    generatedShortlink =
+      response.data.url;
+  }
+
+  else {
+    return res.status(400).json({
+      success: false,
+
+      message:
+        "Failed to generate GPlinks URL",
+    });
+  }
+}
+      /* -----------------------------
+         SHRINKME
+      ----------------------------- */
+
+      if (
+        shortlink.provider ===
+        "shrinkme"
+      ) {
+        const apiUrl =
+          `https://shrinkme.io/api?api=${apiKey}&url=${encodeURIComponent(
+            callbackUrl
+          )}&format=json`;
+
+        const response =
+          await axios.get(apiUrl);
+
+        console.log(
+          "SHRINKME RESPONSE:",
+          response.data
+        );
+
+        generatedShortlink =
+          response.data
+            .shortenedUrl;
+      }
+
+      /* -----------------------------
+         EXE.IO
+      ----------------------------- */
+
+      if (
+        shortlink.provider ===
+        "exeio"
+      ) {
+        const apiUrl =
+          `https://exe.io/api?api=${apiKey}&url=${encodeURIComponent(
+            callbackUrl
+          )}&format=json`;
+
+        const response =
+          await axios.get(apiUrl);
+
+        console.log(
+          "EXE.IO RESPONSE:",
+          response.data
+        );
+
+        generatedShortlink =
+          response.data
+            .shortenedUrl;
+      }
+
+      /* -----------------------------
+         VALIDATION
+      ----------------------------- */
+
+      if (
+        !generatedShortlink
+      ) {
+        return res.status(400).json({
+          success: false,
+
+          message:
+            "Failed to generate shortlink",
+        });
+      }
+
+      /* -----------------------------
          CREATE SESSION
       ----------------------------- */
 
@@ -113,6 +256,15 @@ exports.startShortlink =
           req.headers[
             "user-agent"
           ],
+
+        providerShortUrl:
+          generatedShortlink,
+
+        providerLinkId:
+          null,
+
+        providerAlias:
+          null,
       });
 
       /* -----------------------------
@@ -120,44 +272,6 @@ exports.startShortlink =
       ----------------------------- */
 
       shortlink.totalVisits += 1;
-
-      await shortlink.save();
-
-      /* -----------------------------
-         CALLBACK URL
-      ----------------------------- */
-
-      const callbackUrl =
-        `https://revadoobackend.onrender.com/api/shortlinks/complete/${sessionId}`;
-
-      /* -----------------------------
-         SHRINKME API
-      ----------------------------- */
-
-      const apiKey =
-        shortlink.apiKey;
-
-      const apiUrl =
-        `https://shrinkme.io/api?api=${apiKey}&url=${encodeURIComponent(
-          callbackUrl
-        )}&format=text`;
-
-      const response =
-        await axios.get(apiUrl);
-
-      /* -----------------------------
-         GENERATED SHORT URL
-      ----------------------------- */
-
-      const generatedShortlink =
-        response.data;
-
-      /* -----------------------------
-         SAVE GENERATED URL
-      ----------------------------- */
-
-      shortlink.shortUrl =
-        generatedShortlink;
 
       await shortlink.save();
 

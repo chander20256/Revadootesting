@@ -91,6 +91,25 @@ const shortlinkSessionSchema =
       },
 
       /* -----------------------------
+         PROVIDER DATA
+      ----------------------------- */
+
+      providerShortUrl: {
+        type: String,
+        default: null,
+      },
+
+      providerLinkId: {
+        type: String,
+        default: null,
+      },
+
+      providerAlias: {
+        type: String,
+        default: null,
+      },
+
+      /* -----------------------------
          COMPLETED AT
       ----------------------------- */
 

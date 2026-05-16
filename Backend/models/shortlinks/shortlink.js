@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require(
+  "mongoose"
+);
 
 const shortlinkSchema =
   new mongoose.Schema(
@@ -42,18 +44,41 @@ const shortlinkSchema =
 
       apiMode: {
         type: Boolean,
-        default: false,
+        default: true,
       },
 
       provider: {
         type: String,
-        default: "internal",
+
+        enum: [
+          "gplinks",
+          "shrinkme",
+          "exeio",
+          "linkvertise",
+          "internal",
+        ],
+
+        default: "gplinks",
       },
 
       apiKey: {
         type: String,
         default: null,
         select: false,
+      },
+
+      /* -----------------------------
+         PROVIDER SETTINGS
+      ----------------------------- */
+
+      providerAlias: {
+        type: String,
+        default: null,
+      },
+
+      providerCampaign: {
+        type: String,
+        default: null,
       },
 
       /* -----------------------------
@@ -106,6 +131,7 @@ const shortlinkSchema =
 
       status: {
         type: String,
+
         enum: [
           "active",
           "paused",
@@ -205,6 +231,7 @@ const shortlinkSchema =
         default: null,
       },
     },
+
     {
       timestamps: true,
     }
@@ -216,6 +243,7 @@ const shortlinkSchema =
 
 shortlinkSchema.index({
   title: "text",
+
   category: "text",
 });
 

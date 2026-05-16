@@ -2,9 +2,12 @@
    Backend/routes/admin/shortlinkRoutes.js
 ========================================= */
 
-const express = require("express");
+const express = require(
+  "express"
+);
 
-const router = express.Router();
+const router =
+  express.Router();
 
 /* -----------------------------
    CONTROLLERS
@@ -98,4 +101,5 @@ router.patch(
    EXPORT
 ----------------------------- */
 
-module.exports = router;
+module.exports =
+  router;
