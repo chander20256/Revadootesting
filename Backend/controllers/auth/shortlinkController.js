@@ -303,7 +303,7 @@ exports.completeShortlink =
       ----------------------------- */
 
       return res.redirect(
-        "https://revadoo.vercel.app/dashboard/shortlinks"
+        "https://revadoo.vercel.app/dashboard/tasks/shortlinks"
       );
     } catch (error) {
       console.log(
