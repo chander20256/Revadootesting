@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useEffect,
   useState,
@@ -290,7 +291,7 @@ useEffect(() => {
 /* =============================
    VALUES
 ============================= */
-// eslint-disable-next-line no-unused-vars
+
 const maxTickets =
   drawData?.maxTicketsPerUser ||
   5;
