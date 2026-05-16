@@ -51,7 +51,6 @@ router.post(
 
 router.get(
   "/all",
-  protect,
   getAllShortlinks
 );
 
