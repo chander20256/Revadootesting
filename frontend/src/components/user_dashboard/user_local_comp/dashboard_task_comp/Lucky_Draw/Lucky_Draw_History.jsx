@@ -42,7 +42,12 @@ function Lucky_Draw_History() {
             }
           );
 
-        setHistory(data || []);
+        setHistory(
+          (data || []).slice(
+            0,
+            5
+          )
+        );
       } catch (error) {
         console.log(error);
 
@@ -307,7 +312,7 @@ function Lucky_Draw_History() {
                     <p className="text-sm font-semibold text-gray-600">
                       {new Date(
                         item.completedAt ||
-                          item.updatedAt
+                        item.updatedAt
                       ).toLocaleDateString(
                         "en-IN",
                         {
@@ -515,7 +520,7 @@ function Lucky_Draw_History() {
                   <h4 className="text-xs font-black text-black">
                     {new Date(
                       item.completedAt ||
-                        item.updatedAt
+                      item.updatedAt
                     ).toLocaleDateString(
                       "en-IN",
                       {
