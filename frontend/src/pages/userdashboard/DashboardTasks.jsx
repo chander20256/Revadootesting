@@ -8,6 +8,8 @@ import Captcha_main from "../../components/user_dashboard/user_local_comp/dashbo
 
 import Lucky_Draw_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/Lucky_Draw/Lucky_Draw_main";
 
+import Shortlinks_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/Short_links/Shortlinks_main";
+
 const DashboardTasks = () => {
   const { category } =
     useParams();
@@ -53,6 +55,21 @@ const DashboardTasks = () => {
     return (
       <div className="w-full min-h-screen p-4 md:p-6">
         <Lucky_Draw_main />
+      </div>
+    );
+  }
+
+  /* --------------------------------
+     SHORTLINKS
+  -------------------------------- */
+
+  if (
+    category ===
+    "shortlinks"
+  ) {
+    return (
+      <div className="w-full min-h-screen p-4 md:p-6">
+        <Shortlinks_main />
       </div>
     );
   }
