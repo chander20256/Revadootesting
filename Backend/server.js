@@ -420,6 +420,17 @@ app.use(
 );
 
 /* -----------------------------
+   ADMIN SHORTLINKS
+----------------------------- */
+
+app.use(
+  "/api/admin/shortlinks",
+  require(
+    "./routes/admin/shortlinkRoutes"
+  )
+);
+
+/* -----------------------------
    INVALID API ROUTE
 ----------------------------- */
 
