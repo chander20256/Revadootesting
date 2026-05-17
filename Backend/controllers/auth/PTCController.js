@@ -108,7 +108,7 @@ exports.startPTCSession =
       if (
         progress &&
         progress.lastCompletedDate ===
-          today
+        today
       ) {
         return res
           .status(400)
@@ -127,7 +127,7 @@ exports.startPTCSession =
       const expiresAt =
         new Date(
           Date.now() +
-            5 * 60 * 1000
+          5 * 60 * 1000
         );
 
       const session =
@@ -144,7 +144,7 @@ exports.startPTCSession =
 
             userAgent:
               req.headers[
-                "user-agent"
+              "user-agent"
               ],
           }
         );
@@ -271,7 +271,7 @@ exports.completePTCSession =
 
         {
           $inc: {
-            totalCreds:
+            creds:
               ad.reward,
           },
         }
@@ -343,7 +343,7 @@ exports.completePTCSession =
 
           lastUserAgent:
             req.headers[
-              "user-agent"
+            "user-agent"
             ],
         },
 

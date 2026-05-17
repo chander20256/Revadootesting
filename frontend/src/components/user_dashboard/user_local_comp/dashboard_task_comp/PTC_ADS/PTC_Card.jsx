@@ -611,76 +611,102 @@ function PTC_Card({
 
       {/* BUTTON */}
 
-      <button
-        onClick={
-          handleStart
-        }
-        disabled={
-          isRunning
-        }
+      {/* RESET TEXT */}
+
+{completed && (
+  <p
+    className="
+      text-[9px]
+      sm:text-[11px]
+      font-semibold
+      mt-3
+      mb-2
+      text-center
+    "
+    style={{
+      color:
+        "#9ca3af",
+    }}
+  >
+    Reclaim again at
+    12:00 AM
+  </p>
+)}
+
+{/* BUTTON */}
+
+<button
+  onClick={
+    handleStart
+  }
+  disabled={
+    isRunning ||
+    completed
+  }
+  className="
+    mt-4
+    h-10
+    sm:h-11
+    w-full
+    rounded-2xl
+    text-[11px]
+    sm:text-sm
+    font-black
+    transition-all
+    duration-300
+    flex
+    items-center
+    justify-center
+  "
+  style={{
+    background:
+      completed
+        ? "#ef4444"
+        : isRunning
+        ? "#FF6B00"
+        : "#22c55e",
+
+    color:
+      "#ffffff",
+
+    cursor:
+      isRunning ||
+      completed
+        ? "not-allowed"
+        : "pointer",
+  }}
+>
+  {isRunning ? (
+    <div
+      className="
+        flex
+        items-center
+        justify-center
+        gap-2
+      "
+    >
+      <div
         className="
-          mt-4
-          h-10
-          sm:h-11
-          w-full
-          rounded-2xl
-          text-[11px]
-          sm:text-sm
-          font-black
-          transition-all
-          duration-300
-          flex
-          items-center
-          justify-center
+          w-2
+          h-2
+          rounded-full
+          animate-pulse
         "
         style={{
           background:
-            completed
-              ? "#ef4444"
-              : isRunning
-              ? "#FF6B00"
-              : "#22c55e",
-
-          color:
             "#ffffff",
-
-          cursor:
-            isRunning
-              ? "not-allowed"
-              : "pointer",
         }}
-      >
-        {isRunning ? (
-          <div
-            className="
-              flex
-              items-center
-              justify-center
-              gap-2
-            "
-          >
-            <div
-              className="
-                w-2
-                h-2
-                rounded-full
-                animate-pulse
-              "
-              style={{
-                background:
-                  "#ffffff",
-              }}
-            />
+      />
 
-            {currentTimer}s
-            Left
-          </div>
-        ) : completed ? (
-          "Reward Ready"
-        ) : (
-          "Visit Ad"
-        )}
-      </button>
+      {currentTimer}s
+      Left
+    </div>
+  ) : completed ? (
+    "Completed"
+  ) : (
+    "Visit Ad"
+  )}
+</button>
     </div>
 
     {/* FAVORITE BADGE */}
