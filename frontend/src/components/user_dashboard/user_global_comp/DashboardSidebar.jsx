@@ -178,7 +178,7 @@ const DashboardSidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) =>
     },
 
     {
-      key: "ptc",
+      key: "ptc-ads",
       label: "PTC Ads",
 
       description:

@@ -10,6 +10,8 @@ import Lucky_Draw_main from "../../components/user_dashboard/user_local_comp/das
 
 import Shortlinks_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/Short_links/Shortlinks_main";
 
+import PTC_main from "../../components/user_dashboard/user_local_comp/dashboard_task_comp/PTC_ADS/PTC_main";
+
 const DashboardTasks = () => {
   const { category } =
     useParams();
@@ -73,6 +75,21 @@ const DashboardTasks = () => {
       </div>
     );
   }
+
+  /* --------------------------------
+   PTC ADS
+-------------------------------- */
+
+if (
+  category ===
+  "ptc-ads"
+) {
+  return (
+    <div className="w-full min-h-screen p-4 md:p-6">
+      <PTC_main />
+    </div>
+  );
+}
 
   /* --------------------------------
      DEFAULT TASKS PAGE
