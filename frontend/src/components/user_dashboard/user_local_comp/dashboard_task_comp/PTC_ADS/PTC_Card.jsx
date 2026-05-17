@@ -3,6 +3,8 @@ import React, {
   useState,
 } from "react";
 
+import axios from "axios";
+
 import Swal from "sweetalert2";
 
 function PTC_Card({
@@ -34,7 +36,6 @@ function PTC_Card({
     setAdWindow,
   ] = useState(null);
 
-
   /* =========================================
      TIMER + TAB CHECK
   ========================================= */
@@ -47,98 +48,149 @@ function PTC_Card({
       currentTimer > 0
     ) {
       interval =
-        setInterval(() => {
-          /* USER RETURNED */
+        setInterval(
+          async () => {
+            /* USER RETURNED */
 
-          if (
-            !document.hidden
-          ) {
-            clearInterval(
-              interval
-            );
+            if (
+              !document.hidden
+            ) {
+              clearInterval(
+                interval
+              );
 
-            setIsRunning(
-              false
-            );
+              setIsRunning(
+                false
+              );
 
-            setCurrentTimer(
-              ad.timer
-            );
-
-            document.title =
-              "Revadoo";
-
-            Swal.fire({
-              icon: "warning",
-
-              title:
-                "Timer Reset",
-
-              text: "You returned before timer completion.",
-
-              confirmButtonColor:
-                "#FF6B00",
-            });
-
-            return;
-          }
-
-          /* USER CLOSED TAB */
-
-          if (
-            adWindow &&
-            adWindow.closed
-          ) {
-            clearInterval(
-              interval
-            );
-
-            setIsRunning(
-              false
-            );
-
-            setCurrentTimer(
-              ad.timer
-            );
-
-            document.title =
-              "Revadoo";
-
-            Swal.fire({
-              icon: "error",
-
-              title:
-                "Ad Closed",
-
-              text: "You closed the ad before completion.",
-
-              confirmButtonColor:
-                "#FF6B00",
-            });
-
-            return;
-          }
-
-          /* COUNTDOWN */
-
-          setCurrentTimer(
-            (prev) => {
-              const newTime =
-                prev - 1;
+              setCurrentTimer(
+                ad.timer
+              );
 
               document.title =
-                `⏳ ${newTime}s Left | Revadoo`;
+                "Revadoo";
 
-              return newTime;
+              try {
+                await axios.post(
+                  "https://revadoobackend.onrender.com/api/ptc/cancel",
+
+                  {},
+
+                  {
+                    headers:
+                      {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                  }
+                );
+              } catch (error) {
+                console.log(
+                  error
+                );
+              }
+
+              Swal.fire({
+                icon:
+                  "warning",
+
+                title:
+                  "Timer Reset",
+
+                text: "You returned before timer completion.",
+
+                confirmButtonColor:
+                  "#FF6B00",
+              });
+
+              return;
             }
-          );
-        }, 1000);
+
+            /* USER CLOSED TAB */
+
+            if (
+              adWindow &&
+              adWindow.closed
+            ) {
+              clearInterval(
+                interval
+              );
+
+              setIsRunning(
+                false
+              );
+
+              setCurrentTimer(
+                ad.timer
+              );
+
+              document.title =
+                "Revadoo";
+
+              try {
+                await axios.post(
+                  "https://revadoobackend.onrender.com/api/ptc/cancel",
+
+                  {},
+
+                  {
+                    headers:
+                      {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                  }
+                );
+              } catch (error) {
+                console.log(
+                  error
+                );
+              }
+
+              Swal.fire({
+                icon:
+                  "error",
+
+                title:
+                  "Ad Closed",
+
+                text: "You closed the ad before completion.",
+
+                confirmButtonColor:
+                  "#FF6B00",
+              });
+
+              return;
+            }
+
+            /* COUNTDOWN */
+
+            setCurrentTimer(
+              (
+                prev
+              ) => {
+                const newTime =
+                  prev - 1;
+
+                document.title =
+                  `⏳ ${newTime}s Left | Revadoo`;
+
+                return newTime;
+              }
+            );
+          },
+
+          1000
+        );
     }
 
     /* COMPLETE */
 
     if (
-      currentTimer === 0 &&
+      currentTimer ===
+        0 &&
       isRunning
     ) {
       clearInterval(
@@ -147,39 +199,97 @@ function PTC_Card({
 
       setIsRunning(false);
 
-      setCompleted(true);
+      /* COMPLETE API */
 
-      /* TAB TITLE */
+      const completeTask =
+        async () => {
+          try {
+            const response =
+              await axios.post(
+                "https://revadoobackend.onrender.com/api/ptc/complete",
 
-      document.title =
-        "🎉 Reward Ready | Revadoo";
+                {
+                  adId:
+                    ad._id,
+                },
 
-      /* SUCCESS ALERT */
+                {
+                  headers:
+                    {
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "token"
+                      )}`,
+                    },
+                }
+              );
 
-      Swal.fire({
-        icon: "success",
+            if (
+              response.data
+                .success
+            ) {
+              setCompleted(
+                true
+              );
 
-        title:
-          "Reward Ready!",
+              document.title =
+                "🎉 Reward Ready | Revadoo";
 
-        text: `You successfully completed ${ad.title}.`,
+              Swal.fire({
+                icon:
+                  "success",
 
-        confirmButtonColor:
-          "#FF6B00",
-      });
+                title:
+                  "Reward Claimed!",
 
-      /* TEST MODE RESET */
+                text: `You earned ${response.data.reward} Creds.`,
 
-      setTimeout(() => {
-        setCompleted(false);
+                confirmButtonColor:
+                  "#FF6B00",
+              });
 
-        setCurrentTimer(
-          ad.timer
-        );
+              setTimeout(
+                () => {
+                  setCompleted(
+                    false
+                  );
 
-        document.title =
-          "Revadoo";
-      }, 3000);
+                  setCurrentTimer(
+                    ad.timer
+                  );
+
+                  document.title =
+                    "Revadoo";
+                },
+
+                3000
+              );
+            }
+          } catch (error) {
+            console.log(
+              error
+            );
+
+            Swal.fire({
+              icon:
+                "error",
+
+              title:
+                "Verification Failed",
+
+              text:
+                error
+                  ?.response
+                  ?.data
+                  ?.message ||
+                "PTC verification failed.",
+
+              confirmButtonColor:
+                "#FF6B00",
+            });
+          }
+        };
+
+      completeTask();
     }
 
     return () =>
@@ -191,7 +301,7 @@ function PTC_Card({
     currentTimer,
     adWindow,
     ad.timer,
-    ad.title,
+    ad._id,
   ]);
 
   /* =========================================
@@ -199,51 +309,107 @@ function PTC_Card({
   ========================================= */
 
   const handleStart =
-    () => {
-      const newTab =
-        window.open(
-          ad.adUrl,
-          "_blank"
+    async () => {
+      try {
+        /* START SESSION */
+
+        const response =
+          await axios.post(
+            "https://revadoobackend.onrender.com/api/ptc/start",
+
+            {
+              adId:
+                ad._id,
+            },
+
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem(
+                  "token"
+                )}`,
+              },
+            }
+          );
+
+        if (
+          !response.data
+            .success
+        ) {
+          return;
+        }
+
+        /* OPEN AD */
+
+        const newTab =
+          window.open(
+            ad.adUrl,
+            "_blank"
+          );
+
+        if (!newTab) {
+          Swal.fire({
+            icon:
+              "error",
+
+            title:
+              "Popup Blocked",
+
+            text: "Please allow popups.",
+
+            confirmButtonColor:
+              "#FF6B00",
+          });
+
+          return;
+        }
+
+        setAdWindow(
+          newTab
         );
 
-      if (!newTab) {
+        /* START TIMER */
+
+        setCurrentTimer(
+          ad.timer
+        );
+
+        setIsRunning(true);
+
+        Swal.fire({
+          icon: "info",
+
+          title:
+            "PTC Started",
+
+          text: `Stay on the ad page for ${ad.timer} seconds.`,
+
+          timer: 2000,
+
+          showConfirmButton:
+            false,
+        });
+      } catch (error) {
+        console.log(
+          error
+        );
+
         Swal.fire({
           icon: "error",
 
           title:
-            "Popup Blocked",
+            "PTC Failed",
 
-          text: "Please allow popups for Revadoo.",
+          text:
+            error
+              ?.response
+              ?.data
+              ?.message ||
+            "Unable to start PTC.",
 
           confirmButtonColor:
             "#FF6B00",
         });
-
-        return;
       }
-
-      setAdWindow(
-        newTab
-      );
-
-      setCurrentTimer(
-        ad.timer
-      );
-
-      setIsRunning(true);
-
-      Swal.fire({
-        icon: "info",
-
-        title:
-          "PTC Started",
-
-        text: `Stay on the ad page for ${ad.timer} seconds.`,
-
-        timer: 2000,
-
-        showConfirmButton: false,
-      });
     };
 
   return (
@@ -274,8 +440,6 @@ function PTC_Card({
       {/* TOP */}
 
       <div className="flex items-start justify-between gap-2">
-        {/* PROVIDER */}
-
         <div
           className="
             min-w-[34px]
@@ -303,8 +467,6 @@ function PTC_Card({
           {ad.provider}
         </div>
 
-        {/* FAVORITE */}
-
         <button
           onClick={() =>
             toggleFavorite(
@@ -321,8 +483,6 @@ function PTC_Card({
       {/* CONTENT */}
 
       <div className="mt-3 flex-1 flex flex-col">
-        {/* TITLE */}
-
         <h2
           className="
             text-[11px]
@@ -333,8 +493,6 @@ function PTC_Card({
         >
           {ad.title}
         </h2>
-
-        {/* TYPE */}
 
         <div
           className="
@@ -358,8 +516,6 @@ function PTC_Card({
         >
           {ad.adType}
         </div>
-
-        {/* REWARD */}
 
         <div className="flex gap-1 mt-2 flex-wrap">
           <div
@@ -404,27 +560,6 @@ function PTC_Card({
         </div>
 
         <div className="flex-1" />
-
-        {/* TEST TEXT */}
-
-        <p
-          className="
-            text-[9px]
-            sm:text-[10px]
-            mt-3
-            mb-2
-            font-medium
-          "
-          style={{
-            color:
-              "#9ca3af",
-          }}
-        >
-          Test mode enabled for
-          repeated PTC testing.
-        </p>
-
-        {/* BUTTON */}
 
         <button
           onClick={
@@ -494,7 +629,7 @@ function PTC_Card({
         </button>
       </div>
 
-      {/* FAVORITE BADGE */}
+      {/* FAVORITE */}
 
       {isFavorite && (
         <div

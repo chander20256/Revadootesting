@@ -77,33 +77,6 @@ function PTC_grid() {
   };
 
   /* =========================================
-     OPEN AD
-  ========================================= */
-
-  const startAdTimer = (
-    ad
-  ) => {
-    const newWindow =
-      window.open(
-        ad.adUrl,
-        "_blank"
-      );
-
-    if (!newWindow) {
-      alert(
-        "Popup blocked"
-      );
-
-      return;
-    }
-
-    console.log(
-      "Opened Ad:",
-      ad
-    );
-  };
-
-  /* =========================================
      FILTERED ADS
   ========================================= */
 
@@ -393,9 +366,6 @@ function PTC_grid() {
                 )}
                 toggleFavorite={
                   toggleFavorite
-                }
-                startAdTimer={
-                  startAdTimer
                 }
               />
             )
