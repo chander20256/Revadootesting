@@ -11,6 +11,10 @@ import {
   FaLink,
 } from "react-icons/fa";
 
+import {
+  FaRectangleAd,
+} from "react-icons/fa6";
+
 const AdminSidebar = ({
   isOpen,
   closeSidebar,
@@ -21,9 +25,10 @@ const AdminSidebar = ({
   const navClass = ({
     isActive,
   }) =>
-    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${isActive
-      ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
-      : "text-white/70 hover:bg-white/10 hover:text-white"
+    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${
+      isActive
+        ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
+        : "text-white/70 hover:bg-white/10 hover:text-white"
     }`;
 
   const content = (
@@ -56,11 +61,12 @@ const AdminSidebar = ({
                 "admin"
               )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel ===
-                "admin"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
+              activePanel ===
+              "admin"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-              }`}
+            }`}
           >
             Admin
           </button>
@@ -73,11 +79,12 @@ const AdminSidebar = ({
                 "cms"
               )
             }
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${activePanel ===
-                "cms"
+            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all duration-300 ${
+              activePanel ===
+              "cms"
                 ? "bg-orange-500 text-white"
                 : "text-white/60 hover:text-white"
-              }`}
+            }`}
           >
             CMS
           </button>
@@ -192,15 +199,39 @@ const AdminSidebar = ({
                 Ads Manager
               </NavLink>
 
+              {/* SHORTLINKS */}
+
               <NavLink
                 to="/admin/cms/shortlinks"
-                onClick={closeSidebar}
-                className={navClass}
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
               >
-                <FaLink size={15} />
+                <FaLink
+                  size={15}
+                />
                 Shortlinks
               </NavLink>
 
+              {/* PTC ADS */}
+
+              <NavLink
+                to="/admin/cms/ptc-ads"
+                onClick={
+                  closeSidebar
+                }
+                className={
+                  navClass
+                }
+              >
+                <FaRectangleAd
+                  size={15}
+                />
+                PTC Ads
+              </NavLink>
             </div>
           )}
       </nav>

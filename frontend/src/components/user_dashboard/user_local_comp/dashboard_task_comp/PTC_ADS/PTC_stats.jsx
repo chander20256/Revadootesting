@@ -78,12 +78,12 @@ function PTC_stats() {
       try {
         const response =
           await axios.get(
-            "https://revadoobackend.onrender.com/api/ptc/all"
+            "https://revadoobackend.onrender.com/api/admin/ptc-ads/all"
           );
 
         const ptcAds =
           response?.data
-            ?.ptcAds || [];
+            ?.data || [];
 
         /* =========================================
            TOTAL PTC ADS
@@ -319,16 +319,16 @@ function PTC_stats() {
           color: "#6b7280",
         }}
       >
-       Complete premium
-          paid-to-click ads daily
-          to earn instant Revadoo
-          creds, EXP bonuses,
-          streak rewards, and
-          trusted sponsor rewards.
-          Every PTC ad resets
-          automatically after
-          24 hours for daily
-          earning opportunities.
+        Complete premium
+        paid-to-click ads daily
+        to earn instant Revadoo
+        creds, EXP bonuses,
+        streak rewards, and
+        trusted sponsor rewards.
+        Every PTC ad resets
+        automatically after
+        24 hours for daily
+        earning opportunities.
       </p>
 
       {/* SEO SUB TEXT */}
@@ -344,16 +344,16 @@ function PTC_stats() {
           color: "#9ca3af",
         }}
       >
-       Watch sponsor ads,
-          complete external
-          campaigns, and unlock
-          high-paying PTC rewards
-          through trusted ad
-          networks on Revadoo.
-          Complete tasks once per
-          reset cycle to claim
-          rewards again after the
-          cooldown refreshes.
+        Watch sponsor ads,
+        complete external
+        campaigns, and unlock
+        high-paying PTC rewards
+        through trusted ad
+        networks on Revadoo.
+        Complete tasks once per
+        reset cycle to claim
+        rewards again after the
+        cooldown refreshes.
       </p>
 
       {/* STATS GRID */}
@@ -367,160 +367,167 @@ function PTC_stats() {
           sm:gap-4
         "
       >
-        {stats.map((item, index) => (
-          <article
-            key={index}
-            className="
-              relative
-              overflow-hidden
-              rounded-[22px]
-              sm:rounded-[28px]
-              p-3
-              sm:p-5
-              transition-all
-              duration-300
-              hover:-translate-y-1
-            "
-            style={{
-              background: "#ffffff",
+        {stats.map(
+          (item, index) => (
+            <article
+              key={index}
+              className="
+                relative
+                overflow-hidden
+                rounded-[22px]
+                sm:rounded-[28px]
+                p-3
+                sm:p-5
+                transition-all
+                duration-300
+                hover:-translate-y-1
+              "
+              style={{
+                background:
+                  "#ffffff",
 
-              border:
-                "1px solid rgba(0,0,0,0.06)",
+                border:
+                  "1px solid rgba(0,0,0,0.06)",
 
-              boxShadow:
-                "0 8px 20px rgba(0,0,0,0.04)",
-            }}
-          >
-            {/* TOP */}
+                boxShadow:
+                  "0 8px 20px rgba(0,0,0,0.04)",
+              }}
+            >
+              {/* TOP */}
 
-            <div className="flex items-start justify-between gap-2">
-              <div
-                className="
-                  w-10
-                  h-10
-                  sm:w-14
-                  sm:h-14
-                  rounded-2xl
-                  flex
-                  items-center
-                  justify-center
-                  text-lg
-                  sm:text-2xl
-                  shrink-0
-                "
-                style={{
-                  background:
-                    "rgba(255,107,0,0.10)",
-                }}
-              >
-                {item.icon}
+              <div className="flex items-start justify-between gap-2">
+                <div
+                  className="
+                    w-10
+                    h-10
+                    sm:w-14
+                    sm:h-14
+                    rounded-2xl
+                    flex
+                    items-center
+                    justify-center
+                    text-lg
+                    sm:text-2xl
+                    shrink-0
+                  "
+                  style={{
+                    background:
+                      "rgba(255,107,0,0.10)",
+                  }}
+                >
+                  {item.icon}
+                </div>
+
+                <div
+                  className="
+                    px-2
+                    sm:px-3
+                    py-1
+                    rounded-full
+                    text-[8px]
+                    sm:text-[10px]
+                    font-black
+                    uppercase
+                    tracking-wider
+                    whitespace-nowrap
+                  "
+                  style={{
+                    background:
+                      "rgba(255,107,0,0.08)",
+
+                    color:
+                      "#FF6B00",
+                  }}
+                >
+                  LIVE
+                </div>
               </div>
 
+              {/* CONTENT */}
+
+              <div className="mt-4 sm:mt-6 space-y-1 sm:space-y-2">
+                <h2
+                  className="
+                    text-xl
+                    sm:text-3xl
+                    font-black
+                    tracking-tight
+                    break-words
+                  "
+                  style={{
+                    color:
+                      "#030712",
+                  }}
+                >
+                  {item.value}
+                </h2>
+
+                <h3
+                  className="
+                    text-[11px]
+                    sm:text-sm
+                    font-bold
+                    leading-snug
+                  "
+                  style={{
+                    color:
+                      "#FF6B00",
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  className="
+                    hidden
+                    sm:block
+                    text-xs
+                    leading-relaxed
+                  "
+                  style={{
+                    color:
+                      "#6b7280",
+                  }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+
+              {/* PROGRESS */}
+
               <div
                 className="
-                  px-2
-                  sm:px-3
-                  py-1
+                  mt-4
+                  sm:mt-5
+                  h-[5px]
+                  sm:h-[6px]
                   rounded-full
-                  text-[8px]
-                  sm:text-[10px]
-                  font-black
-                  uppercase
-                  tracking-wider
-                  whitespace-nowrap
+                  overflow-hidden
                 "
                 style={{
                   background:
                     "rgba(255,107,0,0.08)",
-
-                  color: "#FF6B00",
                 }}
               >
-                LIVE
+                <div
+                  className="
+                    h-full
+                    rounded-full
+                    transition-all
+                    duration-500
+                  "
+                  style={{
+                    width:
+                      item.progress,
+
+                    background:
+                      "#FF6B00",
+                  }}
+                />
               </div>
-            </div>
-
-            {/* CONTENT */}
-
-            <div className="mt-4 sm:mt-6 space-y-1 sm:space-y-2">
-              <h2
-                className="
-                  text-xl
-                  sm:text-3xl
-                  font-black
-                  tracking-tight
-                  break-words
-                "
-                style={{
-                  color: "#030712",
-                }}
-              >
-                {item.value}
-              </h2>
-
-              <h3
-                className="
-                  text-[11px]
-                  sm:text-sm
-                  font-bold
-                  leading-snug
-                "
-                style={{
-                  color: "#FF6B00",
-                }}
-              >
-                {item.title}
-              </h3>
-
-              <p
-                className="
-                  hidden
-                  sm:block
-                  text-xs
-                  leading-relaxed
-                "
-                style={{
-                  color: "#6b7280",
-                }}
-              >
-                {item.desc}
-              </p>
-            </div>
-
-            {/* PROGRESS */}
-
-            <div
-              className="
-                mt-4
-                sm:mt-5
-                h-[5px]
-                sm:h-[6px]
-                rounded-full
-                overflow-hidden
-              "
-              style={{
-                background:
-                  "rgba(255,107,0,0.08)",
-              }}
-            >
-              <div
-                className="
-                  h-full
-                  rounded-full
-                  transition-all
-                  duration-500
-                "
-                style={{
-                  width:
-                    item.progress,
-
-                  background:
-                    "#FF6B00",
-                }}
-              />
-            </div>
-          </article>
-        ))}
+            </article>
+          )
+        )}
       </div>
     </section>
   );

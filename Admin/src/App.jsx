@@ -22,6 +22,8 @@ import CMS_AdsManager from "./pages/CMS_dashboard/CMS_AdsManager";
 
 import CMS_Shortlinks from "./pages/CMS_dashboard/CMS_Shortlinks";
 
+import CMS_PTCAds from "./pages/CMS_dashboard/CMS_PTCAds";
+
 import NotFoundPage from "./pages/NotFoundPage";
 
 import LoginPage from "./pages/LoginPage";
@@ -100,6 +102,15 @@ function App() {
             path="cms/shortlinks"
             element={
               <CMS_Shortlinks />
+            }
+          />
+
+          {/* CMS PTC ADS */}
+
+          <Route
+            path="cms/ptc-ads"
+            element={
+              <CMS_PTCAds />
             }
           />
         </Route>
