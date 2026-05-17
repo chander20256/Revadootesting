@@ -37,7 +37,7 @@ function PTC_Card({
   ] = useState(null);
 
   /* =========================================
-     TIMER + TAB CHECK
+     TIMER SYSTEM
   ========================================= */
 
   useEffect(() => {
@@ -98,7 +98,7 @@ function PTC_Card({
                 title:
                   "Timer Reset",
 
-                text: "You returned before timer completion.",
+                text: "You returned before completion.",
 
                 confirmButtonColor:
                   "#FF6B00",
@@ -107,7 +107,7 @@ function PTC_Card({
               return;
             }
 
-            /* USER CLOSED TAB */
+            /* TAB CLOSED */
 
             if (
               adWindow &&
@@ -165,7 +165,7 @@ function PTC_Card({
               return;
             }
 
-            /* COUNTDOWN */
+            /* TIMER */
 
             setCurrentTimer(
               (
@@ -198,8 +198,6 @@ function PTC_Card({
       );
 
       setIsRunning(false);
-
-      /* COMPLETE API */
 
       const completeTask =
         async () => {
@@ -246,23 +244,6 @@ function PTC_Card({
                 confirmButtonColor:
                   "#FF6B00",
               });
-
-              setTimeout(
-                () => {
-                  setCompleted(
-                    false
-                  );
-
-                  setCurrentTimer(
-                    ad.timer
-                  );
-
-                  document.title =
-                    "Revadoo";
-                },
-
-                3000
-              );
             }
           } catch (error) {
             console.log(
@@ -305,12 +286,43 @@ function PTC_Card({
   ]);
 
   /* =========================================
-     HANDLE START
+     START TASK
   ========================================= */
 
   const handleStart =
     async () => {
+      let openedTab = null;
+
       try {
+        /* OPEN TAB INSTANT */
+
+        openedTab =
+          window.open(
+            ad.adUrl,
+            "_blank"
+          );
+
+        if (!openedTab) {
+          Swal.fire({
+            icon:
+              "error",
+
+            title:
+              "Popup Blocked",
+
+            text: "Please allow popups.",
+
+            confirmButtonColor:
+              "#FF6B00",
+          });
+
+          return;
+        }
+
+        setAdWindow(
+          openedTab
+        );
+
         /* START SESSION */
 
         const response =
@@ -335,37 +347,10 @@ function PTC_Card({
           !response.data
             .success
         ) {
-          return;
-        }
-
-        /* OPEN AD */
-
-        const newTab =
-          window.open(
-            ad.adUrl,
-            "_blank"
-          );
-
-        if (!newTab) {
-          Swal.fire({
-            icon:
-              "error",
-
-            title:
-              "Popup Blocked",
-
-            text: "Please allow popups.",
-
-            confirmButtonColor:
-              "#FF6B00",
-          });
+          openedTab.close();
 
           return;
         }
-
-        setAdWindow(
-          newTab
-        );
 
         /* START TIMER */
 
@@ -375,6 +360,9 @@ function PTC_Card({
 
         setIsRunning(true);
 
+        document.title =
+          `⏳ ${ad.timer}s Left | Revadoo`;
+
         Swal.fire({
           icon: "info",
 
@@ -383,7 +371,7 @@ function PTC_Card({
 
           text: `Stay on the ad page for ${ad.timer} seconds.`,
 
-          timer: 2000,
+          timer: 1500,
 
           showConfirmButton:
             false,
@@ -393,6 +381,22 @@ function PTC_Card({
           error
         );
 
+        if (
+          openedTab &&
+          !openedTab.closed
+        ) {
+          openedTab.close();
+        }
+
+        setIsRunning(false);
+
+        setCurrentTimer(
+          ad.timer
+        );
+
+        document.title =
+          "Revadoo";
+
         Swal.fire({
           icon: "error",
 
@@ -400,8 +404,7 @@ function PTC_Card({
             "PTC Failed",
 
           text:
-            error
-              ?.response
+            error?.response
               ?.data
               ?.message ||
             "Unable to start PTC.",
@@ -413,160 +416,49 @@ function PTC_Card({
     };
 
   return (
-  <article
-    className="
-      relative
-      overflow-hidden
-      rounded-[20px]
-      sm:rounded-[28px]
-      p-3
-      sm:p-5
-      transition-all
-      duration-300
-      flex
-      flex-col
-      h-full
-      group
-    "
-    style={{
-      background:
-        "#ffffff",
+    <article
+      className="
+        relative
+        overflow-hidden
+        rounded-[22px]
+        sm:rounded-[28px]
+        p-3
+        sm:p-5
+        transition-all
+        duration-300
+        flex
+        flex-col
+        h-full
+      "
+      style={{
+        background:
+          "#ffffff",
 
-      border:
-        isFavorite
-          ? "1px solid rgba(255,107,0,0.18)"
-          : "1px solid rgba(0,0,0,0.06)",
+        border:
+          isFavorite
+            ? "1px solid rgba(255,107,0,0.18)"
+            : "1px solid rgba(0,0,0,0.06)",
 
-      boxShadow:
-        "0 10px 30px rgba(0,0,0,0.04)",
-    }}
-  >
-    {/* TOP */}
+        boxShadow:
+          "0 10px 30px rgba(0,0,0,0.04)",
+      }}
+    >
+      {/* TOP */}
 
-    <div className="flex items-start justify-between gap-2">
-      {/* PROVIDER */}
-
-      <div
-        className="
-          h-8
-          sm:h-10
-          px-3
-          rounded-xl
-          flex
-          items-center
-          justify-center
-          text-[9px]
-          sm:text-[11px]
-          font-black
-          uppercase
-          shrink-0
-        "
-        style={{
-          background:
-            "rgba(255,107,0,0.10)",
-
-          color:
-            "#FF6B00",
-        }}
-      >
-        {ad.provider}
-      </div>
-
-      {/* FAVORITE */}
-
-      <button
-        onClick={() =>
-          toggleFavorite(
-            ad._id
-          )
-        }
-        className="
-          w-8
-          h-8
-          rounded-xl
-          flex
-          items-center
-          justify-center
-          transition-all
-          duration-300
-        "
-        style={{
-          background:
-            "rgba(0,0,0,0.04)",
-        }}
-      >
-        <span className="text-sm">
-          {isFavorite
-            ? "⭐"
-            : "☆"}
-        </span>
-      </button>
-    </div>
-
-    {/* CONTENT */}
-
-    <div className="mt-4 flex flex-col flex-1">
-      {/* TITLE */}
-
-      <h2
-        className="
-          text-[12px]
-          sm:text-[17px]
-          font-black
-          leading-snug
-          line-clamp-2
-          min-h-[38px]
-          sm:min-h-[48px]
-        "
-        style={{
-          color:
-            "#111827",
-        }}
-      >
-        {ad.title}
-      </h2>
-
-      {/* BADGES */}
-
-      <div className="flex flex-wrap gap-1.5 mt-3">
-        {/* TYPE */}
-
+      <div className="flex items-center justify-between">
         <div
           className="
-            px-2.5
-            h-7
+            h-8
+            sm:h-10
+            px-3
             rounded-xl
             flex
             items-center
             justify-center
             text-[9px]
             sm:text-[11px]
-            font-bold
-          "
-          style={{
-            background:
-              "rgba(59,130,246,0.10)",
-
-            color:
-              "#2563eb",
-          }}
-        >
-          {ad.adType}
-        </div>
-
-        {/* REWARD */}
-
-        <div
-          className="
-            px-2.5
-            h-7
-            rounded-xl
-            flex
-            items-center
-            justify-center
-            text-[9px]
-            sm:text-[11px]
-            font-bold
+            font-black
+            uppercase
           "
           style={{
             background:
@@ -576,173 +468,220 @@ function PTC_Card({
               "#FF6B00",
           }}
         >
-          💰 {ad.reward}
+          {ad.provider}
         </div>
 
-        {/* TIMER */}
-
-        <div
+        <button
+          onClick={() =>
+            toggleFavorite(
+              ad._id
+            )
+          }
           className="
-            px-2.5
-            h-7
+            w-8
+            h-8
             rounded-xl
             flex
             items-center
             justify-center
-            text-[9px]
-            sm:text-[11px]
-            font-bold
           "
           style={{
             background:
-              "rgba(0,0,0,0.05)",
-
-            color:
-              "#6b7280",
+              "rgba(0,0,0,0.04)",
           }}
         >
-          ⏱ {ad.timer}s
+          {isFavorite
+            ? "⭐"
+            : "☆"}
+        </button>
+      </div>
+
+      {/* CONTENT */}
+
+      <div className="flex flex-col flex-1 mt-4">
+        <h2
+          className="
+            text-[12px]
+            sm:text-[16px]
+            font-black
+            leading-snug
+            line-clamp-2
+            min-h-[42px]
+            sm:min-h-[50px]
+          "
+        >
+          {ad.title}
+        </h2>
+
+        {/* BADGES */}
+
+        <div className="flex flex-wrap gap-2 mt-3">
+          <div
+            className="
+              px-2.5
+              h-7
+              rounded-xl
+              flex
+              items-center
+              text-[9px]
+              sm:text-[11px]
+              font-bold
+            "
+            style={{
+              background:
+                "rgba(59,130,246,0.10)",
+
+              color:
+                "#2563eb",
+            }}
+          >
+            {ad.adType}
+          </div>
+
+          <div
+            className="
+              px-2.5
+              h-7
+              rounded-xl
+              flex
+              items-center
+              text-[9px]
+              sm:text-[11px]
+              font-bold
+            "
+            style={{
+              background:
+                "rgba(255,107,0,0.10)",
+
+              color:
+                "#FF6B00",
+            }}
+          >
+            💰 {ad.reward}
+          </div>
+
+          <div
+            className="
+              px-2.5
+              h-7
+              rounded-xl
+              flex
+              items-center
+              text-[9px]
+              sm:text-[11px]
+              font-bold
+            "
+            style={{
+              background:
+                "rgba(0,0,0,0.05)",
+
+              color:
+                "#6b7280",
+            }}
+          >
+            ⏱ {ad.timer}s
+          </div>
         </div>
+
+        <div className="flex-1" />
+
+        {/* RESET TEXT */}
+
+        <div className="h-8 flex items-center justify-center mt-3">
+          {completed && (
+            <p
+              className="
+                text-[9px]
+                sm:text-[11px]
+                font-semibold
+                text-center
+              "
+              style={{
+                color:
+                  "#9ca3af",
+              }}
+            >
+              Reclaim again at
+              12:00 AM
+            </p>
+          )}
+        </div>
+
+        {/* BUTTON */}
+
+        <button
+          onClick={
+            handleStart
+          }
+          disabled={
+            isRunning ||
+            completed
+          }
+          className="
+            h-10
+            sm:h-11
+            w-full
+            rounded-2xl
+            text-[11px]
+            sm:text-sm
+            font-black
+            transition-all
+            duration-300
+            flex
+            items-center
+            justify-center
+            mt-1
+          "
+          style={{
+            background:
+              completed
+                ? "#ef4444"
+                : isRunning
+                ? "#FF6B00"
+                : "#22c55e",
+
+            color:
+              "#ffffff",
+
+            cursor:
+              isRunning ||
+              completed
+                ? "not-allowed"
+                : "pointer",
+          }}
+        >
+          {isRunning ? (
+            <div
+              className="
+                flex
+                items-center
+                gap-2
+              "
+            >
+              <div
+                className="
+                  w-2
+                  h-2
+                  rounded-full
+                  animate-pulse
+                "
+                style={{
+                  background:
+                    "#ffffff",
+                }}
+              />
+
+              {currentTimer}s Left
+            </div>
+          ) : completed ? (
+            "Completed"
+          ) : (
+            "Visit Ad"
+          )}
+        </button>
       </div>
-
-      {/* SPACER */}
-
-      <div className="flex-1" />
-
-      {/* BUTTON */}
-
-      {/* RESET TEXT */}
-
-{completed && (
-  <p
-    className="
-      text-[9px]
-      sm:text-[11px]
-      font-semibold
-      mt-3
-      mb-2
-      text-center
-    "
-    style={{
-      color:
-        "#9ca3af",
-    }}
-  >
-    Reclaim again at
-    12:00 AM
-  </p>
-)}
-
-{/* BUTTON */}
-
-<button
-  onClick={
-    handleStart
-  }
-  disabled={
-    isRunning ||
-    completed
-  }
-  className="
-    mt-4
-    h-10
-    sm:h-11
-    w-full
-    rounded-2xl
-    text-[11px]
-    sm:text-sm
-    font-black
-    transition-all
-    duration-300
-    flex
-    items-center
-    justify-center
-  "
-  style={{
-    background:
-      completed
-        ? "#ef4444"
-        : isRunning
-        ? "#FF6B00"
-        : "#22c55e",
-
-    color:
-      "#ffffff",
-
-    cursor:
-      isRunning ||
-      completed
-        ? "not-allowed"
-        : "pointer",
-  }}
->
-  {isRunning ? (
-    <div
-      className="
-        flex
-        items-center
-        justify-center
-        gap-2
-      "
-    >
-      <div
-        className="
-          w-2
-          h-2
-          rounded-full
-          animate-pulse
-        "
-        style={{
-          background:
-            "#ffffff",
-        }}
-      />
-
-      {currentTimer}s
-      Left
-    </div>
-  ) : completed ? (
-    "Completed"
-  ) : (
-    "Visit Ad"
-  )}
-</button>
-    </div>
-
-    {/* FAVORITE BADGE */}
-
-    {isFavorite && (
-      <div
-        className="
-          absolute
-          top-0
-          right-0
-          px-2
-          sm:px-3
-          h-6
-          sm:h-7
-          rounded-bl-2xl
-          flex
-          items-center
-          justify-center
-          text-[8px]
-          sm:text-[10px]
-          font-black
-          uppercase
-        "
-        style={{
-          background:
-            "#FF6B00",
-
-          color:
-            "#ffffff",
-        }}
-      >
-        Favorite
-      </div>
-    )}
-  </article>
-);
+    </article>
+  );
 }
 
 export default PTC_Card;

@@ -476,3 +476,71 @@ exports.getActivePTCSession =
         });
     }
   };
+
+/* =========================================
+   CHECK DAILY PTC STATUS
+========================================= */
+
+exports.checkPTCStatus =
+  async (
+    req,
+    res
+  ) => {
+    try {
+      const userId =
+        req.user.id;
+
+      const { adId } =
+        req.params;
+
+      /* TODAY DATE */
+
+      const today =
+        new Date()
+          .toISOString()
+          .split("T")[0];
+
+      /* USER PROGRESS */
+
+      const progress =
+        await PTCUserProgress.findOne(
+          {
+            userId,
+
+            adId,
+          }
+        );
+
+      /* CHECK TODAY */
+
+      const completed =
+        progress &&
+        progress.lastCompletedDate ===
+          today;
+
+      return res
+        .status(200)
+        .json({
+          success: true,
+
+          completed:
+            completed || false,
+
+          lastCompletedDate:
+            progress
+              ?.lastCompletedDate ||
+            null,
+        });
+    } catch (error) {
+      console.log(error);
+
+      return res
+        .status(500)
+        .json({
+          success: false,
+
+          message:
+            "Server error",
+        });
+    }
+  };

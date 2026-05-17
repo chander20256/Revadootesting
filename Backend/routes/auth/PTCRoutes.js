@@ -26,6 +26,8 @@ const {
   cancelPTCSession,
 
   getActivePTCSession,
+
+  checkPTCStatus,
 } = require(
   "../../controllers/auth/PTCController"
 );
@@ -76,6 +78,18 @@ router.get(
   protect,
 
   getActivePTCSession
+);
+
+/* =========================================
+   CHECK PTC STATUS
+========================================= */
+
+router.get(
+  "/status/:adId",
+
+  protect,
+
+  checkPTCStatus
 );
 
 module.exports =
