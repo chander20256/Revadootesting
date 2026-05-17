@@ -246,90 +246,91 @@ function PTC_grid() {
       
 
       {/* FILTERS */}
-
-      <div
+<div
+  className="
+    grid
+    grid-cols-2
+    sm:flex
+    sm:flex-wrap
+    gap-2
+    mb-5
+  "
+>
+  {categories.map(
+    (item, index) => (
+      <button
+        key={index}
+        onClick={() =>
+          setActiveType(
+            item.key
+          )
+        }
         className="
+          h-10
+          px-3
+          rounded-xl
           flex
           items-center
+          justify-center
           gap-2
-          overflow-x-auto
-          pb-2
-          mb-5
+          transition-all
+          duration-300
+          w-full
+          sm:w-auto
         "
+        style={{
+          background:
+            activeType ===
+            item.key
+              ? item.color
+              : "#f9fafb",
+
+          border:
+            activeType ===
+            item.key
+              ? `1px solid ${item.text}20`
+              : "1px solid rgba(0,0,0,0.06)",
+        }}
       >
-        {categories.map(
-          (item, index) => (
-            <button
-              key={index}
-              onClick={() =>
-                setActiveType(
-                  item.key
-                )
-              }
-              className="
-                h-10
-                px-3
-                rounded-xl
-                flex
-                items-center
-                gap-2
-                transition-all
-                duration-300
-                shrink-0
-              "
-              style={{
-                background:
-                  activeType ===
-                  item.key
-                    ? item.color
-                    : "#f9fafb",
+        <div
+          className="
+            min-w-[24px]
+            h-6
+            px-2
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            text-[10px]
+            font-black
+          "
+          style={{
+            background:
+              item.color,
 
-                border:
-                  activeType ===
-                  item.key
-                    ? `1px solid ${item.text}20`
-                    : "1px solid rgba(0,0,0,0.06)",
-              }}
-            >
-              <div
-                className="
-                  min-w-[24px]
-                  h-6
-                  px-2
-                  rounded-lg
-                  flex
-                  items-center
-                  justify-center
-                  text-[10px]
-                  font-black
-                "
-                style={{
-                  background:
-                    item.color,
+            color:
+              item.text,
+          }}
+        >
+          {item.value}
+        </div>
 
-                  color:
-                    item.text,
-                }}
-              >
-                {item.value}
-              </div>
-
-              <span
-                className="
-                  text-xs
-                  font-bold
-                "
-                style={{
-                  color:
-                    "#4b5563",
-                }}
-              >
-                {item.title}
-              </span>
-            </button>
-          )
-        )}
-      </div>
+        <span
+          className="
+            text-xs
+            font-bold
+          "
+          style={{
+            color:
+              "#4b5563",
+          }}
+        >
+          {item.title}
+        </span>
+      </button>
+    )
+  )}
+</div>
 
       {/* GRID */}
 
