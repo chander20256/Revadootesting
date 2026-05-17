@@ -437,6 +437,17 @@ app.use(
 );
 
 /* -----------------------------
+   ADMIN PTC ADS
+----------------------------- */
+
+app.use(
+  "/api/admin/ptc-ads",
+  require(
+    "./routes/admin/PTCAdsRoutes"
+  )
+);
+
+/* -----------------------------
    INVALID API ROUTE
 ----------------------------- */
 
