@@ -4,6 +4,10 @@ const mongoose =
 const PTCAdsSchema =
   new mongoose.Schema(
     {
+      /* =========================================
+         BASIC INFO
+      ========================================= */
+
       title: {
         type: String,
 
@@ -11,6 +15,16 @@ const PTCAdsSchema =
 
         trim: true,
       },
+
+      description: {
+        type: String,
+
+        default: "",
+      },
+
+      /* =========================================
+         AD TYPE
+      ========================================= */
 
       adType: {
         type: String,
@@ -26,6 +40,10 @@ const PTCAdsSchema =
           "window",
       },
 
+      /* =========================================
+         PROVIDER
+      ========================================= */
+
       provider: {
         type: String,
 
@@ -39,11 +57,19 @@ const PTCAdsSchema =
           "monetag",
       },
 
+      /* =========================================
+         URL
+      ========================================= */
+
       adUrl: {
         type: String,
 
         required: true,
       },
+
+      /* =========================================
+         REWARD
+      ========================================= */
 
       reward: {
         type: Number,
@@ -53,6 +79,10 @@ const PTCAdsSchema =
         default: 0,
       },
 
+      /* =========================================
+         TIMER
+      ========================================= */
+
       timer: {
         type: Number,
 
@@ -61,11 +91,19 @@ const PTCAdsSchema =
         default: 15,
       },
 
+      /* =========================================
+         DAILY LIMIT
+      ========================================= */
+
       dailyLimit: {
         type: Number,
 
         default: 1,
       },
+
+      /* =========================================
+         STATUS
+      ========================================= */
 
       status: {
         type: String,
@@ -78,12 +116,138 @@ const PTCAdsSchema =
         default:
           "active",
       },
+
+      /* =========================================
+         ANALYTICS
+      ========================================= */
+
+      totalViews: {
+        type: Number,
+
+        default: 0,
+      },
+
+      totalCompletions: {
+        type: Number,
+
+        default: 0,
+      },
+
+      totalRewardsDistributed:
+        {
+          type: Number,
+
+          default: 0,
+        },
+
+      uniqueUsers: {
+        type: Number,
+
+        default: 0,
+      },
+
+      /* =========================================
+         TODAY STATS
+      ========================================= */
+
+      todayViews: {
+        type: Number,
+
+        default: 0,
+      },
+
+      todayCompletions:
+        {
+          type: Number,
+
+          default: 0,
+        },
+
+      todayRewardsDistributed:
+        {
+          type: Number,
+
+          default: 0,
+        },
+
+      /* =========================================
+         LAST RESET
+      ========================================= */
+
+      lastDailyReset: {
+        type: Date,
+
+        default:
+          Date.now,
+      },
+
+      /* =========================================
+         FEATURED
+      ========================================= */
+
+      featured: {
+        type: Boolean,
+
+        default: false,
+      },
+
+      /* =========================================
+         DEVICE SUPPORT
+      ========================================= */
+
+      deviceTarget: {
+        type: String,
+
+        enum: [
+          "all",
+          "desktop",
+          "mobile",
+        ],
+
+        default: "all",
+      },
+
+      /* =========================================
+         COUNTRY TARGET
+      ========================================= */
+
+      countries: [
+        {
+          type: String,
+        },
+      ],
+
+      /* =========================================
+         AUTO EXPIRE
+      ========================================= */
+
+      expiresAt: {
+        type: Date,
+
+        default: null,
+      },
     },
 
     {
       timestamps: true,
     }
   );
+
+/* =========================================
+   INDEXES
+========================================= */
+
+PTCAdsSchema.index({
+  status: 1,
+});
+
+PTCAdsSchema.index({
+  provider: 1,
+});
+
+PTCAdsSchema.index({
+  adType: 1,
+});
 
 module.exports =
   mongoose.model(

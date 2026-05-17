@@ -34,19 +34,6 @@ function PTC_Card({
     setAdWindow,
   ] = useState(null);
 
-  /* =========================================
-     COMPLETION SOUND
-  ========================================= */
-
-  const playCompleteSound =
-    () => {
-      const audio =
-        new Audio(
-          "https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
-        );
-
-      audio.play();
-    };
 
   /* =========================================
      TIMER + TAB CHECK
@@ -166,10 +153,6 @@ function PTC_Card({
 
       document.title =
         "🎉 Reward Ready | Revadoo";
-
-      /* SOUND */
-
-      playCompleteSound();
 
       /* SUCCESS ALERT */
 
