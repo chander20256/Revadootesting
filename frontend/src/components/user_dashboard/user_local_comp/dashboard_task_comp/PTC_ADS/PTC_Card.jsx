@@ -413,98 +413,135 @@ function PTC_Card({
     };
 
   return (
-    <article
-      className="
-        relative
-        overflow-hidden
-        rounded-[18px]
-        sm:rounded-[28px]
-        p-2.5
-        sm:p-5
-        transition-all
-        duration-300
-        flex
-        flex-col
-        h-full
-      "
-      style={{
-        background:
-          "#ffffff",
+  <article
+    className="
+      relative
+      overflow-hidden
+      rounded-[20px]
+      sm:rounded-[28px]
+      p-3
+      sm:p-5
+      transition-all
+      duration-300
+      flex
+      flex-col
+      h-full
+      group
+    "
+    style={{
+      background:
+        "#ffffff",
 
-        border:
-          isFavorite
-            ? "1px solid rgba(255,107,0,0.25)"
-            : "1px solid rgba(0,0,0,0.06)",
-      }}
-    >
-      {/* TOP */}
+      border:
+        isFavorite
+          ? "1px solid rgba(255,107,0,0.18)"
+          : "1px solid rgba(0,0,0,0.06)",
 
-      <div className="flex items-start justify-between gap-2">
+      boxShadow:
+        "0 10px 30px rgba(0,0,0,0.04)",
+    }}
+  >
+    {/* TOP */}
+
+    <div className="flex items-start justify-between gap-2">
+      {/* PROVIDER */}
+
+      <div
+        className="
+          h-8
+          sm:h-10
+          px-3
+          rounded-xl
+          flex
+          items-center
+          justify-center
+          text-[9px]
+          sm:text-[11px]
+          font-black
+          uppercase
+          shrink-0
+        "
+        style={{
+          background:
+            "rgba(255,107,0,0.10)",
+
+          color:
+            "#FF6B00",
+        }}
+      >
+        {ad.provider}
+      </div>
+
+      {/* FAVORITE */}
+
+      <button
+        onClick={() =>
+          toggleFavorite(
+            ad._id
+          )
+        }
+        className="
+          w-8
+          h-8
+          rounded-xl
+          flex
+          items-center
+          justify-center
+          transition-all
+          duration-300
+        "
+        style={{
+          background:
+            "rgba(0,0,0,0.04)",
+        }}
+      >
+        <span className="text-sm">
+          {isFavorite
+            ? "⭐"
+            : "☆"}
+        </span>
+      </button>
+    </div>
+
+    {/* CONTENT */}
+
+    <div className="mt-4 flex flex-col flex-1">
+      {/* TITLE */}
+
+      <h2
+        className="
+          text-[12px]
+          sm:text-[17px]
+          font-black
+          leading-snug
+          line-clamp-2
+          min-h-[38px]
+          sm:min-h-[48px]
+        "
+        style={{
+          color:
+            "#111827",
+        }}
+      >
+        {ad.title}
+      </h2>
+
+      {/* BADGES */}
+
+      <div className="flex flex-wrap gap-1.5 mt-3">
+        {/* TYPE */}
+
         <div
           className="
-            min-w-[34px]
-            h-8
-            sm:min-w-[48px]
-            sm:h-12
-            px-2
+            px-2.5
+            h-7
             rounded-xl
             flex
             items-center
             justify-center
-            text-[8px]
-            sm:text-xs
-            font-black
-            uppercase
-          "
-          style={{
-            background:
-              "rgba(255,107,0,0.10)",
-
-            color:
-              "#FF6B00",
-          }}
-        >
-          {ad.provider}
-        </div>
-
-        <button
-          onClick={() =>
-            toggleFavorite(
-              ad._id
-            )
-          }
-        >
-          {isFavorite
-            ? "⭐"
-            : "☆"}
-        </button>
-      </div>
-
-      {/* CONTENT */}
-
-      <div className="mt-3 flex-1 flex flex-col">
-        <h2
-          className="
-            text-[11px]
-            sm:text-lg
-            font-black
-            leading-snug
-          "
-        >
-          {ad.title}
-        </h2>
-
-        <div
-          className="
-            mt-2
-            inline-flex
-            px-2
-            py-1
-            rounded-full
-            text-[8px]
-            sm:text-xs
+            text-[9px]
+            sm:text-[11px]
             font-bold
-            w-fit
           "
           style={{
             background:
@@ -517,147 +554,169 @@ function PTC_Card({
           {ad.adType}
         </div>
 
-        <div className="flex gap-1 mt-2 flex-wrap">
-          <div
-            className="
-              px-2
-              py-1
-              rounded-full
-              text-[8px]
-              sm:text-xs
-              font-bold
-            "
-            style={{
-              background:
-                "rgba(255,107,0,0.10)",
+        {/* REWARD */}
 
-              color:
-                "#FF6B00",
-            }}
-          >
-            {ad.reward} Creds
-          </div>
-
-          <div
-            className="
-              px-2
-              py-1
-              rounded-full
-              text-[8px]
-              sm:text-xs
-              font-bold
-            "
-            style={{
-              background:
-                "rgba(0,0,0,0.05)",
-
-              color:
-                "#6b7280",
-            }}
-          >
-            {ad.timer}s
-          </div>
-        </div>
-
-        <div className="flex-1" />
-
-        <button
-          onClick={
-            handleStart
-          }
-          disabled={
-            isRunning
-          }
-          className="
-            h-9
-            sm:h-10
-            w-full
-            rounded-xl
-            text-[10px]
-            sm:text-sm
-            font-bold
-            transition-all
-            duration-300
-          "
-          style={{
-            background:
-              completed
-                ? "#ef4444"
-                : isRunning
-                ? "#FF6B00"
-                : "#22c55e",
-
-            color:
-              "#ffffff",
-
-            cursor:
-              isRunning
-                ? "not-allowed"
-                : "pointer",
-          }}
-        >
-          {isRunning ? (
-            <div
-              className="
-                flex
-                items-center
-                justify-center
-                gap-2
-              "
-            >
-              <div
-                className="
-                  w-2
-                  h-2
-                  rounded-full
-                  animate-pulse
-                "
-                style={{
-                  background:
-                    "#ffffff",
-                }}
-              />
-
-              {currentTimer}s
-              Left
-            </div>
-          ) : completed ? (
-            "Reward Ready"
-          ) : (
-            "Visit"
-          )}
-        </button>
-      </div>
-
-      {/* FAVORITE */}
-
-      {isFavorite && (
         <div
           className="
-            absolute
-            top-0
-            right-0
-            px-2
-            py-1
-            rounded-bl-xl
-            text-[7px]
-            sm:text-[10px]
-            font-black
-            uppercase
+            px-2.5
+            h-7
+            rounded-xl
+            flex
+            items-center
+            justify-center
+            text-[9px]
+            sm:text-[11px]
+            font-bold
           "
           style={{
             background:
-              "#FF6B00",
+              "rgba(255,107,0,0.10)",
 
             color:
-              "#ffffff",
+              "#FF6B00",
           }}
         >
-          Fav
+          💰 {ad.reward}
         </div>
-      )}
-    </article>
-  );
+
+        {/* TIMER */}
+
+        <div
+          className="
+            px-2.5
+            h-7
+            rounded-xl
+            flex
+            items-center
+            justify-center
+            text-[9px]
+            sm:text-[11px]
+            font-bold
+          "
+          style={{
+            background:
+              "rgba(0,0,0,0.05)",
+
+            color:
+              "#6b7280",
+          }}
+        >
+          ⏱ {ad.timer}s
+        </div>
+      </div>
+
+      {/* SPACER */}
+
+      <div className="flex-1" />
+
+      {/* BUTTON */}
+
+      <button
+        onClick={
+          handleStart
+        }
+        disabled={
+          isRunning
+        }
+        className="
+          mt-4
+          h-10
+          sm:h-11
+          w-full
+          rounded-2xl
+          text-[11px]
+          sm:text-sm
+          font-black
+          transition-all
+          duration-300
+          flex
+          items-center
+          justify-center
+        "
+        style={{
+          background:
+            completed
+              ? "#ef4444"
+              : isRunning
+              ? "#FF6B00"
+              : "#22c55e",
+
+          color:
+            "#ffffff",
+
+          cursor:
+            isRunning
+              ? "not-allowed"
+              : "pointer",
+        }}
+      >
+        {isRunning ? (
+          <div
+            className="
+              flex
+              items-center
+              justify-center
+              gap-2
+            "
+          >
+            <div
+              className="
+                w-2
+                h-2
+                rounded-full
+                animate-pulse
+              "
+              style={{
+                background:
+                  "#ffffff",
+              }}
+            />
+
+            {currentTimer}s
+            Left
+          </div>
+        ) : completed ? (
+          "Reward Ready"
+        ) : (
+          "Visit Ad"
+        )}
+      </button>
+    </div>
+
+    {/* FAVORITE BADGE */}
+
+    {isFavorite && (
+      <div
+        className="
+          absolute
+          top-0
+          right-0
+          px-2
+          sm:px-3
+          h-6
+          sm:h-7
+          rounded-bl-2xl
+          flex
+          items-center
+          justify-center
+          text-[8px]
+          sm:text-[10px]
+          font-black
+          uppercase
+        "
+        style={{
+          background:
+            "#FF6B00",
+
+          color:
+            "#ffffff",
+        }}
+      >
+        Favorite
+      </div>
+    )}
+  </article>
+);
 }
 
 export default PTC_Card;
