@@ -8,7 +8,7 @@ const PTCUserProgress =
   require("../../models/ptcads/PTCUserProgressModel");
 
 const User =
-  require("../../models/user/UserModel");
+  require("../../models/User");
 
 /* =========================================
    START PTC SESSION
