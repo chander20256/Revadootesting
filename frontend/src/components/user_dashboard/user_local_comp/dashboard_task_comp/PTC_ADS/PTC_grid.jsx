@@ -88,7 +88,7 @@ function PTC_grid() {
 
       type: "youtube",
 
-      completedToday: true,
+      completedToday: false,
     },
   ];
 
@@ -293,15 +293,16 @@ function PTC_grid() {
         </p>
       </div>
 
-      {/* TOP FILTERS */}
+      {/* FILTERS */}
 
       <div
         className="
           flex
           items-center
-          gap-3
+          gap-2
+          sm:gap-3
           flex-wrap
-          mb-6
+          mb-5
         "
       >
         {categories.map(
@@ -314,13 +315,15 @@ function PTC_grid() {
                 )
               }
               className="
-                h-11
-                px-4
+                h-10
+                sm:h-11
+                px-3
                 sm:px-5
                 rounded-xl
                 flex
                 items-center
-                gap-3
+                gap-2
+                sm:gap-3
                 transition-all
                 duration-300
               "
@@ -340,14 +343,17 @@ function PTC_grid() {
             >
               <div
                 className="
-                  min-w-[28px]
-                  h-7
+                  min-w-[24px]
+                  h-6
+                  sm:min-w-[28px]
+                  sm:h-7
                   px-2
                   rounded-lg
                   flex
                   items-center
                   justify-center
-                  text-[11px]
+                  text-[10px]
+                  sm:text-[11px]
                   font-black
                 "
                 style={{
@@ -363,8 +369,8 @@ function PTC_grid() {
 
               <span
                 className="
-                  text-sm
-                  sm:text-base
+                  text-xs
+                  sm:text-sm
                   font-bold
                 "
                 style={{
@@ -384,7 +390,8 @@ function PTC_grid() {
       <div
         className="
           grid
-          grid-cols-2
+          grid-cols-1
+          sm:grid-cols-2
           xl:grid-cols-4
           gap-3
           sm:gap-5
@@ -405,13 +412,12 @@ function PTC_grid() {
                 className="
                   relative
                   overflow-hidden
-                  rounded-[22px]
+                  rounded-[20px]
                   sm:rounded-[28px]
                   p-3
                   sm:p-5
                   transition-all
                   duration-300
-                  hover:-translate-y-1
                 "
                 style={{
                   background:
@@ -433,7 +439,7 @@ function PTC_grid() {
 
                   <div
                     className="
-                      min-w-[40px]
+                      min-w-[42px]
                       h-10
                       sm:min-w-[48px]
                       sm:h-12
@@ -470,11 +476,9 @@ function PTC_grid() {
                     {ad.provider ===
                     "monetag"
                       ? "MT"
-
                       : ad.provider ===
                         "adsterra"
                       ? "AD"
-
                       : "PP"}
                   </div>
 
@@ -511,14 +515,14 @@ function PTC_grid() {
 
                 {/* CONTENT */}
 
-                <div className="mt-4 sm:mt-5">
+                <div className="mt-4">
                   <h2
                     className="
                       text-sm
                       sm:text-lg
                       font-black
                       leading-snug
-                      line-clamp-2
+                      break-words
                     "
                     style={{
                       color:
@@ -629,9 +633,9 @@ function PTC_grid() {
 
                 <div
                   className="
-                    mt-4
+                    mt-5
                     flex
-                    items-center
+                    items-end
                     justify-between
                     gap-3
                   "
@@ -690,12 +694,11 @@ function PTC_grid() {
                       ad.completedToday
                     }
                     className="
-                      h-9
-                      sm:h-10
-                      px-3
-                      sm:px-4
+                      h-10
+                      min-w-[92px]
+                      px-4
                       rounded-xl
-                      text-[10px]
+                      text-[11px]
                       sm:text-sm
                       font-bold
                       transition-all
