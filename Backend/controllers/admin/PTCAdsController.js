@@ -3,6 +3,11 @@ const PTCAds =
     "../../models/ptcads/PTCAdsModel"
   );
 
+const PTCUserProgress =
+  require(
+    "../../models/ptcads/PTCUserProgressModel"
+  );
+
 /* =========================================
    CREATE PTC AD
 ========================================= */
@@ -97,6 +102,8 @@ const getAllPTCAds =
     res
   ) => {
     try {
+      /* GET ADS */
+
       const ads =
         await PTCAds.find().sort(
           {
@@ -105,13 +112,50 @@ const getAllPTCAds =
           }
         );
 
+      /* TODAY DATE */
+
+      const today =
+        new Date()
+          .toISOString()
+          .split("T")[0];
+
+      /* ADD COMPLETION DATA */
+
+      const updatedAds =
+        await Promise.all(
+          ads.map(
+            async (ad) => {
+              const completedCount =
+                await PTCUserProgress.countDocuments(
+                  {
+                    adId:
+                      ad._id,
+
+                    lastCompletedDate:
+                      today,
+                  }
+                );
+
+              return {
+                ...ad.toObject(),
+
+                totalCompleted:
+                  completedCount,
+              };
+            }
+          )
+        );
+
+      /* RESPONSE */
+
       res.status(200).json({
         success: true,
 
         count:
-          ads.length,
+          updatedAds.length,
 
-        data: ads,
+        data:
+          updatedAds,
       });
     } catch (error) {
       console.error(

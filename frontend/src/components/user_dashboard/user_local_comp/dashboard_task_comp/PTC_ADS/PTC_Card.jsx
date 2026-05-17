@@ -37,6 +37,45 @@ function PTC_Card({
   ] = useState(null);
 
   /* =========================================
+     CHECK DAILY STATUS
+  ========================================= */
+
+  useEffect(() => {
+    const checkStatus =
+      async () => {
+        try {
+          const response =
+            await axios.get(
+              `https://revadoobackend.onrender.com/api/ptc/status/${ad._id}`,
+
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "token"
+                  )}`,
+                },
+              }
+            );
+
+          setCompleted(
+            response.data
+              .completed || false
+          );
+        } catch (error) {
+          console.log(
+            error
+          );
+
+          setCompleted(
+            false
+          );
+        }
+      };
+
+    checkStatus();
+  }, [ad._id]);
+
+  /* =========================================
      TIMER SYSTEM
   ========================================= */
 
@@ -294,7 +333,7 @@ function PTC_Card({
       let openedTab = null;
 
       try {
-        /* OPEN TAB INSTANT */
+        /* OPEN TAB */
 
         openedTab =
           window.open(
@@ -351,8 +390,6 @@ function PTC_Card({
 
           return;
         }
-
-        /* START TIMER */
 
         setCurrentTimer(
           ad.timer
@@ -601,8 +638,8 @@ function PTC_Card({
                   "#9ca3af",
               }}
             >
-              Reclaim again at
-              12:00 AM
+              Available again
+              after 12:00 AM
             </p>
           )}
         </div>

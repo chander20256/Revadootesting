@@ -4,12 +4,12 @@ import React, {
 
 import axios from "axios";
 
+import Swal from "sweetalert2";
+
 function PTC_CreateAds() {
   const [formData, setFormData] =
     useState({
       title: "",
-
-      adType: "window",
 
       provider:
         "monetag",
@@ -20,8 +20,6 @@ function PTC_CreateAds() {
 
       timer: "",
 
-      dailyLimit: "1",
-
       status: "active",
     });
 
@@ -29,75 +27,113 @@ function PTC_CreateAds() {
      HANDLE INPUT
   ========================================= */
 
-  const handleChange = (
-    e
-  ) => {
-    setFormData({
-      ...formData,
+  /* =========================================
+   HANDLE INPUT
+========================================= */
 
-      [e.target.name]:
-        e.target.value,
-    });
-  };
+const handleChange = (
+  e
+) => {
+  const {
+    name,
+    value,
+  } = e.target;
 
+  /* BLOCK NEGATIVE */
+
+  if (
+    (name ===
+      "reward" ||
+      name ===
+        "timer") &&
+    Number(value) < 0
+  ) {
+    return;
+  }
+
+  setFormData({
+    ...formData,
+
+    [name]: value,
+  });
+};
   /* =========================================
      HANDLE SUBMIT
   ========================================= */
 
- const handleSubmit =
-  async (e) => {
-    e.preventDefault();
+  const handleSubmit =
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      const response =
-        await axios.post(
-          "https://revadoobackend.onrender.com/api/admin/ptc-ads/create",
+      try {
+        const response =
+          await axios.post(
+            "https://revadoobackend.onrender.com/api/admin/ptc-ads/create",
 
-          formData
+            {
+              ...formData,
+
+              adType:
+                "window",
+            }
+          );
+
+        if (
+          response.data.success
+        ) {
+          Swal.fire({
+            icon:
+              "success",
+
+            title:
+              "PTC Ad Created",
+
+            text: "Campaign created successfully.",
+
+            confirmButtonColor:
+              "#FF6B00",
+          });
+
+          setFormData({
+            title: "",
+
+            provider:
+              "monetag",
+
+            adUrl: "",
+
+            reward: "",
+
+            timer: "",
+
+            status:
+              "active",
+          });
+        }
+      } catch (error) {
+        console.error(
+          "CREATE ERROR:",
+          error
         );
 
-      if (
-        response.data.success
-      ) {
-        alert(
-          "PTC Ad Created Successfully"
-        );
+        Swal.fire({
+          icon:
+            "error",
 
-        setFormData({
-          title: "",
+          title:
+            "Creation Failed",
 
-          adType:
-            "window",
+          text:
+            error.response
+              ?.data
+              ?.message ||
+            "Failed to create PTC Ad",
 
-          provider:
-            "monetag",
-
-          adUrl: "",
-
-          reward: "",
-
-          timer: "",
-
-          dailyLimit:
-            "1",
-
-          status:
-            "active",
+          confirmButtonColor:
+            "#FF6B00",
         });
       }
-    } catch (error) {
-      console.error(
-        "CREATE ERROR:",
-        error
-      );
-
-      alert(
-        error.response?.data
-          ?.message ||
-          "Failed to create PTC Ad"
-      );
-    }
-  };
+    };
 
   return (
     <section
@@ -144,10 +180,8 @@ function PTC_CreateAds() {
               "#6b7280",
           }}
         >
-          Create reusable
-          paid-to-click ads and
-          reward campaigns for
-          your users.
+          Create daily reward
+          campaigns for users.
         </p>
       </div>
 
@@ -175,19 +209,6 @@ function PTC_CreateAds() {
           >
             Ad Title
           </label>
-
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Name shown to users
-            on the PTC card.
-          </p>
 
           <input
             type="text"
@@ -217,73 +238,6 @@ function PTC_CreateAds() {
           />
         </div>
 
-        {/* AD TYPE */}
-
-        <div className="space-y-2">
-          <label
-            className="
-              text-sm
-              font-bold
-            "
-          >
-            Ad Type
-          </label>
-
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Choose how the ad
-            opens for the user.
-          </p>
-
-          <select
-            name="adType"
-            value={
-              formData.adType
-            }
-            onChange={
-              handleChange
-            }
-            className="
-              w-full
-              h-12
-              rounded-2xl
-              px-4
-              outline-none
-              text-sm
-            "
-            style={{
-              background:
-                "#f9fafb",
-
-              border:
-                "1px solid rgba(0,0,0,0.06)",
-            }}
-          >
-            <option value="window">
-              Window
-            </option>
-
-            <option value="iframe">
-              Iframe
-            </option>
-
-            <option value="external">
-              External
-            </option>
-
-            <option value="youtube">
-              Youtube
-            </option>
-          </select>
-        </div>
-
         {/* PROVIDER */}
 
         <div className="space-y-2">
@@ -295,19 +249,6 @@ function PTC_CreateAds() {
           >
             Provider
           </label>
-
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Select the ad network
-            provider source.
-          </p>
 
           <select
             name="provider"
@@ -356,24 +297,12 @@ function PTC_CreateAds() {
               font-bold
             "
           >
-            Reward
+            Reward Creds
           </label>
 
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Creds rewarded after
-            successful completion.
-          </p>
-
-          <input
-            type="number"
+         <input
+  type="number"
+  min="0"
             name="reward"
             value={
               formData.reward
@@ -409,24 +338,12 @@ function PTC_CreateAds() {
               font-bold
             "
           >
-            Timer
+            Timer (Seconds)
           </label>
 
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Time users must stay
-            before reward unlocks.
-          </p>
-
           <input
-            type="number"
+  type="number"
+  min="0"
             name="timer"
             value={
               formData.timer
@@ -453,60 +370,7 @@ function PTC_CreateAds() {
           />
         </div>
 
-        {/* DAILY LIMIT */}
-
-        <div className="space-y-2">
-          <label
-            className="
-              text-sm
-              font-bold
-            "
-          >
-            Daily Limit
-          </label>
-
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            How many times a user
-            can complete daily.
-          </p>
-
-          <input
-            type="number"
-            name="dailyLimit"
-            value={
-              formData.dailyLimit
-            }
-            onChange={
-              handleChange
-            }
-            placeholder="1"
-            className="
-              w-full
-              h-12
-              rounded-2xl
-              px-4
-              outline-none
-              text-sm
-            "
-            style={{
-              background:
-                "#f9fafb",
-
-              border:
-                "1px solid rgba(0,0,0,0.06)",
-            }}
-          />
-        </div>
-
-        {/* AD URL */}
+        {/* URL */}
 
         <div className="space-y-2 md:col-span-2">
           <label
@@ -517,20 +381,6 @@ function PTC_CreateAds() {
           >
             Ad URL
           </label>
-
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Destination link users
-            will visit to complete
-            the task.
-          </p>
 
           <input
             type="text"
@@ -572,19 +422,6 @@ function PTC_CreateAds() {
             Status
           </label>
 
-          <p
-            className="
-              text-xs
-            "
-            style={{
-              color:
-                "#6b7280",
-            }}
-          >
-            Enable or pause this
-            PTC campaign anytime.
-          </p>
-
           <select
             name="status"
             value={
@@ -617,6 +454,31 @@ function PTC_CreateAds() {
               Paused
             </option>
           </select>
+        </div>
+
+        {/* INFO */}
+
+        <div
+          className="
+            rounded-2xl
+            p-4
+            flex
+            items-center
+            text-xs
+            leading-relaxed
+          "
+          style={{
+            background:
+              "rgba(255,107,0,0.08)",
+
+            color:
+              "#92400e",
+          }}
+        >
+          Users can complete this
+          ad once per day. Rewards
+          automatically reset at
+          12:00 AM.
         </div>
 
         {/* BUTTON */}

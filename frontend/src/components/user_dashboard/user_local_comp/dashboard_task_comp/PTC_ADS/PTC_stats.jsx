@@ -24,14 +24,14 @@ function PTC_stats() {
 
       {
         title:
-          "Total Creds Available",
+          "Creds Remaining",
 
         value: 0,
 
         icon: "💰",
 
         desc:
-          "Rewards available from PTC ads",
+          "0 creds claimed today",
 
         progress: "0%",
       },
@@ -93,10 +93,10 @@ function PTC_stats() {
           ptcAds.length || 0;
 
         /* =========================================
-           TOTAL CREDS AVAILABLE
+           TOTAL CREDS
         ========================================= */
 
-        const totalCredsAvailable =
+        const totalCreds =
           ptcAds.reduce(
             (acc, item) => {
               return (
@@ -131,6 +131,18 @@ function PTC_stats() {
 
             0
           ) || 0;
+
+        /* =========================================
+           REMAINING CREDS
+        ========================================= */
+
+        const totalCredsAvailable =
+          Math.max(
+            totalCreds -
+              claimedToday,
+
+            0
+          );
 
         /* =========================================
            COMPLETED TODAY
@@ -174,7 +186,7 @@ function PTC_stats() {
 
           {
             title:
-              "Total Creds Available",
+              "Creds Remaining",
 
             value:
               totalCredsAvailable ||
@@ -182,8 +194,7 @@ function PTC_stats() {
 
             icon: "💰",
 
-            desc:
-              "Rewards available from PTC ads",
+            desc: `${claimedToday} creds claimed today`,
 
             progress:
               totalCredsAvailable >
@@ -235,7 +246,7 @@ function PTC_stats() {
         );
 
         /* =========================================
-           KEEP ZERO UI
+           RESET UI
         ========================================= */
 
         setStats([
@@ -255,14 +266,14 @@ function PTC_stats() {
 
           {
             title:
-              "Total Creds Available",
+              "Creds Remaining",
 
             value: 0,
 
             icon: "💰",
 
             desc:
-              "Rewards available from PTC ads",
+              "0 creds claimed today",
 
             progress: "0%",
           },
@@ -350,10 +361,6 @@ function PTC_stats() {
         high-paying PTC rewards
         through trusted ad
         networks on Revadoo.
-        Complete tasks once per
-        reset cycle to claim
-        rewards again after the
-        cooldown refreshes.
       </p>
 
       {/* STATS GRID */}

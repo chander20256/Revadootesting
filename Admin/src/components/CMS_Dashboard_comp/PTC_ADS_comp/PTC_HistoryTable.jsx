@@ -5,6 +5,8 @@ import React, {
 
 import axios from "axios";
 
+import Swal from "sweetalert2";
+
 function PTC_HistoryTable() {
   const [ads, setAds] =
     useState([]);
@@ -48,6 +50,34 @@ function PTC_HistoryTable() {
 
   const handleDelete =
     async (id) => {
+      const result =
+        await Swal.fire({
+          title:
+            "Delete PTC Ad?",
+
+          text: "This action cannot be undone.",
+
+          icon: "warning",
+
+          showCancelButton:
+            true,
+
+          confirmButtonColor:
+            "#ef4444",
+
+          cancelButtonColor:
+            "#9ca3af",
+
+          confirmButtonText:
+            "Delete",
+        });
+
+      if (
+        !result.isConfirmed
+      ) {
+        return;
+      }
+
       try {
         const response =
           await axios.delete(
@@ -63,12 +93,39 @@ function PTC_HistoryTable() {
                 ad._id !== id
             )
           );
+
+          Swal.fire({
+            icon:
+              "success",
+
+            title:
+              "Deleted",
+
+            text: "PTC Ad removed successfully.",
+
+            confirmButtonColor:
+              "#FF6B00",
+          });
         }
       } catch (error) {
         console.error(
           "DELETE ERROR:",
           error
         );
+
+        Swal.fire({
+          icon:
+            "error",
+
+          title:
+            "Delete Failed",
+
+          text:
+            "Unable to delete ad.",
+
+          confirmButtonColor:
+            "#FF6B00",
+        });
       }
     };
 
@@ -126,9 +183,8 @@ function PTC_HistoryTable() {
               "#6b7280",
           }}
         >
-          Manage existing PTC
-          campaigns and remove
-          inactive ads.
+          Manage active daily
+          reward campaigns.
         </p>
       </div>
 
@@ -182,14 +238,14 @@ function PTC_HistoryTable() {
             }}
           >
             Create your first PTC
-            ad from the form above.
+            campaign above.
           </p>
         </div>
       ) : (
         /* TABLE */
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[850px]">
+          <table className="w-full min-w-[650px]">
             {/* HEAD */}
 
             <thead>
@@ -201,10 +257,6 @@ function PTC_HistoryTable() {
               >
                 {[
                   "Title",
-
-                  "Type",
-
-                  "Provider",
 
                   "Reward",
 
@@ -286,52 +338,9 @@ function PTC_HistoryTable() {
                               "#9ca3af",
                           }}
                         >
-                          PTC Campaign
+                          Daily Reward Campaign
                         </p>
                       </div>
-                    </td>
-
-                    {/* TYPE */}
-
-                    <td className="py-4 px-3">
-                      <div
-                        className="
-                          inline-flex
-                          items-center
-                          px-3
-                          py-1
-                          rounded-full
-                          text-xs
-                          font-bold
-                        "
-                        style={{
-                          background:
-                            "rgba(59,130,246,0.10)",
-
-                          color:
-                            "#2563eb",
-                        }}
-                      >
-                        {ad.adType}
-                      </div>
-                    </td>
-
-                    {/* PROVIDER */}
-
-                    <td className="py-4 px-3">
-                      <span
-                        className="
-                          text-sm
-                          font-semibold
-                          capitalize
-                        "
-                        style={{
-                          color:
-                            "#374151",
-                        }}
-                      >
-                        {ad.provider}
-                      </span>
                     </td>
 
                     {/* REWARD */}
