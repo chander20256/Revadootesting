@@ -8,8 +8,11 @@ const router =
    AUTH MIDDLEWARE
 ========================================= */
 
-const authMiddleware =
-  require("../../middleware/auth");
+const {
+  protect,
+} = require(
+  "../../middleware/auth"
+);
 
 /* =========================================
    CONTROLLERS
@@ -34,7 +37,7 @@ const {
 router.post(
   "/start",
 
-  authMiddleware,
+  protect,
 
   startPTCSession
 );
@@ -46,7 +49,7 @@ router.post(
 router.post(
   "/complete",
 
-  authMiddleware,
+  protect,
 
   completePTCSession
 );
@@ -58,7 +61,7 @@ router.post(
 router.post(
   "/cancel",
 
-  authMiddleware,
+  protect,
 
   cancelPTCSession
 );
@@ -70,7 +73,7 @@ router.post(
 router.get(
   "/active",
 
-  authMiddleware,
+  protect,
 
   getActivePTCSession
 );
