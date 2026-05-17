@@ -305,50 +305,7 @@ function PTC_stats() {
           "'DM Sans', sans-serif",
       }}
     >
-      {/* SEO TEXT */}
-
-      <p
-        className="
-          text-xs
-          sm:text-sm
-          font-medium
-          leading-relaxed
-          mb-2
-        "
-        style={{
-          color: "#6b7280",
-        }}
-      >
-        Complete premium
-        paid-to-click ads, earn
-        instant Revadoo creds,
-        unlock daily rewards,
-        and maximize your online
-        earnings with trusted PTC
-        sponsor campaigns.
-      </p>
-
-      {/* SEO SUB TEXT */}
-
-      <p
-        className="
-          text-[11px]
-          sm:text-xs
-          leading-relaxed
-          mb-5
-        "
-        style={{
-          color: "#9ca3af",
-        }}
-      >
-        Discover high-paying PTC
-        ads, sponsor tasks,
-        external reward campaigns,
-        and daily earning
-        opportunities through the
-        Revadoo rewards platform.
-      </p>
-
+    
       {/* STATS GRID */}
 
       <div
