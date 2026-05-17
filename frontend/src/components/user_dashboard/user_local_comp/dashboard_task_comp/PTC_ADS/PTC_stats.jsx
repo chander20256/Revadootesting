@@ -305,7 +305,57 @@ function PTC_stats() {
           "'DM Sans', sans-serif",
       }}
     >
-    
+      {/* SEO TEXT */}
+
+      <p
+        className="
+          text-xs
+          sm:text-sm
+          font-medium
+          leading-relaxed
+          mb-2
+        "
+        style={{
+          color: "#6b7280",
+        }}
+      >
+       Complete premium
+          paid-to-click ads daily
+          to earn instant Revadoo
+          creds, EXP bonuses,
+          streak rewards, and
+          trusted sponsor rewards.
+          Every PTC ad resets
+          automatically after
+          24 hours for daily
+          earning opportunities.
+      </p>
+
+      {/* SEO SUB TEXT */}
+
+      <p
+        className="
+          text-[11px]
+          sm:text-xs
+          leading-relaxed
+          mb-5
+        "
+        style={{
+          color: "#9ca3af",
+        }}
+      >
+       Watch sponsor ads,
+          complete external
+          campaigns, and unlock
+          high-paying PTC rewards
+          through trusted ad
+          networks on Revadoo.
+          Complete tasks once per
+          reset cycle to claim
+          rewards again after the
+          cooldown refreshes.
+      </p>
+
       {/* STATS GRID */}
 
       <div
