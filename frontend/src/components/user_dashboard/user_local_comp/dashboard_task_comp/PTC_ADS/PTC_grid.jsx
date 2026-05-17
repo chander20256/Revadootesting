@@ -252,8 +252,8 @@ function PTC_grid() {
           flex
           items-center
           gap-2
-          sm:gap-3
-          flex-wrap
+          overflow-x-auto
+          pb-2
           mb-5
         "
       >
@@ -268,16 +268,14 @@ function PTC_grid() {
               }
               className="
                 h-10
-                sm:h-11
                 px-3
-                sm:px-5
                 rounded-xl
                 flex
                 items-center
                 gap-2
-                sm:gap-3
                 transition-all
                 duration-300
+                shrink-0
               "
               style={{
                 background:
@@ -297,15 +295,12 @@ function PTC_grid() {
                 className="
                   min-w-[24px]
                   h-6
-                  sm:min-w-[28px]
-                  sm:h-7
                   px-2
                   rounded-lg
                   flex
                   items-center
                   justify-center
                   text-[10px]
-                  sm:text-[11px]
                   font-black
                 "
                 style={{
@@ -322,7 +317,6 @@ function PTC_grid() {
               <span
                 className="
                   text-xs
-                  sm:text-sm
                   font-bold
                 "
                 style={{
@@ -342,10 +336,9 @@ function PTC_grid() {
       <div
         className="
           grid
-          grid-cols-1
-          sm:grid-cols-2
+          grid-cols-2
           xl:grid-cols-4
-          gap-3
+          gap-2
           sm:gap-5
         "
       >
@@ -364,9 +357,9 @@ function PTC_grid() {
                 className="
                   relative
                   overflow-hidden
-                  rounded-[20px]
+                  rounded-[18px]
                   sm:rounded-[28px]
-                  p-3
+                  p-2.5
                   sm:p-5
                   transition-all
                   duration-300
@@ -391,16 +384,17 @@ function PTC_grid() {
 
                   <div
                     className="
-                      min-w-[42px]
-                      h-10
+                      min-w-[34px]
+                      h-8
                       sm:min-w-[48px]
                       sm:h-12
                       px-2
-                      rounded-2xl
+                      rounded-xl
+                      sm:rounded-2xl
                       flex
                       items-center
                       justify-center
-                      text-[10px]
+                      text-[8px]
                       sm:text-xs
                       font-black
                       uppercase
@@ -443,9 +437,12 @@ function PTC_grid() {
                       )
                     }
                     className="
-                      w-8
-                      h-8
-                      rounded-xl
+                      w-7
+                      h-7
+                      sm:w-8
+                      sm:h-8
+                      rounded-lg
+                      sm:rounded-xl
                       flex
                       items-center
                       justify-center
@@ -457,7 +454,7 @@ function PTC_grid() {
                           : "rgba(0,0,0,0.04)",
                     }}
                   >
-                    <span className="text-sm">
+                    <span className="text-xs sm:text-sm">
                       {isFavorite
                         ? "⭐"
                         : "☆"}
@@ -467,14 +464,15 @@ function PTC_grid() {
 
                 {/* CONTENT */}
 
-                <div className="mt-4">
+                <div className="mt-3 sm:mt-4">
                   <h2
                     className="
-                      text-sm
+                      text-[11px]
                       sm:text-lg
                       font-black
                       leading-snug
                       break-words
+                      line-clamp-2
                     "
                     style={{
                       color:
@@ -491,11 +489,11 @@ function PTC_grid() {
                       mt-2
                       inline-flex
                       items-center
-                      gap-2
+                      gap-1
                       px-2
                       py-1
                       rounded-full
-                      text-[10px]
+                      text-[8px]
                       sm:text-xs
                       font-bold
                     "
@@ -533,10 +531,10 @@ function PTC_grid() {
                   <div
                     className="
                       flex
-                      items-center
-                      gap-2
-                      mt-3
                       flex-wrap
+                      items-center
+                      gap-1
+                      mt-2
                     "
                   >
                     <div
@@ -544,7 +542,7 @@ function PTC_grid() {
                         px-2
                         py-1
                         rounded-full
-                        text-[10px]
+                        text-[8px]
                         sm:text-xs
                         font-bold
                       "
@@ -564,7 +562,7 @@ function PTC_grid() {
                         px-2
                         py-1
                         rounded-full
-                        text-[10px]
+                        text-[8px]
                         sm:text-xs
                         font-bold
                       "
@@ -576,7 +574,7 @@ function PTC_grid() {
                           "#6b7280",
                       }}
                     >
-                      {ad.timer} Sec
+                      {ad.timer}s
                     </div>
                   </div>
                 </div>
@@ -585,11 +583,10 @@ function PTC_grid() {
 
                 <div
                   className="
-                    mt-5
+                    mt-4
                     flex
-                    items-end
-                    justify-between
-                    gap-3
+                    flex-col
+                    gap-2
                   "
                 >
                   {/* STATUS */}
@@ -597,10 +594,10 @@ function PTC_grid() {
                   <div className="flex flex-col gap-1">
                     <div
                       className="
-                        px-3
-                        py-2
-                        rounded-xl
-                        text-[10px]
+                        px-2
+                        py-1.5
+                        rounded-lg
+                        text-[8px]
                         sm:text-xs
                         font-bold
                         leading-relaxed
@@ -625,7 +622,7 @@ function PTC_grid() {
 
                     <p
                       className="
-                        text-[9px]
+                        text-[8px]
                         sm:text-[10px]
                         font-medium
                         pl-1
@@ -635,7 +632,7 @@ function PTC_grid() {
                           "#9ca3af",
                       }}
                     >
-                      Resets in 24h
+                      Reset 24h
                     </p>
                   </div>
 
@@ -646,11 +643,11 @@ function PTC_grid() {
                       ad.completedToday
                     }
                     className="
-                      h-10
-                      min-w-[92px]
-                      px-4
+                      h-9
+                      sm:h-10
+                      w-full
                       rounded-xl
-                      text-[11px]
+                      text-[10px]
                       sm:text-sm
                       font-bold
                       transition-all
@@ -695,10 +692,10 @@ function PTC_grid() {
                       absolute
                       top-0
                       right-0
-                      px-3
+                      px-2
                       py-1
-                      rounded-bl-2xl
-                      text-[9px]
+                      rounded-bl-xl
+                      text-[7px]
                       sm:text-[10px]
                       font-black
                       uppercase
@@ -711,7 +708,7 @@ function PTC_grid() {
                         "#ffffff",
                     }}
                   >
-                    Favorite
+                    Fav
                   </div>
                 )}
               </article>
